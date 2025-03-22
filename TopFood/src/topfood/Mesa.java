@@ -6,15 +6,21 @@ public class Mesa{
     private int personas;
     private boolean activo;
     
-    public Mesa(int numero, int personas, boolean activo) {
+    public Mesa(Mesero mesero, int numero, int personas, boolean activo) {
+        this.mesero = mesero;
         this.numero = numero;
         this.personas = personas;
         this.activo = activo;
     }
     public Mesa(int numero){
+        mesero = null;
         this.numero = numero;
         personas = 0;
         activo = false;
+    }
+
+    public void getMesero(){
+        mesero.info();
     }
 
     public int getNumero() {
@@ -44,6 +50,7 @@ public class Mesa{
         String confirmacion = "";
         if(activo==true){confirmacion="Si.";}
         if(activo==false){confirmacion="No.";}
+        System.out.println("Mesero encargado: "+mesero.getCodigo());
         System.out.println("Mesa: "+numero);
         System.out.println("Cantidad de personas: "+personas);
         System.out.println("Activa: "+confirmacion);

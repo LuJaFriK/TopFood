@@ -55,8 +55,24 @@ public class Mesero{
         this.mesas[x] = mesa;
         this.contador++;
     }
+    
+    public void cleanMesa(Mesa mesa){
+        int x=0;
+        mesas[mesa.getNumero()] = new Mesa(mesa.getNumero());
+    }
 
     public int getContador() {
         return contador;
+    }
+
+    public void info(){
+        int x=0;
+        System.out.println("Codigo: "+codigo);
+        System.out.println("Nombre: "+nombre);
+        while(this.mesas[x]!=null&&x>this.mesas.length-1){
+            System.out.print(mesas[x].getNumero()+" ");
+            x++;
+        }
+        System.out.println("Contador de mesas: "+contador);
     }
 }
