@@ -16,6 +16,11 @@ public class Mesero{
         this.contador = 0;
     }
 
+    public Mesero(){
+        nombre = "Default";
+        codigo = 0;
+    }
+
     public String getNombre() {
         return nombre;
     }
