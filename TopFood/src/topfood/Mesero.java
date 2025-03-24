@@ -54,11 +54,14 @@ public class Mesero{
         }
     }
 
-    public void setMesa(Mesa mesa) {
-        int x=0;
-        while(this.mesas[x]!=null&&x>this.mesas.length-1){x++;}
-        this.mesas[x] = mesa;
-        this.contador++;
+    public void addMesa(Mesa mesa) {
+        for(int i = 0;i < this.mesas.length-1;i++){
+            if(this.mesas[i]!=null){
+                this.mesas[i] = mesa;
+                this.contador++;
+                return;
+            }
+        }System.out.println("Error. La mesa no puede ingresar más pedidos.");
     }
     
     public void cleanMesa(Mesa mesa){

@@ -24,7 +24,7 @@ public class Alimento{
         return costo;
     }
 
-    public void setCosto(int costo) {
+    public void setCosto(double costo) {
         this.costo = costo;
     }
 
@@ -44,13 +44,10 @@ public class Alimento{
     }
 
     public void detalles(){
-        String confirmacion = "";
-        if(existencia==true){confirmacion="Si.";}
-        if(existencia==false){confirmacion="No.";}
         System.out.println(nombre);
         System.out.println("Precio: "+ costo);
         System.out.println("Comentarios: "+ comentario);
-        System.out.println("Existencia: "+confirmacion);
+        System.out.println("Existencia: "+ (existencia ? "Si." : "No."));
     }
 
 }

@@ -7,6 +7,7 @@ public class Mesa{
     private boolean activo;
     private Alimento[]pedido;
     
+    
     public Mesa(Mesero mesero, int numero, int personas, boolean activo) {
         this.mesero = mesero;
         this.numero = numero;
@@ -50,28 +51,29 @@ public class Mesa{
     }
 
     public void addPedido(Alimento orden){
-        int i=0;
-        while(i>pedido.length&&pedido[i]!=null){i++;}
-        pedido[i] = orden;
+        for (int i = 0; i < pedido.length; i++) {
+            if (pedido[i] == null) {
+                pedido[i] = orden;
+                return;
+            }
+        }
+        System.out.println("Error: Pedido lleno. No se puede agregar más alimentos.");;
     }
 
     public void getPedido(){
-        int i=0;
-        while (i<100&&pedido[i]!=null) {
-            System.out.println("===============");
-            pedido[i].detalles();
-            System.out.println("===============");
-            i++;
+        for (int i=0; i < 100 && pedido[i] != null;i++) {
+            if(i<100){
+                System.out.println("===============");
+                pedido[i].detalles();
+                System.out.println("===============");
+            }
         }
     }
 
     public void info(){
-        String confirmacion = "";
-        if(activo==true){confirmacion="Si.";}
-        if(activo==false){confirmacion="No.";}
         System.out.println("Mesero encargado: "+mesero.getCodigo());
         System.out.println("Mesa: "+numero);
         System.out.println("Cantidad de personas: "+personas);
-        System.out.println("Activa: "+confirmacion);
+        System.out.println("Activa: "+(activo ? "Si." : "No."));
     }
 }
