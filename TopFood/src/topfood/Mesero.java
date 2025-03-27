@@ -19,6 +19,8 @@ public class Mesero{
     public Mesero(){
         nombre = "Default";
         codigo = 0;
+        password=-1;
+        contador = 0;
     }
 
     public String getNombre() {
@@ -46,27 +48,31 @@ public class Mesero{
         this.password = password;
     }
 
-    public void getMesas() {
-        int x=0;
-        while(mesas[x]!=null&&x<mesas.length-1){x++;}
-        for(int i=0;i<x;i++){
-            mesas[i].info();
+    public void printMesas() {
+        for(int i=0;i<mesas.length;i++){
+            if(mesas[i]!=null){
+                mesas[i].info();
+            }else{return;}
         }
     }
 
     public void addMesa(Mesa mesa) {
         for(int i = 0;i < this.mesas.length-1;i++){
-            if(this.mesas[i]!=null){
-                this.mesas[i] = mesa;
-                this.contador++;
+            if(!mesas[i].isActivo()){
+                mesas[i] = mesa;
+                contador++;
                 return;
             }
         }System.out.println("Error. La mesa no puede ingresar más pedidos.");
     }
+
+    public boolean isMyMesa(int i){
+        if(mesas[i]!=null){return true;}
+        else{return false;}
+    }
     
     public void cleanMesa(Mesa mesa){
-        int x=0;
-        mesas[mesa.getNumero()] = new Mesa(mesa.getNumero());
+        mesas[mesa.getNumero()] = new Mesa(mesa.getNumero());  
     }
 
     public int getContador() {

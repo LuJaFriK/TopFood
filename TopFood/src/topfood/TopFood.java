@@ -17,21 +17,49 @@ public class TopFood {
     public static void main(String[] args) {
         
         Mesero[]meseros = new Mesero[10];
-        Mesa[]mesas = new Mesa[5];
-        Alimento[]menu = new Alimento[10];
+        Mesa[]mesas = new Mesa[70];
+        Alimento[]menu = new Alimento[90];
+        Mesero user = meseros[0];
 
-        Mesero user = new Mesero();
-        int opc=0,fallas=0;
+        int opc=0,fallas=0,i=0,opt=0;
+        boolean myMesa=false,isActive=false;
+        switch()
         do{
+            opc=0;
             while(user == null){
             System.out.println("Ingresa tu contraseña para iniciar sesión:");
             user = LogIn(meseros, scanner.nextInt());
             fallas+=1;
-            if(fallas>3){
+            if(fallas>=3){
                 System.out.println("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo?");
                 System.out.println("1. Si      2. No");
+                fallas=0;
                 int crear = scanner.nextInt();
-                if(crear==1){crearMesero(meseros);}
+                scanner.nextLine();
+                if(crear==1){
+                    for(i=0;i<meseros.length;i++){
+                        if(meseros[i] == null){
+                            System.out.println("Ingresa el nombre del mesero:");
+                            String nombre = scanner.nextLine();
+                            boolean done = false;
+                            int pass1 = 0,pass2 = 0;
+                            do{
+                                System.out.println("Ingresa la contraseña: ");
+                                pass1 = scanner.nextInt();
+                                System.out.println("Confirma tu contraseña: ");
+                                pass2 = scanner.nextInt();
+                                if(pass1 == pass2){
+                                    done = true;
+                                }else{
+                                    System.out.println("Error. las contraseñas no coinciden.");
+                                }
+                            }while(done!=true);
+                        meseros[i] = new Mesero(nombre,i,pass1);
+                        break;
+                        }
+                    } 
+                    if(i<meseros.length){System.out.println("Error. No pueden ingresar más meseros.");}
+                }
             }
         }   
         scanner.nextLine();
@@ -41,23 +69,62 @@ public class TopFood {
             System.out.println("3.- Agregar productos.");
             System.out.println("4.- Cerrar una cuenta.");
             System.out.println("5.- Eliminar una cuenta.");
+            System.out.println("6.- Separar o juntar cuentas.");
+            System.out.println("7.- Salir.");
             opc = scanner.nextInt();
+            scanner.nextLine();
             switch (opc){
                 case 1:
+                    asignarMesa(user, mesas, menu);
                 break;
                 case 2:
+                    user.printMesas();
                 break;
                 case 3:
+                    System.out.println("Ingresa el numero de la mesa:");
+                    i = scanner.nextInt();
+                    myMesa = user.isMyMesa(i);
+                    if(myMesa){
+                        hacerPedido(mesas[i], user, menu);
+                    }else{System.out.println("Error. La mesa no fue encontrada activa o no es operada por el mesero.");}
                 break;
                 case 4:
+                    System.out.println("Ingresa la cuenta que deseas cerrar:");
+                    i = scanner.nextInt();
+                    myMesa = user.isMyMesa(i);
+                    isActive = mesas[i].isActivo();
+                    if(myMesa&&isActive){
+                        Ticket(mesas[i]);
+                        mesas[i].setActivo(false);
+                    }else{System.out.println("Error. La mesa no fue encontrada activa o no es operada por el mesero.");}
                 break;
                 case 5:
+                    System.out.println("Ingresa el numero de la cuenta a eliminar:");
+                    i = scanner.nextInt();
+                    myMesa = user.isMyMesa(i);
+                    isActive = mesas[i].isActivo();
+                    if(myMesa&&!isActive){ 
+                        user.cleanMesa(mesas[i]);
+                        mesas[i]=new Mesa(i);
+                    }else{
+                        System.out.println("Error. La mesa sigue activa o no es operada por el mesero.");
+                    }
                 break;
                 case 6:
+                    opt=0;
+                    System.out.println("Desea separar o juntar cuentas?");
+                    System.out.println("1. Separar       2. Juntar");
+                    opt=scanner.nextInt();
+                    if(opt!=1&&opt!=2){
+                        System.out.println("Error. Opción no válida.");
+                        break;
+                    }
                 break;
                 case 7:
+                System.out.println("Saliendo...");
                 break;
                 default:
+                System.out.println("Error. Opción no válida.");
                 break;
             }
         }while(opc != 7);
@@ -70,7 +137,7 @@ public class TopFood {
         scanner.next();
         boolean done = false;
         int i = 0;
-        do{
+        do{ 
             System.out.println("Ingresa el nombre del alimento:");
             String nombre =  scanner.nextLine();
             while(i < menu.length){
@@ -99,54 +166,36 @@ public class TopFood {
             }
             i++;
         }
+        System.out.println("Error. Contraseña incorrecta.");
         return null;
     } 
 
     public static void crearMesero(Mesero[]meseros){
-        scanner.next();
-        for(int i=0;i<meseros.length;i++){
-            if(meseros[i] == null){
-                System.out.println("Ingresa el nombre del mesero:");
-                String nombre = scanner.nextLine();
-                boolean done = false;
-                int pass1 = 0,pass2 = 0;
-                do{
-                    System.out.println("Ingresa la contraseña: ");
-                    pass1 = scanner.nextInt();
-                    System.out.println("Confirma tu contraseña: ");
-                    pass2 = scanner.nextInt();
-                    if(pass1 == pass2){
-                        done = true;
-                    }else{
-                        System.out.println("Error. las contraseñas no coinciden.");
-                    }
-                }while(done!=true);
-            meseros[i] = new Mesero(nombre,i,pass1);
-            return;
-            }
-        } 
-        System.out.println("Error. No pueden ingresar más meseros.");
+        
     }
 
     public static void asignarMesa(Mesero mesero, Mesa[] mesas, Alimento[]menu){
         scanner.next();
         System.out.println("Ingresa el numero de la mesa: ");
-        int i = scanner.nextInt();
-        if(mesas[i].isActivo() == true){System.out.println("Error, la mesa está ocupada.");}
-        System.out.println("Ingresa el numero de personas: ");
-        int personas = scanner.nextInt();
-        mesas[i] = new Mesa(mesero, i++, personas, true);
-        mesero.addMesa(mesas[i]);
-        int tomarorden = 0;
-        do{
-            System.out.println("Desea tomar la orden?");
-            System.out.println("1. Si       2. No");
-            tomarorden = scanner.nextInt();
-            if(tomarorden == 1){
-                hacerPedido(mesas[i],mesero, menu);
-            }else if(tomarorden == 2){}
-            else{System.out.println("Error, valor no válido.");}
-        }while(tomarorden!=1);
+        int i=0;
+        i = scanner.nextInt();
+        if(mesas[i].isActivo()){System.out.println("Error, la mesa está ocupada.");
+        }else{
+            System.out.println("Ingresa el numero de personas: ");
+            int personas = scanner.nextInt();
+            mesas[i] = new Mesa(mesero, i++, personas, true);
+            mesero.addMesa(mesas[i]);
+            int tomarorden = 0;
+            do{
+                System.out.println("Desea tomar la orden?");
+                System.out.println("1. Si       2. No");
+                tomarorden = scanner.nextInt();
+                if(tomarorden == 1){
+                    hacerPedido(mesas[i],mesero, menu);
+                }else if(tomarorden == 2){return;}
+                else{System.out.println("Error, valor no válido.");}
+            }while(tomarorden!=1);
+        }
     }
 
     public static void Ticket(Mesa mesa){
