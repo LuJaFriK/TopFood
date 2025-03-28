@@ -1,5 +1,4 @@
-import topfood.Alimento;
-
+package topfood;
 public class Cafe extends Alimento{
      private boolean cafeina;
      private boolean hielo;
@@ -47,17 +46,25 @@ public class Cafe extends Alimento{
      }
 
      @Override
-     public void setCosto(double costo){
-          double newcosto=costo;
-          if(leche.equals("Almendras")){newcosto+=10;}
-          if(size.equals("CH")){return;}
-          else if(size.equals("M")){
-               newcosto*=1.10;
-          }else if(size.equals("G")){
-               newcosto*=1.20;
-          }
-          super.setCosto(newcosto);
-     }
+public void setCosto(double costo) {
+    double newCosto = costo;
+    if("Almendras".equals(leche)) { 
+        newCosto += 10;
+    }
+    
+    if(size != null) {
+        switch(size.toUpperCase()) { 
+            case "M":
+                newCosto *= 1.10;
+                break;
+            case "G":
+                newCosto *= 1.20;
+                break;
+        }
+    }
+    super.setCosto(newCosto); 
+}
+
      @Override 
      public void detalles(){
           super.detalles();

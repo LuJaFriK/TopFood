@@ -1,5 +1,6 @@
 package topfood;
-public class Alimento{
+
+public abstract class Alimento{
     private String nombre;
     private double costo;
     private String comentario;
@@ -10,6 +11,7 @@ public class Alimento{
         this.costo = costo;
         this.comentario = comentario;
         this.existencia = existencia;
+        
     }
 
     public String getNombre() {

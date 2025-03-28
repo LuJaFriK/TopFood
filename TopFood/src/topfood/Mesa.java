@@ -5,7 +5,8 @@ public class Mesa{
     private int numero;
     private int personas;
     private boolean activo;
-    private Alimento[]pedido;
+    private Platillo[]pedido;
+    private Cafe[]cafeteria;
     private double total;
     
     public Mesa(Mesero mesero, int numero, int personas, boolean activo) {
@@ -13,7 +14,14 @@ public class Mesa{
         this.numero = numero;
         this.personas = personas;
         this.activo = activo;
-        pedido = new Alimento[100];
+        pedido = new Platillo[100];
+        int i;
+        for(i=0; i<pedido.length;i++){
+            pedido[i] = new Platillo(null, 0, null, activo);
+        }
+        for(i=0;i<cafeteria.length;i++){
+            cafeteria[i] = new Cafe(null, 0, null, activo);
+        }
         total = 0;
     }
     public Mesa(int numero){
@@ -53,7 +61,7 @@ public class Mesa{
         this.activo = activo;
     }
 
-    public void addPedido(Alimento orden){
+    public void addPedido(Platillo orden){
         for (int i = 0; i < pedido.length; i++) {
             if (pedido[i] == null) {
                 pedido[i] = orden;
@@ -67,7 +75,7 @@ public class Mesa{
         return pedido.length;
     }
 
-    public Alimento getpedido(int i){
+    public Platillo getpedido(int i){
         return pedido[i];
     }
 
@@ -76,6 +84,34 @@ public class Mesa{
             if(i<100){
                 System.out.println("===============");
                 pedido[i].detalles();
+                System.out.println("===============");
+            }
+        }
+    }
+    
+    public void addCafe(Cafe coffee){
+        for (int i = 0; i < cafeteria.length; i++) {
+            if (cafeteria[i] == null) {
+                cafeteria[i] = coffee;
+                return;
+            }
+        }
+        System.out.println("Error: Pedido de cafe lleno. No se puede agregar más bebidas.");
+    }
+
+    public int getCafeLength(){
+        return cafeteria.length;
+    }
+
+    public Cafe getCafe(int i){
+        return cafeteria[i];
+    }
+
+    public void printCafe(){
+        for (int i=0; i < 100 && cafeteria[i] != null;i++) {
+            if(i<100){
+                System.out.println("===============");
+                cafeteria[i].detalles();
                 System.out.println("===============");
             }
         }
