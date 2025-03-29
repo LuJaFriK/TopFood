@@ -3,9 +3,9 @@ public class Cafe extends Alimento{
      private boolean cafeina;
      private boolean hielo;
      private String leche; 
-     public final String[] milkList= {"No","Entera","Deslactosada","Light","Almendras"};
+     private String[] milkList= {"No","Entera","Deslactosada","Light","Almendras"};
      private String size;
-     public final String[] sizeList={"CH","M","G"};
+     private String[] sizeList={"CH","M","G"};
 
      public Cafe(String nombre, double costo,String comentario,boolean existencia){
           super(nombre,costo,comentario,existencia);
@@ -32,6 +32,16 @@ public class Cafe extends Alimento{
      public void setHielo(boolean hielo) {
           this.hielo = hielo;
      }
+     
+     public void printMilklist(){
+          for(int i = 0;i<milkList.length;i++){
+               System.out.println(i+". "+milkList[i]);
+          }
+     }
+
+     public int getMilklistSize(){
+          return milkList.length;
+     }
 
      public void setMilk(int index){
           this.leche=milkList[index];
@@ -45,25 +55,31 @@ public class Cafe extends Alimento{
           size=sizeList[index];
      }
 
+     public void printSizeList(){
+          for(int i = 0;i<sizeList.length;i++){
+               System.out.println(i+". "+sizeList[i]);
+          }
+     }
+
      @Override
-public void setCosto(double costo) {
-    double newCosto = costo;
-    if("Almendras".equals(leche)) { 
-        newCosto += 10;
-    }
-    
-    if(size != null) {
-        switch(size.toUpperCase()) { 
-            case "M":
-                newCosto *= 1.10;
-                break;
-            case "G":
-                newCosto *= 1.20;
-                break;
-        }
-    }
-    super.setCosto(newCosto); 
-}
+     public void setCosto(double costo) {
+     double newCosto = costo;
+     if("Almendras".equals(leche)) { 
+          newCosto += 10;
+     }
+     
+     if(size != null) {
+          switch(size.toUpperCase()) { 
+               case "M":
+                    newCosto *= 1.10;
+                    break;
+               case "G":
+                    newCosto *= 1.20;
+                    break;
+          }
+     }
+     super.setCosto(newCosto); 
+     }
 
      @Override 
      public void detalles(){

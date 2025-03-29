@@ -21,6 +21,7 @@ public class Mesero{
         codigo = 0;
         password = -1;
         contador = 0;
+        this.mesas = new Mesa[60]; 
     }
 
     public String getNombre() {
@@ -58,17 +59,20 @@ public class Mesero{
 
     public void addMesa(Mesa mesa) {
         for(int i = 0;i < this.mesas.length-1;i++){
-            if(!mesas[i].isActivo()){
-                mesas[i] = mesa;
+            if(mesas[i]==null){
+                mesas[i] = new Mesa(mesa.getMesero(),mesa.getNumero(),mesa.getPersonas() , true);
                 contador++;
                 return;
             }
-        }System.out.println("Error. La mesa no puede ingresar más pedidos.");
+        }System.out.println("Error. El mesero no puede agregar más mesas.");
     }
 
-    public boolean isMyMesa(int i){
-        if(mesas[i]!=null){return true;}
-        else{return false;}
+    public boolean isMyMesa(int numero, int personas, boolean activo, double total){
+        for(int i = 0;i < mesas.length;i++){
+            if(mesas[i].getNumero()==numero&&mesas[i].getPersonas()==personas&&mesas[i].isActivo()==activo&&mesas[i].getTotal()==total){
+                return true;
+            }
+        }return false;
     }
     
     public void cleanMesa(Mesa mesa){

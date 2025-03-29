@@ -4,6 +4,7 @@ public abstract class Alimento{
     private String nombre;
     private double costo;
     private String comentario;
+    private int cantidad;
     private boolean existencia;
     
     public Alimento(String nombre, double costo, String comentario, boolean existencia) {
@@ -11,6 +12,7 @@ public abstract class Alimento{
         this.costo = costo;
         this.comentario = comentario;
         this.existencia = existencia;
+        
         
     }
 

@@ -15,13 +15,14 @@ public class Mesa{
         this.personas = personas;
         this.activo = activo;
         pedido = new Platillo[100];
+        cafeteria = new Cafe[100];
         int i;
-        for(i=0; i<pedido.length;i++){
+        /*for(i=0; i<pedido.length;i++){
             pedido[i] = new Platillo(null, 0, null, activo);
         }
         for(i=0;i<cafeteria.length;i++){
             cafeteria[i] = new Cafe(null, 0, null, activo);
-        }
+        }*/
         total = 0;
     }
     public Mesa(int numero){
@@ -32,8 +33,8 @@ public class Mesa{
         total = 0;
     }
 
-    public int getMesero(){
-        return mesero.getCodigo();
+    public Mesero getMesero(){
+        return mesero;
     }
 
     public int getNumero() {
@@ -61,14 +62,25 @@ public class Mesa{
         this.activo = activo;
     }
 
-    public void addPedido(Platillo orden){
-        for (int i = 0; i < pedido.length; i++) {
+    public void addPedido(Platillo orden, int cantidad) {
+        int espaciosDisponibles = 0;
+        
+        for (int i = 0; i < pedido.length; i++) {// Contabilizar el espacio disponible en el arreglo
             if (pedido[i] == null) {
-                pedido[i] = orden;
-                return;
+                espaciosDisponibles++;
             }
         }
-        System.out.println("Error: Pedido lleno. No se puede agregar más alimentos.");;
+        if (espaciosDisponibles < cantidad) {// Verificar si hay suficiente espacio
+            System.out.println("Error: No hay suficiente espacio para agregar " + cantidad + " platillos. Espacios disponibles: " + espaciosDisponibles);
+            return;
+        }
+        int agregados = 0;
+        for (int i = 0; i < pedido.length && agregados < cantidad; i++) {// Agregar el platillo la cantidad de veces especificada
+            if (pedido[i] == null) {
+                pedido[i] = orden;
+                agregados++;
+            }
+        }
     }
 
     public int getPedidolength(){
@@ -89,14 +101,25 @@ public class Mesa{
         }
     }
     
-    public void addCafe(Cafe coffee){
-        for (int i = 0; i < cafeteria.length; i++) {
+    public void addCafe(Cafe orden, int cantidad) {
+        int espaciosDisponibles = 0;
+        
+        for (int i = 0; i < cafeteria.length; i++) {// Contabilizar el espacio disponible en el arreglo
             if (cafeteria[i] == null) {
-                cafeteria[i] = coffee;
-                return;
+                espaciosDisponibles++;
             }
         }
-        System.out.println("Error: Pedido de cafe lleno. No se puede agregar más bebidas.");
+        if (espaciosDisponibles < cantidad) {// Verificar si hay suficiente espacio
+            System.out.println("Error: No hay suficiente espacio para agregar " + cantidad + " cafes. Espacios disponibles: " + espaciosDisponibles);
+            return;
+        }
+        int agregados = 0;
+        for (int i = 0; i < cafeteria.length && agregados < cantidad; i++) {// Agregar el platillo la cantidad de veces especificada
+            if (cafeteria[i] == null) {
+                cafeteria[i] = orden;
+                agregados++;
+            }
+        }
     }
 
     public int getCafeLength(){
@@ -125,7 +148,7 @@ public class Mesa{
     }
 
     public void info(){
-        System.out.println("Mesero encargado: "+mesero.getCodigo());
+        System.out.println("Mesero encargado: "+mesero.getCodigo()+" : "+mesero.getNombre());
         System.out.println("Mesa: "+numero);
         System.out.println("Cantidad de personas: "+personas);
         System.out.println("Activa: "+(activo ? "Si." : "No."));
