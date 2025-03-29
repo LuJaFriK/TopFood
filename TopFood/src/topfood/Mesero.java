@@ -19,7 +19,7 @@ public class Mesero{
     public Mesero(){
         nombre = "Default";
         codigo = 0;
-        password=-1;
+        password = -1;
         contador = 0;
     }
 

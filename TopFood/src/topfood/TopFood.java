@@ -57,11 +57,14 @@ public class TopFood {
         
         Mesero[]meseros = new Mesero[20];
         Mesa[]mesas = new Mesa[70];
+
+        for(int x = 0; x<mesas.length;x++){
+            mesas[x]=new Mesa(x);
+        }
+
         Platillo[]menu = new Platillo[90];
         Cafe[]cafeteria = new Cafe[50];
-        Mesero user = meseros[0];
-        user.setNombre("Usuario invalido");
-        user.setCodigo(0);
+        Mesero user = new Mesero();
         int opc=0,fallas=0,i=0,opt=0,opcion=0;
         
         do{
@@ -99,7 +102,7 @@ public class TopFood {
         do{
             scanner.nextLine();
             opc=0;
-            while(user == null){
+            while(user.getNombre().equals("Default")){
             System.out.println("Ingresa tu contraseña para iniciar sesión:");
             user = LogIn(meseros, scanner.nextInt());
             fallas+=1;
@@ -187,7 +190,8 @@ public class TopFood {
         String nombre = "";
         double costo = 0;
         System.out.println("Crear:");
-        System.out.println("1. Platillo               2. Café");
+        System.out.println("1. Platillo");
+        System.out.println("2. Café");
         opc = scanner.nextInt();
         scanner.nextLine();
         if(opc==1){
@@ -221,7 +225,6 @@ public class TopFood {
     }     
 
     public static void hacerPedido(Mesa mesa,Mesero mesero,Platillo[] menu,Cafe[] cafeteria){
-        scanner.nextLine();
         boolean done = false;
         Platillo tempedido;
         Cafe tempcafe;
