@@ -55,6 +55,10 @@ public class Cafe extends Alimento{
           size=sizeList[index];
      }
 
+     public int getSizeListSize(){
+          return sizeList.length;
+     }
+
      public void printSizeList(){
           for(int i = 0;i<sizeList.length;i++){
                System.out.println(i+". "+sizeList[i]);

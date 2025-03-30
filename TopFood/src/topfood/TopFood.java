@@ -118,13 +118,13 @@ public class TopFood {
     public static void SetExistencia(String nombre,Platillo[]menu,Cafe[]cafeteria,boolean existencia){
         int i=0;
         for(i=0;i<menu.length;i++){
-            if(menu[i].getNombre().equals(nombre)){
+            if(menu[i].getNombre().equalsIgnoreCase(nombre)){
                 menu[i].setExistencia(existencia);
                 return;
             }
         }
         for(i=0;i<cafeteria.length;i++){
-            if(cafeteria[i].getNombre().equals(nombre)){
+            if(cafeteria[i].getNombre().equalsIgnoreCase(nombre)){
                 cafeteria[i].setExistencia(existencia);
                 return;
             }
@@ -264,12 +264,12 @@ public class TopFood {
         boolean done = false;
         
         do{
-            scanner.nextLine();
             // Los objetos temporales que registran las ordenes, se limpian luego de cada registro.
             Platillo tempedido = null;
             Cafe tempcafe = null;
             int i = 0,opc = 0,condicion=-1,cantidad = 0;
             String nombrealimento = null, comentario = null;
+
             System.out.println("Ingresar:");
             System.out.println("1. Platillo");
             System.out.println("2. Cafe");
@@ -314,10 +314,11 @@ public class TopFood {
                             System.out.println("2. No");
                             condicion = scanner.nextInt();
                             if(condicion==2){done = true;}
+                            else{break;}
                         } 
                     }
                 }else{//Si platillo es null, no sucede nada, solo se repite el ciclo
-                    System.out.println("Error. Platillo no encontrado.");
+                    System.out.println("Error. no encontrado.");
                 }
             
             }else if(opc == 2){//Ingresar un cafe
@@ -363,7 +364,7 @@ public class TopFood {
                                 System.out.println("Tipo de leche:");
                                 tempcafe.printMilklist();
                                 condicion = scanner.nextInt();
-                                if(condicion>=0&&condicion<=tempcafe.getMilklistSize()){
+                                if(condicion>=0&&condicion<tempcafe.getMilklistSize()){
                                     tempcafe.setMilk(i);
                                 }else{
                                     System.out.println("Error. Opcion no valida.");
@@ -375,7 +376,7 @@ public class TopFood {
                                 System.out.println("Tamaños:");
                                 tempcafe.printSizeList();
                                 condicion = scanner.nextInt();
-                                if(condicion>=0&&condicion<=tempcafe.getMilklistSize()){
+                                if(condicion>=0&&condicion<tempcafe.getSizeListSize()){
                                     tempcafe.setMilk(i);
                                 }else{
                                     System.out.println("Error. Opcion no valida.");
@@ -397,6 +398,7 @@ public class TopFood {
                             System.out.println("2. No");
                             condicion = scanner.nextInt();
                             if(condicion==2){done = true;}
+                            else{break;}
                         } 
                     }
                 }else{//Si platillo es null, no sucede nada, solo se repite el ciclo

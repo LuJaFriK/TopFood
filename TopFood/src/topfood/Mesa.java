@@ -17,12 +17,6 @@ public class Mesa{
         pedido = new Platillo[100];
         cafeteria = new Cafe[100];
         int i;
-        /*for(i=0; i<pedido.length;i++){
-            pedido[i] = new Platillo(null, 0, null, activo);
-        }
-        for(i=0;i<cafeteria.length;i++){
-            cafeteria[i] = new Cafe(null, 0, null, activo);
-        }*/
         total = 0;
     }
     public Mesa(int numero){
