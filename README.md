@@ -29,7 +29,7 @@
 ### Instalación
 ```bash
 # Clonar repositorio
-git clone https://github.com/tu-usuario/TopFood.git
+git clone https://github.com/LuJaFriK/TopFood.git
 
 # Compilar proyecto
 cd TopFood
