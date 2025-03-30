@@ -1,19 +1,17 @@
 package topfood;
 
-public abstract class Alimento{
+public abstract class Alimento {
     private String nombre;
     private double costo;
     private String comentario;
-    private int cantidad;
     private boolean existencia;
-    
+
     public Alimento(String nombre, double costo, String comentario, boolean existencia) {
         this.nombre = nombre;
         this.costo = costo;
         this.comentario = comentario;
         this.existencia = existencia;
-        
-        
+
     }
 
     public String getNombre() {
@@ -39,6 +37,7 @@ public abstract class Alimento{
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
+
     public boolean isExistencia() {
         return existencia;
     }
@@ -47,11 +46,11 @@ public abstract class Alimento{
         this.existencia = existencia;
     }
 
-    public void detalles(){
+    public void detalles() {
         System.out.println(nombre);
-        System.out.println("Precio: "+ costo);
-        System.out.println("Comentarios: "+ comentario);
-        System.out.println("Existencia: "+ (existencia ? "Si." : "No."));
+        System.out.println("Precio: " + costo);
+        System.out.println("Comentarios: " + comentario);
+        System.out.println("Existencia: " + (existencia ? "Si." : "No."));
     }
 
 }
