@@ -1,7 +1,7 @@
 # 🍽️ TopFood - Sistema de Gestión para Restaurantes
 
-[![Java](https://img.shields.io/badge/Java-17%2B-blue.svg)](https://java.com)
-[![Licencia](https://img.shields.io/badge/Licencia-MIT-green.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-JDK24-blue.svg)](https://www.oracle.com/java/technologies/javase/jdk24-archive-downloads.html)
+[![Licencia](https://img.shields.io/badge/Licencia-GPL--3.0-green.svg)](LICENSE)
 [![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-orange.svg)](https://github.com/tu-usuario/TopFood)
 
 <img src="https://www.imagelato.com/images/article-cover-restaurant-management-software-guide-879d78a5-1024w.jpg" alt="Ilustración restaurante" width="400" align="right">
