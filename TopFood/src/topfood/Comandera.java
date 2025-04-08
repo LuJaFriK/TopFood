@@ -10,13 +10,10 @@ import java.util.Scanner;
  *
  * @author Luis Javier Robles Topete 25460001
  */
-public class TopFood {
+public class Comandera {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    /**
-     * @param args the command line arguments
-     */
 
     public static Mesero LogIn(Mesero[] meseros, int password) {
         int i = 0;
@@ -30,6 +27,7 @@ public class TopFood {
         return null;
     }
 
+
     public static void crearMesero(Mesero[] meseros) {
         int i;
         for (i = 0; i < meseros.length; i++) {
@@ -37,7 +35,7 @@ public class TopFood {
                 System.out.println("Ingresa el nombre del mesero:");
                 String nombre = scanner.nextLine();
                 boolean done = false;
-                int pass1 = 0, pass2 = 0;
+                int pass1, pass2;
                 do {
                     System.out.println("Ingresa la contraseña: ");
                     pass1 = scanner.nextInt();
@@ -48,12 +46,12 @@ public class TopFood {
                     } else {
                         System.out.println("Error. las contraseñas no coinciden.");
                     }
-                } while (done != true);
+                } while (!done);
                 meseros[i] = new Mesero(nombre, i, pass1);
                 return;
             }
         }
-        if (i < meseros.length) {
+        if (i == meseros.length) {
             System.out.println("Error. No pueden ingresar más meseros.");
         }
     }
@@ -81,7 +79,7 @@ public class TopFood {
         cafeteria[3] = new Cafe("Cappuccino", 4.00, "Espuma de leche.", true);
         cafeteria[4] = new Cafe("Mocha", 5.00, "Chocolate y leche entera.", false);
         Mesero user = null;
-        int opc = 0, fallas = 0, i = 0, opt = 0, opcion = 0;
+        int opcion;
 
         do {
 
@@ -120,8 +118,9 @@ public class TopFood {
         } while (opcion != 4);
     }
 
+
     public static void SetExistencia(String nombre,Platillo[]menu,Cafe[]cafeteria,boolean existencia){
-        int i=0;
+        int i;
         for(i=0;i<menu.length;i++){
             if(menu[i].getNombre().equalsIgnoreCase(nombre)){
                 menu[i].setExistencia(existencia);
@@ -137,10 +136,10 @@ public class TopFood {
     }
 
     public static void MenuMesero(Mesero user, Mesero[] meseros, Mesa[] mesas, Platillo[] menu, Cafe[] cafeteria) {
-        int opc = 0, fallas = 0, i = 0, opt = 0;
+        int opc, fallas = 0, i, opt;
         do {
-            boolean myMesa = false, isActive = false;
-            opc = 0;
+            boolean myMesa, isActive;
+
             while (user == null) {
                 System.out.println("Ingresa tu contraseña para iniciar sesión:");
                 user = LogIn(meseros, scanner.nextInt());
@@ -179,8 +178,7 @@ public class TopFood {
                 case 3:
                     System.out.println("Ingresa el numero de la mesa:");
                     i = scanner.nextInt();
-                    myMesa = user.isMyMesa(mesas[i].getNumero(), mesas[i].getPersonas(), mesas[i].isActivo(),
-                            mesas[i].getTotal());
+                    myMesa = user.isMyMesa(mesas[i]);
                     if (myMesa) {
                         hacerPedido(mesas[i], user, menu, cafeteria);
                         System.out.println(user.getNombre());
@@ -191,8 +189,7 @@ public class TopFood {
                 case 4:
                     System.out.println("Ingresa la cuenta que deseas cerrar:");
                     i = scanner.nextInt();
-                    myMesa = user.isMyMesa(mesas[i].getNumero(), mesas[i].getPersonas(), mesas[i].isActivo(),
-                            mesas[i].getTotal());
+                    myMesa = user.isMyMesa(mesas[i]);
                     isActive = mesas[i].isActivo();
                     if (myMesa && isActive) {
                         Ticket(mesas[i]);
@@ -202,25 +199,21 @@ public class TopFood {
                     }
                     break;
                 case 5:
-                    System.out.println("Ingresa el numero de la cuenta a eliminar:");
-                    i = scanner.nextInt();
-                    myMesa = user.isMyMesa(mesas[i].getNumero(), mesas[i].getPersonas(), mesas[i].isActivo(),
-                            mesas[i].getTotal());
-                    isActive = mesas[i].isActivo();
-                    if (myMesa && !isActive) {
-                        user.cleanMesa(mesas[i]);
-                        mesas[i] = new Mesa(i);
-                    } else {
-                        System.out.println("Error. La mesa sigue activa o no es operada por el mesero.");
-                    }
+                    DeleteMesa(user,mesas);
                     break;
                 case 6:
-                    opt = 0;
                     System.out.println("Desea separar o juntar cuentas?");
                     System.out.println("1. Separar       2. Juntar");
                     opt = scanner.nextInt();
-                    if (opt != 1 && opt != 2) {
-                        System.out.println("Error. Opción no válida.");
+                    switch (opt){
+                        case 1:
+                            
+                        break;
+                        case 2:
+
+                        break;
+                        default:
+
                         break;
                     }
                     break;
@@ -234,10 +227,11 @@ public class TopFood {
         } while (opc != 7);
     }
 
+
     public static void crearAlimento(Platillo[] menu, Cafe[] cafeteria) {
         scanner.nextLine();
-        int i = 0, opc = 0;
-        String nombre = "";
+        int i, opc;
+        String nombre;
         double costo = 0;
         System.out.println("Crear:");
         System.out.println("1. Platillo");
@@ -273,10 +267,13 @@ public class TopFood {
             System.out.println("Error. Opcion no valida");
         }
     }
-
+    
     public static void hacerPedido(Mesa mesa, Mesero mesero, Platillo[] menu, Cafe[] cafeteria) {
         boolean done = false;
-        
+        Platillo[] comanda = new Platillo[100];
+        Cafe[] bebidas = new Cafe[100];
+        int contPlat = 0, contBeb = 0,x = 0;
+        if (!mesero.isMyMesa(mesa))
         do{
             // Los objetos temporales que registran las ordenes, se limpian luego de cada registro.
             Platillo tempedido = null;
@@ -290,7 +287,8 @@ public class TopFood {
             System.out.println("3. Salir");
             opc = scanner.nextInt();
             scanner.nextLine();
-            if (opc == 1) {// Ingresar un platillo
+            switch (opc) {
+                case 1:
                 System.out.println("Ingresa el nombre del Platillo");
                 nombrealimento = scanner.nextLine();
                 // Busca el platillo por nombre, si lo encuentra, regresa el platillo, si no,
@@ -326,7 +324,10 @@ public class TopFood {
                             cantidad = scanner.nextInt();
 
                             mesa.addPedido(tempedido, cantidad);// Se agrega el platillo
-
+                            for(i=0;i<cantidad;i++){
+                                comanda[contPlat]=tempedido;
+                                contPlat++;
+                            }
                             // Termina registro del pedido
 
                             // Continuar con el pedido o cerrar el pedido.
@@ -345,8 +346,9 @@ public class TopFood {
                 } else {// Si platillo es null, no sucede nada, solo se repite el ciclo
                     System.out.println("Error. Platillo no encontrado.");
                 }
-                System.out.println("esta linea sobra");
-            } else if (opc == 2) {// Ingresar un cafe
+                    break;
+                
+                case 2:
                 System.out.println("Ingresa el nombre del Cafe");
                 nombrealimento = scanner.nextLine();
                 // Busca el platillo por nombre, si lo encuentra, regresa el platillo, si no,
@@ -422,7 +424,10 @@ public class TopFood {
                             cantidad = scanner.nextInt();
 
                             mesa.addCafe(tempcafe, cantidad);// Se agrega el platillo
-
+                            for(i=0;i<cantidad;i++){
+                                bebidas[contBeb]=tempcafe;
+                                contBeb++;
+                            }
                             // Termina registro del pedido
 
                             // Continuar con el pedido o cerrar el pedido.
@@ -441,25 +446,44 @@ public class TopFood {
                 } else {// Si platillo es null, no sucede nada, solo se repite el ciclo
                     System.out.println("Error. cafe no encontrado.");
                 }
-
-            } else if (opc == 3) {// Salir
+                    break;
+                    
+                case 3:
                 System.out.println("Saliendo...");
                 done = true;
-            } else {
+                    break;
+            
+                default:
                 System.out.println("Error. Opcion no valida.");
+                    break;
             }
-            System.out.println("");
         } while (!done);
+        //Imprimir comanda
+        if(contPlat>0){
+            System.out.println("=================================");
+            System.out.println("Platillos:");
+            for(x=0;x<contPlat;x++){
+                comanda[x].detalles();
+            }
+            System.out.println("=================================");
+        }
+        
+        if(contBeb>0){
+            System.out.println("Café");
+            for(x=0;x<contBeb;x++){
+                bebidas[x].detalles();
+            }
+            System.out.println("=================================");
 
+        }
     }
 
     // Metodo buscador de un platillo, si lo encuentra retorna el platillo, si no,
     // retorna null
+
     public static Platillo buscarPlatillo(String nombre, Platillo[] menu) {
-        Platillo platillo;
-        for (int i = 0; i < menu.length; i++) {
-            if (menu[i] != null && menu[i].getNombre().equalsIgnoreCase(nombre)) {
-                platillo = menu[i];
+        for(Platillo platillo:menu){
+            if(platillo != null && platillo.getNombre().equalsIgnoreCase(nombre)){
                 return platillo;
             }
         }
@@ -468,18 +492,18 @@ public class TopFood {
 
     // Metodo buscador de un cafe, si lo encuentra retorna el cafe, si no, retorna
     // null
-    public static Cafe buscarCafe(String nombre, Cafe[] menu) {
-        Cafe platillo;
-        for (int i = 0; i < menu.length; i++) {
-            if (menu[i] != null && menu[i].getNombre().equalsIgnoreCase(nombre)) {
-                platillo = menu[i];
-                return platillo;
+
+    public static Cafe buscarCafe(String nombre, Cafe[] cafeteria) {
+        for(Cafe cafe: cafeteria){
+            if(cafe != null && cafe.getNombre().equalsIgnoreCase(nombre)){
+                return cafe;
             }
         }
         return null;
     }
 
     // Metodo para abrir una mesa, actualmente pendiente de correccion
+
     public static void asignarMesa(Mesero mesero, Mesa[] mesas, Platillo[] menu, Cafe[] cafeteria) {
         System.out.println("Ingresa el numero de la mesa: ");
         int i = 0;
@@ -509,6 +533,7 @@ public class TopFood {
 
     // Metodo para imprimir la cuenta y darla por terminada, necesita ser probado
     // aun
+
     public static void Ticket(Mesa mesa) {
         System.out.println("=========TICKET=========");
         System.out.println("Mesa: " + mesa.getNumero());
@@ -532,5 +557,20 @@ public class TopFood {
         System.out.println("IVA (16%): ------------------------------------ $" + mesa.getTotal() * 0.16);
         System.out.println("Total: ------------------------------------ $" + mesa.getTotal() * 1.16);
         mesa.setActivo(false);
+    }
+    
+
+    public static void DeleteMesa(Mesero user, Mesa[] mesas){
+        int i =0;
+        System.out.println("Ingresa el numero de la cuenta a eliminar:");
+        i = scanner.nextInt();
+        boolean myMesa = user.isMyMesa(mesas[i]);
+        boolean isActive = mesas[i].isActivo();
+        if (myMesa && !isActive) {
+            user.cleanMesa(mesas[i]);
+            mesas[i] = new Mesa(i);
+        } else {
+            System.out.println("Error. La mesa sigue activa o no es operada por el mesero.");
+        }
     }
 }

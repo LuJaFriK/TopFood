@@ -1,6 +1,6 @@
 package topfood;
 
-public abstract class Alimento {
+public class Alimento implements description{
     private String nombre;
     private double costo;
     private String comentario;
@@ -31,6 +31,9 @@ public abstract class Alimento {
     }
 
     public String getComentario() {
+        if (comentario==null){
+            comentario = "";
+        }
         return comentario;
     }
 
@@ -46,10 +49,13 @@ public abstract class Alimento {
         this.existencia = existencia;
     }
 
+
+
+    @Override
     public void detalles() {
         System.out.println(nombre);
         System.out.println("Precio: " + costo);
-        System.out.println("Comentarios: " + comentario);
+        System.out.println("Comentarios: " + getComentario());
         System.out.println("Existencia: " + (existencia ? "Si." : "No."));
     }
 

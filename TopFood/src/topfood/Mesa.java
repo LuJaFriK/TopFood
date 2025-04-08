@@ -1,6 +1,6 @@
 package topfood;
 
-public class Mesa{
+public class Mesa implements description{
     private Mesero mesero;
     private int numero;
     private int personas;
@@ -58,9 +58,8 @@ public class Mesa{
 
     public void addPedido(Platillo orden, int cantidad) {
         int espaciosDisponibles = 0;
-        
-        for (int i = 0; i < pedido.length; i++) {// Contabilizar el espacio disponible en el arreglo
-            if (pedido[i] == null) {
+        for(Platillo platillo : pedido){
+            if(platillo == null){
                 espaciosDisponibles++;
             }
         }
@@ -69,9 +68,9 @@ public class Mesa{
             return;
         }
         int agregados = 0;
-        for (int i = 0; i < pedido.length && agregados < cantidad; i++) {// Agregar el platillo la cantidad de veces especificada
-            if (pedido[i] == null) {
-                pedido[i] = orden;
+        for(Platillo platillo : pedido){
+            if(agregados < cantidad && platillo == null){
+                platillo = orden;
                 agregados++;
             }
         }
@@ -141,7 +140,7 @@ public class Mesa{
         return total;
     }
 
-    public void info(){
+    public void detalles(){
         System.out.println("Mesero encargado: "+mesero.getCodigo()+" : "+mesero.getNombre());
         System.out.println("Mesa: "+numero);
         System.out.println("Cantidad de personas: "+personas);

@@ -1,7 +1,7 @@
 package topfood;
 
 
-public class Mesero{
+public class Mesero implements description{
     private String nombre;
     private int codigo;
     private int password;
@@ -50,26 +50,27 @@ public class Mesero{
     }
 
     public void printMesas() {
-        for(int i=0;i<mesas.length;i++){
-            if(mesas[i]!=null){
-                mesas[i].info();
+        for(Mesa mesa : mesas){
+            if(mesa != null){
+                mesa.detalles();
             }else{return;}
         }
     }
 
-    public void addMesa(Mesa mesa) {
-        for(int i = 0;i < this.mesas.length-1;i++){
-            if(mesas[i]==null){
-                mesas[i] = new Mesa(mesa.getMesero(),mesa.getNumero(),mesa.getPersonas() , true);
+    public void addMesa(Mesa mesanueva) {
+        for(Mesa mesa : mesas){
+            if(mesa==null){
+                mesa = mesanueva;
                 contador++;
                 return;
             }
         }System.out.println("Error. El mesero no puede agregar más mesas.");
     }
 
-    public boolean isMyMesa(int numero, int personas, boolean activo, double total){
-        for(int i = 0;i < mesas.length;i++){
-            if(mesas[i].getNumero()==numero&&mesas[i].getPersonas()==personas&&mesas[i].isActivo()==activo&&mesas[i].getTotal()==total){
+
+    public boolean isMyMesa(Mesa verificar){
+        for(Mesa mesa : mesas){
+            if(mesa.getNumero()==verificar.getNumero()&&mesa.getPersonas()== verificar.getPersonas()&&mesa.getTotal()== verificar.getTotal()){
                 return true;
             }
         }return false;
@@ -83,13 +84,13 @@ public class Mesero{
         return contador;
     }
 
-    public void info(){
-        int x=0;
+    public void detalles(){
         System.out.println("Codigo: "+codigo);
         System.out.println("Nombre: "+nombre);
-        while(this.mesas[x]!=null&&x>this.mesas.length-1){
-            System.out.print(mesas[x].getNumero()+" ");
-            x++;
+        for(Mesa mesa : mesas){
+            if(mesa!=null){
+                System.out.print(mesa.getNumero()+" ");
+            }
         }
         System.out.println("Contador de mesas: "+contador);
     }

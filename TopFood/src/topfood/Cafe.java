@@ -14,6 +14,7 @@ public class Cafe extends Alimento{
           this.leche=milkList[0];
           this.size = sizeList[0];
      }
+     
      public boolean hasCafeina() {
           System.out.println((cafeina ? "Si.":"No."));
           return cafeina;
@@ -71,9 +72,7 @@ public class Cafe extends Alimento{
      if("Almendras".equals(leche)) { 
           newCosto += 10;
      }
-     
-     if(size != null) {
-          switch(size.toUpperCase()) { 
+          switch(size.toUpperCase()) {
                case "M":
                     newCosto *= 1.10;
                     break;
@@ -81,7 +80,7 @@ public class Cafe extends Alimento{
                     newCosto *= 1.20;
                     break;
           }
-     }
+
      super.setCosto(newCosto); 
      }
 

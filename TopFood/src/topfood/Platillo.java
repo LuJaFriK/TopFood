@@ -1,6 +1,6 @@
 package topfood;
 
-public class Platillo extends Alimento {
+public class Platillo extends Alimento{
 
     private boolean ordenCompleta;
     private Boolean prioridadAlta;
@@ -14,7 +14,7 @@ public class Platillo extends Alimento {
     public boolean isOrdenCompleta() {
         return ordenCompleta;
     }
-
+    
     public void setOrdenCompleta(boolean ordenCompleta) {
         this.ordenCompleta = ordenCompleta;
     }
@@ -45,9 +45,6 @@ public class Platillo extends Alimento {
             prioridad = "Prioridad: Baja";
         } else if (prioridadAlta == null) {}
         super.detalles();
-        System.out.println(
-            (ordenCompleta ? "Orden Completa." : "Media Orden.")
-        );
     }
     
 }
