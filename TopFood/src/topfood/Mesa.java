@@ -5,8 +5,7 @@ public class Mesa implements description{
     private int numero;
     private int personas;
     private boolean activo;
-    private Platillo[]pedido;
-    private Cafe[]cafeteria;
+    private Alimento[]pedido;
     private double total;
     
     public Mesa(Mesero mesero, int numero, int personas, boolean activo) {
@@ -15,7 +14,6 @@ public class Mesa implements description{
         this.personas = personas;
         this.activo = activo;
         pedido = new Platillo[100];
-        cafeteria = new Cafe[100];
         int i;
         total = 0;
     }
@@ -56,10 +54,10 @@ public class Mesa implements description{
         this.activo = activo;
     }
 
-    public void addPedido(Platillo orden, int cantidad) {
+    public void addPedido(Alimento orden, int cantidad) {
         int espaciosDisponibles = 0;
-        for(Platillo platillo : pedido){
-            if(platillo == null){
+        for(Alimento alimento : pedido){
+            if(alimento == null){
                 espaciosDisponibles++;
             }
         }
@@ -68,9 +66,9 @@ public class Mesa implements description{
             return;
         }
         int agregados = 0;
-        for(Platillo platillo : pedido){
-            if(agregados < cantidad && platillo == null){
-                platillo = orden;
+        for(Alimento alimento : pedido){
+            if(agregados < cantidad && alimento == null){
+                alimento = orden;
                 agregados++;
             }
         }
@@ -80,57 +78,17 @@ public class Mesa implements description{
         return pedido.length;
     }
 
-    public Platillo getpedido(int i){
+    public Alimento getpedido(int i){
         return pedido[i];
     }
 
     public void printPedido(){
-        for (int i=0; i < 100 && pedido[i] != null;i++) {
-            if(i<100){
-                System.out.println("===============");
-                pedido[i].detalles();
-                System.out.println("===============");
-            }
+        System.out.println("Nombre  ================   Costo");
+        for(Alimento alimento : pedido){
+            System.out.print(alimento.getNombre()+" =============  $"+alimento.getCosto());
+            if(alimento == null){break;}
         }
-    }
-    
-    public void addCafe(Cafe orden, int cantidad) {
-        int espaciosDisponibles = 0;
-        
-        for (int i = 0; i < cafeteria.length; i++) {// Contabilizar el espacio disponible en el arreglo
-            if (cafeteria[i] == null) {
-                espaciosDisponibles++;
-            }
-        }
-        if (espaciosDisponibles < cantidad) {// Verificar si hay suficiente espacio
-            System.out.println("Error: No hay suficiente espacio para agregar " + cantidad + " cafes. Espacios disponibles: " + espaciosDisponibles);
-            return;
-        }
-        int agregados = 0;
-        for (int i = 0; i < cafeteria.length && agregados < cantidad; i++) {// Agregar el platillo la cantidad de veces especificada
-            if (cafeteria[i] == null) {
-                cafeteria[i] = orden;
-                agregados++;
-            }
-        }
-    }
-
-    public int getCafeLength(){
-        return cafeteria.length;
-    }
-
-    public Cafe getCafe(int i){
-        return cafeteria[i];
-    }
-
-    public void printCafe(){
-        for (int i=0; i < 100 && cafeteria[i] != null;i++) {
-            if(i<100){
-                System.out.println("===============");
-                cafeteria[i].detalles();
-                System.out.println("===============");
-            }
-        }
+        System.out.println("===============================");
     }
 
     public double getTotal(){

@@ -66,18 +66,17 @@ public class Comandera {
             mesas[x] = new Mesa(x);
         }
 
-        Platillo[] menu = new Platillo[90]; // puede ser variable de instancia
+        Alimento [] menu = new Alimento[90]; // puede ser variable de instancia
         menu[0] = new Platillo("Pizza", 4.9, "Some comment", true);
         menu[1] = new Platillo("Taco", 3.8, "Another comment", false);
         menu[2] = new Platillo("Platillo3", 5.7, "Yet another comment", true);
         menu[3] = new Platillo("Platillo4", 2.9, "The final comment", false);
         menu[4] = new Platillo("Platillo5", 1.8, "Final final comment", true);
-        Cafe[] cafeteria = new Cafe[50];
-        cafeteria[0] = new Cafe("Expresso", 3.50, "No se especifica.", true);
-        cafeteria[1] = new Cafe("Americano", 2.80, "Sin crema.", true);
-        cafeteria[2] = new Cafe("Latte", 4.20, "Leche enteral y espuma.", false);
-        cafeteria[3] = new Cafe("Cappuccino", 4.00, "Espuma de leche.", true);
-        cafeteria[4] = new Cafe("Mocha", 5.00, "Chocolate y leche entera.", false);
+        menu[5] = new Cafe("Expresso", 3.50, "No se especifica.", true);
+        menu[6] = new Cafe("Americano", 2.80, "Sin crema.", true);
+        menu[7] = new Cafe("Latte", 4.20, "Leche enteral y espuma.", false);
+        menu[8] = new Cafe("Cappuccino", 4.00, "Espuma de leche.", true);
+        menu[9] = new Cafe("Mocha", 5.00, "Chocolate y leche entera.", false);
         Mesero user = null;
         int opcion;
 
@@ -95,21 +94,21 @@ public class Comandera {
             switch (opcion) {
                 case 1:
                     // Iniciar sesion como mesero, si no, crear un mesero
-                    MenuMesero(user, meseros, mesas, menu, cafeteria);
+                    MenuMesero(user, meseros, mesas, menu);
                     break;
                 case 2:
                     crearMesero(meseros);
                     break;
                 case 3:
-                    crearAlimento(menu, cafeteria);
+                    crearAlimento(menu);
                     break;
                 case 4:
                     System.out.println("Ingresa el nombre de el producto: ");
-                    SetExistencia(scanner.nextLine(), menu, cafeteria, false);
+                    SetExistencia(scanner.nextLine(), menu, false);
                     break;
                 case 5:
                     System.out.println("Ingresa el nombre de el producto: ");
-                    SetExistencia(scanner.nextLine(), menu, cafeteria, true);
+                    SetExistencia(scanner.nextLine(), menu, true);
                     break;
                 case 6:
                     System.out.println("Saliendo...");
@@ -119,23 +118,16 @@ public class Comandera {
     }
 
 
-    public static void SetExistencia(String nombre,Platillo[]menu,Cafe[]cafeteria,boolean existencia){
-        int i;
-        for(i=0;i<menu.length;i++){
-            if(menu[i].getNombre().equalsIgnoreCase(nombre)){
-                menu[i].setExistencia(existencia);
-                return;
-            }
-        }
-        for(i=0;i<cafeteria.length;i++){
-            if(cafeteria[i].getNombre().equalsIgnoreCase(nombre)){
-                cafeteria[i].setExistencia(existencia);
+    public static void SetExistencia(String nombre,Alimento[]menu,boolean existencia){
+        for(Alimento alimento : menu){
+            if(alimento.getNombre().equalsIgnoreCase(nombre)){
+                alimento.setExistencia(existencia);
                 return;
             }
         }
     }
 
-    public static void MenuMesero(Mesero user, Mesero[] meseros, Mesa[] mesas, Platillo[] menu, Cafe[] cafeteria) {
+    public static void MenuMesero(Mesero user, Mesero[] meseros, Mesa[] mesas, Alimento[] menu) {
         int opc, fallas = 0, i, opt;
         do {
             boolean myMesa, isActive;
@@ -170,7 +162,7 @@ public class Comandera {
             scanner.nextLine();
             switch (opc) {
                 case 1:
-                    asignarMesa(user, mesas, menu, cafeteria);
+                    asignarMesa(user, mesas, menu);
                     break;
                 case 2:
                     user.printMesas();
@@ -180,7 +172,7 @@ public class Comandera {
                     i = scanner.nextInt();
                     myMesa = user.isMyMesa(mesas[i]);
                     if (myMesa) {
-                        hacerPedido(mesas[i], user, menu, cafeteria);
+                        hacerPedido(mesas[i], user, menu);
                         System.out.println(user.getNombre());
                     } else {
                         System.out.println("Error. La mesa no fue encontrada activa o no es operada por el mesero.");
@@ -228,52 +220,49 @@ public class Comandera {
     }
 
 
-    public static void crearAlimento(Platillo[] menu, Cafe[] cafeteria) {
-        scanner.nextLine();
-        int i, opc;
-        String nombre;
-        double costo = 0;
+    public static void crearAlimento(Alimento[] menu) {
+
         System.out.println("Crear:");
         System.out.println("1. Platillo");
         System.out.println("2. Café");
-        opc = scanner.nextInt();
+        int opc = scanner.nextInt();
         scanner.nextLine();
-        if (opc == 1) {
-            for (i = 0; i < menu.length; i++) {
-                if (menu[i] == null) {
-                    System.out.println("Ingresa el nombre del Platillo");
-                    nombre = scanner.nextLine();
-                    System.out.println("Ingresa el costo base del producto (Orden Completa):");
-                    costo = scanner.nextDouble();
-                    menu[i] = new Platillo(nombre, costo, null, true);
-                    return;
+        for(Alimento alimento : menu){
+            if(alimento==null){
+                String nombre; double costo;
+                switch (opc) {
+                    case 1:
+                        System.out.println("Ingresa el nombre del Platillo");
+                        nombre = scanner.nextLine();
+                        System.out.println("Ingresa el costo base del producto (Orden Completa):");
+                        costo = scanner.nextDouble();
+                        alimento = new Platillo(nombre, costo, null, true);
+                        return;
+                    case 2:
+                        System.out.println("Ingresa el nombre del Cafe");
+                        nombre = scanner.nextLine();
+                        System.out.println("Ingresa el costo base del producto (Chico):");
+                        costo = scanner.nextDouble();
+                        alimento = new Cafe(nombre, costo, null, true);
+                        return;
+                
+                    default:
+                        System.out.println("Error. Opcion no valida");
+                        break;
                 }
             }
-            System.out.println("Error al crear un Platillo nuevo.");
-
-        } else if (opc == 2) {
-            for (i = 0; i < cafeteria.length; i++) {
-                if (cafeteria[i] == null) {
-                    System.out.println("Ingresa el nombre del Cafe");
-                    nombre = scanner.nextLine();
-                    System.out.println("Ingresa el costo base del producto (Chico):");
-                    costo = scanner.nextDouble();
-                    cafeteria[i] = new Cafe(nombre, costo, null, true);
-                    return;
-                }
-            }
-            System.out.println("Error al crear un Café nuevo.");
-        } else {
-            System.out.println("Error. Opcion no valida");
-        }
+        }System.out.println("Error al crear alimento nuevo.");
     }
     
-    public static void hacerPedido(Mesa mesa, Mesero mesero, Platillo[] menu, Cafe[] cafeteria) {
+    public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu) {
         boolean done = false;
         Platillo[] comanda = new Platillo[100];
         Cafe[] bebidas = new Cafe[100];
         int contPlat = 0, contBeb = 0,x = 0;
-        if (!mesero.isMyMesa(mesa))
+        if (!mesero.isMyMesa(mesa)){
+            System.out.println("Error, esta mesa no está en control del mesero.");
+            return;
+        }
         do{
             // Los objetos temporales que registran las ordenes, se limpian luego de cada registro.
             Platillo tempedido = null;
@@ -293,7 +282,7 @@ public class Comandera {
                 nombrealimento = scanner.nextLine();
                 // Busca el platillo por nombre, si lo encuentra, regresa el platillo, si no,
                 // null
-                tempedido = buscarPlatillo(nombrealimento, menu);
+                tempedido = buscarAlimento(nombrealimento, menu);
                 if (tempedido != null) {// Si se encontro un platillo, se registra en el pedido de la mesa
                     for (i = 0; i < mesa.getPedidolength(); i++) {// ciclo para encontrar el proximo espacio vacio del
                                                                   // pedido para insertarlo
@@ -302,9 +291,10 @@ public class Comandera {
 
                             // Inicia registro del pedido
 
-                            System.out.println("Realizar un comentario: ");
-                            tempedido.setComentario(scanner.nextLine());// Realizar un comentario para el pedido antes
+                            // Realizar un comentario para el pedido antes
                                                                         // de ingresarlo
+
+
                             while (condicion == -1) {// Ciclo para ingresar orden o media orden
                                 System.out.println("Orden completa o media orden");
                                 System.out.println("1. Orden Completa");
@@ -320,14 +310,9 @@ public class Comandera {
                                 }
                             }
                             System.out.println("Cantidad de platillos iguales:");// Ingresar cuantos platillos iguales a
-                                                                                 // este hay
-                            cantidad = scanner.nextInt();
-
-                            mesa.addPedido(tempedido, cantidad);// Se agrega el platillo
-                            for(i=0;i<cantidad;i++){
-                                comanda[contPlat]=tempedido;
-                                contPlat++;
-                            }
+                            // este hay
+                            cantidad = scanner.nextInt();           mesa.addPedido(tempedido, cantidad);// Se agrega el platillo
+                            mesa.ad
                             // Termina registro del pedido
 
                             // Continuar con el pedido o cerrar el pedido.
@@ -478,33 +463,21 @@ public class Comandera {
         }
     }
 
-    // Metodo buscador de un platillo, si lo encuentra retorna el platillo, si no,
-    // retorna null
-
-    public static Platillo buscarPlatillo(String nombre, Platillo[] menu) {
-        for(Platillo platillo:menu){
-            if(platillo != null && platillo.getNombre().equalsIgnoreCase(nombre)){
-                return platillo;
-            }
-        }
-        return null;
-    }
-
-    // Metodo buscador de un cafe, si lo encuentra retorna el cafe, si no, retorna
+    // Metodo buscador de un alimento, si lo encuentra retorna el alimento, si no, retorna
     // null
 
-    public static Cafe buscarCafe(String nombre, Cafe[] cafeteria) {
-        for(Cafe cafe: cafeteria){
-            if(cafe != null && cafe.getNombre().equalsIgnoreCase(nombre)){
-                return cafe;
+    public static Alimento buscarAlimento(String nombre, Alimento[] menu) {
+        for(Alimento alimento: menu){
+            if(alimento != null && alimento.getNombre().equalsIgnoreCase(nombre)){
+                return alimento;
             }
         }
         return null;
     }
 
-    // Metodo para abrir una mesa, actualmente pendiente de correccion
+    // Metodo para abrir una mesa
 
-    public static void asignarMesa(Mesero mesero, Mesa[] mesas, Platillo[] menu, Cafe[] cafeteria) {
+    public static void asignarMesa(Mesero mesero, Mesa[] mesas, Alimento[] menu) {
         System.out.println("Ingresa el numero de la mesa: ");
         int i = 0;
         i = scanner.nextInt();
@@ -521,7 +494,7 @@ public class Comandera {
                 System.out.println("1. Si       2. No");
                 tomarorden = scanner.nextInt();
                 if (tomarorden == 1) {
-                    hacerPedido(mesas[i], mesero, menu, cafeteria);
+                    hacerPedido(mesas[i], mesero, menu);
                 } else if (tomarorden == 2) {
                     return;
                 } else {
@@ -532,27 +505,14 @@ public class Comandera {
     }
 
     // Metodo para imprimir la cuenta y darla por terminada, necesita ser probado
-    // aun
+
 
     public static void Ticket(Mesa mesa) {
         System.out.println("=========TICKET=========");
         System.out.println("Mesa: " + mesa.getNumero());
         System.out.println("Mesero: " + mesa.getMesero());
         System.out.println("Personas: " + mesa.getPersonas());
-        for (int i = 0; i < mesa.getPedidolength(); i++) {// Ciclo que imprime todos los alimentos de la mesa
-            Platillo alimento = mesa.getpedido(i);
-            if (alimento != null) {
-                System.out.println(
-                        alimento.getNombre() + " ------------------------------------ $" + alimento.getCosto());
-            }
-        }
-        for (int i = 0; i < mesa.getPedidolength(); i++) {// Ciclo que imprime todo lo relacionado a cafeteria
-            Cafe alimento = mesa.getCafe(i);
-            if (alimento != null) {
-                System.out.println(
-                        alimento.getNombre() + " ------------------------------------ $" + alimento.getCosto());
-            }
-        }
+        mesa.printPedido();
         System.out.println("Subtotal: ------------------------------------ $" + mesa.getTotal());
         System.out.println("IVA (16%): ------------------------------------ $" + mesa.getTotal() * 0.16);
         System.out.println("Total: ------------------------------------ $" + mesa.getTotal() * 1.16);
