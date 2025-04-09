@@ -14,7 +14,6 @@ public class Mesa implements description{
         this.personas = personas;
         this.activo = activo;
         pedido = new Platillo[100];
-        int i;
         total = 0;
     }
     public Mesa(int numero){
@@ -85,8 +84,8 @@ public class Mesa implements description{
     public void printPedido(){
         System.out.println("Nombre  ================   Costo");
         for(Alimento alimento : pedido){
-            System.out.print(alimento.getNombre()+" =============  $"+alimento.getCosto());
             if(alimento == null){break;}
+            System.out.print(alimento.getNombre()+" =============  $"+alimento.getCosto());
         }
         System.out.println("===============================");
     }
@@ -97,7 +96,7 @@ public class Mesa implements description{
         }
         return total;
     }
-
+    @Override
     public void detalles(){
         System.out.println("Mesero encargado: "+mesero.getCodigo()+" : "+mesero.getNombre());
         System.out.println("Mesa: "+numero);

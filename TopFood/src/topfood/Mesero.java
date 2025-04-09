@@ -68,9 +68,9 @@ public class Mesero implements description{
     }
 
 
-    public boolean isMyMesa(Mesa verificar){
+    public boolean isMyMesa(int numero){
         for(Mesa mesa : mesas){
-            if(mesa.getNumero()==verificar.getNumero()&&mesa.getPersonas()== verificar.getPersonas()&&mesa.getTotal()== verificar.getTotal()){
+            if(mesa.getNumero()==numero){
                 return true;
             }
         }return false;

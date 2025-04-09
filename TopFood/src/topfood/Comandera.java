@@ -170,7 +170,7 @@ public class Comandera {
                 case 3:
                     System.out.println("Ingresa el numero de la mesa:");
                     i = scanner.nextInt();
-                    myMesa = user.isMyMesa(mesas[i]);
+                    myMesa = user.isMyMesa(i);
                     if (myMesa) {
                         hacerPedido(mesas[i], user, menu);
                         System.out.println(user.getNombre());
@@ -181,7 +181,7 @@ public class Comandera {
                 case 4:
                     System.out.println("Ingresa la cuenta que deseas cerrar:");
                     i = scanner.nextInt();
-                    myMesa = user.isMyMesa(mesas[i]);
+                    myMesa = user.isMyMesa(i);
                     isActive = mesas[i].isActivo();
                     if (myMesa && isActive) {
                         Ticket(mesas[i]);
@@ -205,7 +205,7 @@ public class Comandera {
 
                         break;
                         default:
-
+                            System.out.println("Error. Opcion no valida");
                         break;
                     }
                     break;
@@ -254,214 +254,172 @@ public class Comandera {
         }System.out.println("Error al crear alimento nuevo.");
     }
     
-    public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu) {
-        boolean done = false;
-        Platillo[] comanda = new Platillo[100];
-        Cafe[] bebidas = new Cafe[100];
-        int contPlat = 0, contBeb = 0,x = 0;
-        if (!mesero.isMyMesa(mesa)){
-            System.out.println("Error, esta mesa no está en control del mesero.");
-            return;
+    public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu){
+        if (!mesero.isMyMesa(mesa.getNumero())){
+             System.out.println("Error, esta mesa no está en control del mesero.");
+             return;
         }
+        Alimento[] comanda = new Alimento[100];
+        int contador = 0;
+        boolean platos = false, cafes = false;
         do{
-            // Los objetos temporales que registran las ordenes, se limpian luego de cada registro.
-            Platillo tempedido = null;
-            Cafe tempcafe = null;
-            int i = 0, opc = 0, condicion = -1, cantidad = 0;
-            String nombrealimento = null;
+             boolean done = false;
+             int opc, condicion = -1, cantidad;
+             String nombrealimento;
 
-            System.out.println("Ingresar:");
-            System.out.println("1. Platillo");
-            System.out.println("2. Cafe");
-            System.out.println("3. Salir");
-            opc = scanner.nextInt();
-            scanner.nextLine();
-            switch (opc) {
-                case 1:
-                System.out.println("Ingresa el nombre del Platillo");
-                nombrealimento = scanner.nextLine();
-                // Busca el platillo por nombre, si lo encuentra, regresa el platillo, si no,
-                // null
-                tempedido = buscarAlimento(nombrealimento, menu);
-                if (tempedido != null) {// Si se encontro un platillo, se registra en el pedido de la mesa
-                    for (i = 0; i < mesa.getPedidolength(); i++) {// ciclo para encontrar el proximo espacio vacio del
-                                                                  // pedido para insertarlo
-                        if (mesa.getpedido(i) == null) {// Si el espacio del arreglo esta vacio, se inserta el platillo
-                                                        // en el pedido
-
-                            // Inicia registro del pedido
-
-                            // Realizar un comentario para el pedido antes
-                                                                        // de ingresarlo
-
-
-                            while (condicion == -1) {// Ciclo para ingresar orden o media orden
-                                System.out.println("Orden completa o media orden");
-                                System.out.println("1. Orden Completa");
-                                System.out.println("2. Media orden");
-                                condicion = scanner.nextInt();
-                                if (condicion == 1) {
-                                    tempedido.setOrdenCompleta(true);
-                                } else if (condicion == 2) {
-                                    tempedido.setOrdenCompleta(false);
-                                } else {
-                                    System.out.println("Error. Opcion no valida.");
-                                    condicion = -1;
-                                }
-                            }
-                            System.out.println("Cantidad de platillos iguales:");// Ingresar cuantos platillos iguales a
-                            // este hay
-                            cantidad = scanner.nextInt();           mesa.addPedido(tempedido, cantidad);// Se agrega el platillo
-                            mesa.ad
-                            // Termina registro del pedido
-
-                            // Continuar con el pedido o cerrar el pedido.
-                            System.out.println("Desea agregar otro pedido?");
-                            System.out.println("1. Si");
-                            System.out.println("2. No");
-                            condicion = scanner.nextInt();
-                            if (condicion == 2) {
-                                done = true;
-                                break;
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                } else {// Si platillo es null, no sucede nada, solo se repite el ciclo
-                    System.out.println("Error. Platillo no encontrado.");
-                }
-                    break;
-                
-                case 2:
-                System.out.println("Ingresa el nombre del Cafe");
-                nombrealimento = scanner.nextLine();
-                // Busca el platillo por nombre, si lo encuentra, regresa el platillo, si no,
-                // null
-                tempcafe = buscarCafe(nombrealimento, cafeteria);
-                if (tempcafe != null) {// Si se encontro un platillo, se registra en el pedido de la mesa
-                    for (i = 0; i < mesa.getCafeLength(); i++) {// ciclo para encontrar el proximo espacio vacio del
-                                                                // pedido para insertarlo
-                        if (mesa.getCafe(i) == null) {// Si el espacio del arreglo esta vacio, se inserta el platillo en
-                                                      // el pedido
-
-                            // Inicia registro del pedido
-
+             System.out.println("Ingresar:");
+             System.out.println("1. Platillo");
+             System.out.println("2. Cafe");
+             System.out.println("3. Salir");
+             opc = scanner.nextInt();
+             scanner.nextLine();
+             
+             for(Alimento pedido:comanda){
+                  if(pedido == null){
+                       System.out.println("Busqueda por nombre:");
+                       nombrealimento = scanner.nextLine();
+                       scanner.nextLine();
+                       pedido = buscarAlimento(nombrealimento, menu);
+                       if(pedido!=null){
                             System.out.println("Realizar un comentario: ");
-                            tempcafe.setComentario(scanner.nextLine());// Realizar un comentario para el pedido antes de
-                                                                       // ingresarlo
-                            while (condicion == -1) {// Ciclo para ingresar Cafeina o Descafeinado
-                                System.out.println("Cafeina:");
-                                System.out.println("1. Si");
-                                System.out.println("2. No");
-                                condicion = scanner.nextInt();
-                                if (condicion == 1) {
-                                    tempcafe.setCafeina(true);
-                                } else if (condicion == 2) {
-                                    tempcafe.setCafeina(false);
-                                } else {
-                                    System.out.println("Error. Opcion no valida.");
-                                    condicion = -1;
-                                }
+                            pedido.setComentario(scanner.nextLine());
+                            switch(opc){
+                                 case 1:
+                                      Platillo platillo = (Platillo) pedido;
+                                      while (condicion == -1) {// Ciclo para ingresar orden o media orden
+                                           System.out.println("Orden completa o media orden");
+                                           System.out.println("1. Orden Completa");
+                                           System.out.println("2. Media orden");
+                                           condicion = scanner.nextInt();
+                                           switch (condicion){
+                                                case 1:
+                                                     platillo.setOrdenCompleta(true);
+                                                     break;
+                                                case 2:
+                                                     platillo.setOrdenCompleta(false);
+                                                     break;
+                                                default:
+                                                     System.out.println("Error. Opcion no valida.");
+                                                     condicion = -1;
+                                                     break;
+                                           }
+                                      }
+                                      done = true;
+                                      platos = true;     
+                                 break;
+                                 case 2:
+                                      Cafe cafe  = (Cafe) pedido;
+                                      while(condicion ==-1){
+                                           System.out.println("Cafeina:");
+                                           System.out.println("1. Si");
+                                           System.out.println("2. No");
+                                           condicion = scanner.nextInt();
+                                           switch(opc){
+                                                case 1:
+                                                     cafe.setCafeina(true);
+                                                     break;
+                                                case 2:
+                                                     cafe.setCafeina(false);
+                                                     break;
+                                                default:
+                                                     System.out.println("Error. valor no valido.");
+                                                     condicion = -1;
+                                                     break;
+                                           }
+                                      }
+                                      condicion = -1;
+                                      while (condicion == -1) {// Ciclo para ingresar Frio o Caliente
+                                           System.out.println("Hielo:");
+                                           System.out.println("1. Frio");
+                                           System.out.println("2. Caliente");
+                                           condicion = scanner.nextInt();
+                                           switch (condicion){
+                                                case 1:
+                                                     cafe.setHielo(true);
+                                                     break;
+                                                case 2:
+                                                     cafe.setHielo(false);
+                                                     break;
+                                                default:
+                                                     System.out.println("Error. valor no valido.");
+                                                     condicion = -1;
+                                                     break;
+                                           }
+                                      }
+                                      condicion = -1;
+                                      while (condicion == -1) {// Ciclo para ingresar tipo de leche
+                                           System.out.println("Tipo de leche:");
+                                           cafe.printMilklist();
+                                           condicion = scanner.nextInt();
+                                           if(condicion>=0 && condicion < cafe.getMilklistSize()){
+                                                cafe.setMilk(condicion);
+                                           } else {
+                                                System.out.println("Error. Opcion no valida.");
+                                                condicion = -1;
+                                           }
+                                      }
+                                      done = true;
+                                      cafes = true;
+                                 break;
+                                 case 3:
+                                      System.out.println("Saliendo...");
+                                 return;
+                                 default:
+                                      System.out.println("Error. Opción no válida.");
+                                 break;
                             }
-                            condicion = -1;
-                            while (condicion == -1) {// Ciclo para ingresar Frio o Caliente
-                                System.out.println("Hielo:");
-                                System.out.println("1. Frio");
-                                System.out.println("2. Caliente");
-                                condicion = scanner.nextInt();
-                                if (condicion == 1) {
-                                    tempcafe.setHielo(true);
-                                } else if (condicion == 2) {
-                                    tempcafe.setHielo(false);
-                                } else {
-                                    System.out.println("Error. Opcion no valida.");
-                                    condicion = -1;
-                                }
+                            if(done){
+                                 scanner.nextLine();
+                                 pedido.detalles();
+                                 System.out.println("Cantidad de platillos iguales:");
+                                 cantidad = scanner.nextInt();
+                                 contador += cantidad;
+                                 mesa.addPedido(pedido,cantidad);
+                                 int pedidos = 0;
+                                 for(Alimento llenado : comanda){
+                                      if(llenado==null&&pedidos<cantidad){
+                                           llenado = pedido;
+                                      }
+                                 }
+                                 System.out.println("Desea ingresar otro pedido?");
+                                 System.out.println("1. Si.");
+                                 System.out.println("2. No.");
+                                 opc = scanner.nextInt();
+                                 if(opc!=1){
+                                      if(contador>0){
+                                           if(platos){
+                                                System.out.println("=================================");
+                                                System.out.println("Platillos:");
+                                                for(Alimento alimento: comanda){
+                                                     if(alimento instanceof Platillo){
+                                                          alimento.detalles();
+                                                     }
+                                                }
+                                                System.out.println("=================================");
+                                           }
+                                           if(cafes){
+                                                System.out.println("=================================");
+                                           System.out.println("Cafés:");
+                                           for(Alimento alimento: comanda){
+                                                if(alimento instanceof Cafe){
+                                                     alimento.detalles();
+                                                }
+                                           }
+                                           System.out.println("=================================");
+                                           }
+                                       }
+                                      
+                                      
+                                      return;
+                                 }
                             }
-                            condicion = -1;
-                            while (condicion == -1) {// Ciclo para ingresar tipo de leche
-                                System.out.println("Tipo de leche:");
-                                tempcafe.printMilklist();
-                                condicion = scanner.nextInt();
-                                if(condicion>=0&&condicion<tempcafe.getMilklistSize()){
-                                    tempcafe.setMilk(i);
-                                } else {
-                                    System.out.println("Error. Opcion no valida.");
-                                    condicion = -1;
-                                }
-                            }
-                            condicion = -1;
-                            while (condicion == -1) {// Ciclo para ingresar tamaño de la bebida
-                                System.out.println("Tamaños:");
-                                tempcafe.printSizeList();
-                                condicion = scanner.nextInt();
-                                if(condicion>=0&&condicion<tempcafe.getSizeListSize()){
-                                    tempcafe.setMilk(i);
-                                } else {
-                                    System.out.println("Error. Opcion no valida.");
-                                    condicion = -1;
-                                }
-                            }
+                       }
+                  }
+             }
+             System.out.println("No se pueden ingresar más alimentos a la cuenta.");
 
-                            System.out.println("Cantidad de bebidas iguales:");// Ingresar cuantos platillos iguales a
-                                                                               // este hay
-                            cantidad = scanner.nextInt();
-
-                            mesa.addCafe(tempcafe, cantidad);// Se agrega el platillo
-                            for(i=0;i<cantidad;i++){
-                                bebidas[contBeb]=tempcafe;
-                                contBeb++;
-                            }
-                            // Termina registro del pedido
-
-                            // Continuar con el pedido o cerrar el pedido.
-                            System.out.println("Desea agregar otro pedido?");
-                            System.out.println("1. Si");
-                            System.out.println("2. No");
-                            condicion = scanner.nextInt();
-                            if (condicion == 2) {
-                                done = true;
-                                break;
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                } else {// Si platillo es null, no sucede nada, solo se repite el ciclo
-                    System.out.println("Error. cafe no encontrado.");
-                }
-                    break;
-                    
-                case 3:
-                System.out.println("Saliendo...");
-                done = true;
-                    break;
-            
-                default:
-                System.out.println("Error. Opcion no valida.");
-                    break;
-            }
-        } while (!done);
-        //Imprimir comanda
-        if(contPlat>0){
-            System.out.println("=================================");
-            System.out.println("Platillos:");
-            for(x=0;x<contPlat;x++){
-                comanda[x].detalles();
-            }
-            System.out.println("=================================");
-        }
-        
-        if(contBeb>0){
-            System.out.println("Café");
-            for(x=0;x<contBeb;x++){
-                bebidas[x].detalles();
-            }
-            System.out.println("=================================");
-
-        }
-    }
+        }while(comanda[99]==null);
+   }
 
     // Metodo buscador de un alimento, si lo encuentra retorna el alimento, si no, retorna
     // null
@@ -479,8 +437,7 @@ public class Comandera {
 
     public static void asignarMesa(Mesero mesero, Mesa[] mesas, Alimento[] menu) {
         System.out.println("Ingresa el numero de la mesa: ");
-        int i = 0;
-        i = scanner.nextInt();
+        int i = scanner.nextInt();
         if (mesas[i].isActivo()) {
             System.out.println("Error, la mesa está ocupada.");
         } else {
@@ -521,10 +478,9 @@ public class Comandera {
     
 
     public static void DeleteMesa(Mesero user, Mesa[] mesas){
-        int i =0;
         System.out.println("Ingresa el numero de la cuenta a eliminar:");
-        i = scanner.nextInt();
-        boolean myMesa = user.isMyMesa(mesas[i]);
+        int i = scanner.nextInt();
+        boolean myMesa = user.isMyMesa(i);
         boolean isActive = mesas[i].isActivo();
         if (myMesa && !isActive) {
             user.cleanMesa(mesas[i]);
