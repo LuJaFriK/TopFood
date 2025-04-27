@@ -1,7 +1,7 @@
 package topfood;
 
+public class Mesero implements description {
 
-public class Mesero implements description{
     private String nombre;
     private int codigo;
     private int password;
@@ -16,7 +16,7 @@ public class Mesero implements description{
         this.contador = 0;
     }
 
-    public Mesero(){
+    public Mesero() {
         nombre = "Default";
         codigo = 0;
         password = -1;
@@ -41,8 +41,11 @@ public class Mesero implements description{
     }
 
     public boolean login(int password) {
-        if(this.password==password){return true;}
-        else{return false;}
+        if (this.password == password) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setPassword(int password) {
@@ -50,10 +53,12 @@ public class Mesero implements description{
     }
 
     public void printMesas() {
-        for(Mesa mesa : mesas){
-            if(mesa != null){
+        for (Mesa mesa : mesas) {
+            if (mesa != null) {
                 mesa.detalles();
-            }else{return;}
+            } else {
+                return;
+            }
         }
     }
 
