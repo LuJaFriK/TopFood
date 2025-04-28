@@ -14,7 +14,6 @@ public class Comandera {
 
     private static Scanner scanner = new Scanner(System.in);
 
-
     public static Mesero LogIn(Mesero[] meseros, int password) {
         int i = 0;
         while (i < meseros.length - 1) {
@@ -26,7 +25,6 @@ public class Comandera {
         System.out.println("Error. Contraseña incorrecta.");
         return null;
     }
-
 
     public static void crearMesero(Mesero[] meseros) {
         int i;
@@ -44,7 +42,9 @@ public class Comandera {
                     if (pass1 == pass2) {
                         done = true;
                     } else {
-                        System.out.println("Error. las contraseñas no coinciden.");
+                        System.out.println(
+                            "Error. las contraseñas no coinciden."
+                        );
                     }
                 } while (!done);
                 meseros[i] = new Mesero(nombre, i, pass1);
@@ -57,7 +57,6 @@ public class Comandera {
     }
 
     public static void main(String[] args) {
-
         Mesero[] meseros = new Mesero[20];
         meseros[0] = new Mesero("Luis", 49, 2707);
         Mesa[] mesas = new Mesa[70];
@@ -66,7 +65,7 @@ public class Comandera {
             mesas[x] = new Mesa(x);
         }
 
-        Alimento [] menu = new Alimento[90]; // puede ser variable de instancia
+        Alimento[] menu = new Alimento[90]; // puede ser variable de instancia
         menu[0] = new Platillo("Pizza", 4.9, "Some comment", true);
         menu[1] = new Platillo("Taco", 3.8, "Another comment", false);
         menu[2] = new Platillo("Platillo3", 5.7, "Yet another comment", true);
@@ -81,8 +80,9 @@ public class Comandera {
         int opcion;
 
         do {
-
-            System.out.println("Ingrese la acción que desea realizar a continuación:");
+            System.out.println(
+                "Ingrese la acción que desea realizar a continuación:"
+            );
             System.out.println("1.- Iniciar sesión como mesero.");
             System.out.println("2.- Registrar un mesero nuevo.");
             System.out.println("3.- Ingresar nuevos alimentos.");
@@ -117,10 +117,13 @@ public class Comandera {
         } while (opcion != 4);
     }
 
-
-    public static void SetExistencia(String nombre,Alimento[]menu,boolean existencia){
-        for(Alimento alimento : menu){
-            if(alimento.getNombre().equalsIgnoreCase(nombre)){
+    public static void SetExistencia(
+        String nombre,
+        Alimento[] menu,
+        boolean existencia
+    ) {
+        for (Alimento alimento : menu) {
+            if (alimento.getNombre().equalsIgnoreCase(nombre)) {
                 alimento.setExistencia(existencia);
                 return;
             }
@@ -197,16 +200,14 @@ public class Comandera {
                     System.out.println("Desea separar o juntar cuentas?");
                     System.out.println("1. Separar       2. Juntar");
                     opt = scanner.nextInt();
-                    switch (opt){
+                    switch (opt) {
                         case 1:
-                            
-                        break;
+                            break;
                         case 2:
-
-                        break;
+                            break;
                         default:
                             System.out.println("Error. Opcion no valida");
-                        break;
+                            break;
                     }
                     break;
                 case 7:
@@ -219,217 +220,253 @@ public class Comandera {
         } while (opc != 7);
     }
 
-
     public static void crearAlimento(Alimento[] menu) {
-
         System.out.println("Crear:");
         System.out.println("1. Platillo");
         System.out.println("2. Café");
         int opc = scanner.nextInt();
         scanner.nextLine();
-        for(Alimento alimento : menu){
-            if(alimento==null){
-                String nombre; double costo;
+        for (Alimento alimento : menu) {
+            if (alimento == null) {
+                String nombre;
+                double costo;
                 switch (opc) {
                     case 1:
                         System.out.println("Ingresa el nombre del Platillo");
                         nombre = scanner.nextLine();
-                        System.out.println("Ingresa el costo base del producto (Orden Completa):");
+                        System.out.println(
+                            "Ingresa el costo base del producto (Orden Completa):"
+                        );
                         costo = scanner.nextDouble();
                         alimento = new Platillo(nombre, costo, null, true);
                         return;
                     case 2:
                         System.out.println("Ingresa el nombre del Cafe");
                         nombre = scanner.nextLine();
-                        System.out.println("Ingresa el costo base del producto (Chico):");
+                        System.out.println(
+                            "Ingresa el costo base del producto (Chico):"
+                        );
                         costo = scanner.nextDouble();
                         alimento = new Cafe(nombre, costo, null, true);
                         return;
-                
                     default:
                         System.out.println("Error. Opcion no valida");
                         break;
                 }
             }
-        }System.out.println("Error al crear alimento nuevo.");
+        }
+        System.out.println("Error al crear alimento nuevo.");
     }
-    
-    public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu){
-        if (!mesero.isMyMesa(mesa.getNumero())){
-             System.out.println("Error, esta mesa no está en control del mesero.");
-             return;
+
+    public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu) {
+        if (!mesero.isMyMesa(mesa.getNumero())) {
+            System.out.println(
+                "Error, esta mesa no está en control del mesero."
+            );
+            return;
         }
         Alimento[] comanda = new Alimento[100];
         int contador = 0;
         boolean platos = false, cafes = false;
-        do{
-             boolean done = false;
-             int opc, condicion = -1, cantidad;
-             String nombrealimento;
 
-             System.out.println("Ingresar:");
-             System.out.println("1. Platillo");
-             System.out.println("2. Cafe");
-             System.out.println("3. Salir");
-             opc = scanner.nextInt();
-             scanner.nextLine();
-             
-             for(Alimento pedido:comanda){
-                  if(pedido == null){
-                       System.out.println("Busqueda por nombre:");
-                       nombrealimento = scanner.nextLine();
-                       scanner.nextLine();
-                       pedido = buscarAlimento(nombrealimento, menu);
-                       if(pedido!=null){
-                            System.out.println("Realizar un comentario: ");
-                            pedido.setComentario(scanner.nextLine());
-                            switch(opc){
-                                 case 1:
-                                      Platillo platillo = (Platillo) pedido;
-                                      while (condicion == -1) {// Ciclo para ingresar orden o media orden
-                                           System.out.println("Orden completa o media orden");
-                                           System.out.println("1. Orden Completa");
-                                           System.out.println("2. Media orden");
-                                           condicion = scanner.nextInt();
-                                           switch (condicion){
-                                                case 1:
-                                                     platillo.setOrdenCompleta(true);
-                                                     break;
-                                                case 2:
-                                                     platillo.setOrdenCompleta(false);
-                                                     break;
-                                                default:
-                                                     System.out.println("Error. Opcion no valida.");
-                                                     condicion = -1;
-                                                     break;
-                                           }
-                                      }
-                                      done = true;
-                                      platos = true;     
-                                 break;
-                                 case 2:
-                                      Cafe cafe  = (Cafe) pedido;
-                                      while(condicion ==-1){
-                                           System.out.println("Cafeina:");
-                                           System.out.println("1. Si");
-                                           System.out.println("2. No");
-                                           condicion = scanner.nextInt();
-                                           switch(opc){
-                                                case 1:
-                                                     cafe.setCafeina(true);
-                                                     break;
-                                                case 2:
-                                                     cafe.setCafeina(false);
-                                                     break;
-                                                default:
-                                                     System.out.println("Error. valor no valido.");
-                                                     condicion = -1;
-                                                     break;
-                                           }
-                                      }
-                                      condicion = -1;
-                                      while (condicion == -1) {// Ciclo para ingresar Frio o Caliente
-                                           System.out.println("Hielo:");
-                                           System.out.println("1. Frio");
-                                           System.out.println("2. Caliente");
-                                           condicion = scanner.nextInt();
-                                           switch (condicion){
-                                                case 1:
-                                                     cafe.setHielo(true);
-                                                     break;
-                                                case 2:
-                                                     cafe.setHielo(false);
-                                                     break;
-                                                default:
-                                                     System.out.println("Error. valor no valido.");
-                                                     condicion = -1;
-                                                     break;
-                                           }
-                                      }
-                                      condicion = -1;
-                                      while (condicion == -1) {// Ciclo para ingresar tipo de leche
-                                           System.out.println("Tipo de leche:");
-                                           cafe.printMilklist();
-                                           condicion = scanner.nextInt();
+        for (Alimento pedido : comanda) {
+            boolean done = false;
+            int opc, condicion = -1, cantidad;
+            String nombrealimento;
+
+            System.out.println("Ingresar:");
+            System.out.println("1. Platillo");
+            System.out.println("2. Cafe");
+            System.out.println("3. Salir");
+            opc = scanner.nextInt();
+            scanner.nextLine();
+            if (pedido == null) {
+                System.out.println("Busqueda por nombre:");
+                nombrealimento = scanner.nextLine();
+                pedido = buscarAlimento(nombrealimento, menu);
+                if (pedido != null) {
+                    System.out.println("Realizar un comentario: ");
+                    pedido.setComentario(scanner.nextLine());
+                    switch (opc) {
+                        case 1:
+                            Platillo platillo = (Platillo) pedido;
+                            while (condicion == -1) { // Ciclo para ingresar orden o media orden
+                                System.out.println(
+                                    "Orden completa o media orden"
+                                );
+                                System.out.println("1. Orden Completa");
+                                System.out.println("2. Media orden");
+                                condicion = scanner.nextInt();
+                                switch (condicion) {
+                                    case 1:
+                                        platillo.setOrdenCompleta(true);
+                                        break;
+                                    case 2:
+                                        platillo.setOrdenCompleta(false);
+                                        break;
+                                    default:
+                                        System.out.println(
+                                            "Error. Opcion no valida."
+                                        );
+                                        condicion = -1;
+                                        break;
+                                }
+                            }
+                            done = true;
+                            platos = true;
+                            break;
+                        case 2:
+                            Cafe cafe = (Cafe) pedido;
+                            while (condicion == -1) {
+                                System.out.println("Cafeina:");
+                                System.out.println("1. Si");
+                                System.out.println("2. No");
+                                condicion = scanner.nextInt();
+                                switch (opc) {
+                                    case 1:
+                                        cafe.setCafeina(true);
+                                        break;
+                                    case 2:
+                                        cafe.setCafeina(false);
+                                        break;
+                                    default:
+                                        System.out.println(
+                                            "Error. valor no valido."
+                                        );
+                                        condicion = -1;
+                                        break;
+                                }
+                            }
+                            condicion = -1;
+                            while (condicion == -1) { // Ciclo para ingresar Frio o Caliente
+                                System.out.println("Hielo:");
+                                System.out.println("1. Frio");
+                                System.out.println("2. Caliente");
+                                condicion = scanner.nextInt();
+                                switch (condicion) {
+                                    case 1:
+                                        cafe.setHielo(true);
+                                        break;
+                                    case 2:
+                                        cafe.setHielo(false);
+                                        break;
+                                    default:
+                                        System.out.println(
+                                            "Error. valor no valido."
+                                        );
+                                        condicion = -1;
+                                        break;
+                                }
+                            }
+                            condicion = -1;
+                            while (condicion == -1) { // Ciclo para ingresar tipo de leche
+                                System.out.println("Tipo de leche:");
+                                cafe.printMilklist();
+                                condicion = scanner.nextInt();
                                            if(condicion>=0 && condicion < cafe.getMilklistSize()){
-                                                cafe.setMilk(condicion);
-                                           } else {
+                                    cafe.setMilk(condicion);
+                                } else {
                                                 System.out.println("Error. Opcion no valida.");
-                                                condicion = -1;
-                                           }
-                                      }
-                                      done = true;
-                                      cafes = true;
-                                 break;
-                                 case 3:
-                                      System.out.println("Saliendo...");
-                                 return;
-                                 default:
-                                      System.out.println("Error. Opción no válida.");
-                                 break;
+                                    condicion = -1;
+                                }
                             }
+                            done = true;
+                            cafes = true;
+                            break;
+                        case 3:
+                            System.out.println("Saliendo...");
+                            return;
+                        default:
+                            System.out.println("Error. Opción no válida.");
+                            break;
+                    }
                             if(done){
-                                 scanner.nextLine();
-                                 pedido.detalles();
-                                 System.out.println("Cantidad de platillos iguales:");
-                                 cantidad = scanner.nextInt();
-                                 contador += cantidad;
-                                 mesa.addPedido(pedido,cantidad);
-                                 int pedidos = 0;
-                                 for(Alimento llenado : comanda){
-                                      if(llenado==null&&pedidos<cantidad){
-                                           llenado = pedido;
-                                      }
-                                 }
-                                 System.out.println("Desea ingresar otro pedido?");
-                                 System.out.println("1. Si.");
-                                 System.out.println("2. No.");
-                                 opc = scanner.nextInt();
-                                 if(opc!=1){
-                                      if(contador>0){
-                                           if(platos){
-                                                System.out.println("=================================");
-                                                System.out.println("Platillos:");
-                                                for(Alimento alimento: comanda){
-                                                     if(alimento instanceof Platillo){
-                                                          alimento.detalles();
-                                                     }
-                                                }
-                                                System.out.println("=================================");
-                                           }
-                                           if(cafes){
-                                                System.out.println("=================================");
-                                           System.out.println("Cafés:");
-                                           for(Alimento alimento: comanda){
-                                                if(alimento instanceof Cafe){
-                                                     alimento.detalles();
-                                                }
-                                           }
-                                           System.out.println("=================================");
-                                           }
-                                       }
-                                      
-                                      
-                                      return;
-                                 }
+                        scanner.nextLine();
+                        pedido.detalles();
+                        if (pedido instanceof Cafe) {
+                            System.out.println("Cantidad de cafés iguales:");
+                        } else {
+                            System.out.println(
+                                "Cantidad de platillos iguales:"
+                            );
+                        }
+                        cantidad = scanner.nextInt();
+                        contador += cantidad;
+                        mesa.addPedido(pedido, cantidad);
+                        int pedidos = 0;
+                        for (int i = 0; i < comanda.length; i++) {
+                            if (comanda[i] == null && pedidos < cantidad) {
+                                comanda[i] = pedido;
+                                pedidos++;
                             }
-                       }
-                  }
-             }
-             System.out.println("No se pueden ingresar más alimentos a la cuenta.");
+                        }
+                        System.out.println("Desea ingresar otro pedido?");
+                        System.out.println("1. Si.");
+                        System.out.println("2. No.");
+                        opc = scanner.nextInt();
+                        if (opc != 1) {
+                            if (contador > 0) {
+                                if (platos) {
+                                    System.out.println(
+                                        "================================="
+                                    );
+                                    System.out.println("Platillos:");
+                                    for (Alimento alimento : comanda) {
+                                        if (alimento instanceof Platillo) {
+                                            System.out.println("-----------------");
+                                            alimento.detalles();
+                                            System.out.println("-----------------");
+                                        }
+                                    }
+                                   
+                                }
+                                if (cafes) {
+                                    System.out.println(
+                                        "================================="
+                                    );
+                                    System.out.println("Cafés:");
+                                    for (Alimento alimento : comanda) {
+                                        if (alimento instanceof Cafe) {
+                                            System.out.println("-----------------");
+                                            alimento.detalles();
+                                            System.out.println("-----------------");
+                                        }
+                                    }
+                                    System.out.println(
+                                        "================================="
+                                    );
+                                }
+                            }
 
-        }while(comanda[99]==null);
-   }
+                            scanner.nextLine();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("No se pueden ingresar más alimentos a la cuenta.");
+    }
 
     // Metodo buscador de un alimento, si lo encuentra retorna el alimento, si no, retorna
     // null
 
     public static Alimento buscarAlimento(String nombre, Alimento[] menu) {
-        for(Alimento alimento: menu){
-            if(alimento != null && alimento.getNombre().equalsIgnoreCase(nombre)){
-                return alimento;
+        for (Alimento alimento : menu) {
+            if (
+                alimento != null &&
+                alimento.getNombre().equalsIgnoreCase(nombre)
+            ) {
+                if (!alimento.isExistencia()) {
+                    System.out.println(
+                        "El platillo está dado de baja indefinidamente."
+                    );
+                } else {
+                    return alimento;
+                }
             }
         }
+        System.out.println("No se ha encontrado el platillo.");
         return null;
     }
 
@@ -475,7 +512,7 @@ public class Comandera {
         System.out.println("Total: ------------------------------------ $" + mesa.getTotal() * 1.16);
         mesa.setActivo(false);
     }
-    
+
 
     public static void DeleteMesa(Mesero user, Mesa[] mesas){
         System.out.println("Ingresa el numero de la cuenta a eliminar:");
