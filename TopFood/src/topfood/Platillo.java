@@ -5,12 +5,7 @@ public class Platillo extends Alimento {
     private boolean ordenCompleta;
     private boolean prioridadAlta;
 
-    public Platillo(
-        String nombre,
-        double costo,
-        String comentario,
-        boolean existencia
-    ) {
+    public Platillo(String nombre,double costo,String comentario,boolean existencia) {
         super(nombre, costo, comentario, existencia);
         this.ordenCompleta = true;
         this.prioridadAlta = false;
@@ -43,12 +38,7 @@ public class Platillo extends Alimento {
 
     @Override
     public void detalles() {
-        String prioridad;
-        if (prioridadAlta == true) {
-            prioridad = "Prioridad: Alta";
-        } else if (prioridadAlta == false) {
-            prioridad = "Prioridad: Baja";
-        }
         super.detalles();
+        System.out.println(prioridadAlta ? "Prioridad: Alta" : "Prioridad: Baja");
     }
 }
