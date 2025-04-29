@@ -1,13 +1,14 @@
 package topfood;
 
-public class Mesa implements description{
+public class Mesa implements description {
+
     private Mesero mesero;
     private int numero;
     private int personas;
     private boolean activo;
-    private Alimento[]pedido;
+    private Alimento[] pedido;
     private double total;
-    
+
     public Mesa(Mesero mesero, int numero, int personas, boolean activo) {
         this.mesero = mesero;
         this.numero = numero;
@@ -16,7 +17,8 @@ public class Mesa implements description{
         pedido = new Platillo[100];
         total = 0;
     }
-    public Mesa(int numero){
+
+    public Mesa(int numero) {
         mesero = null;
         this.numero = numero;
         personas = 0;
@@ -24,7 +26,7 @@ public class Mesa implements description{
         total = 0;
     }
 
-    public Mesero getMesero(){
+    public Mesero getMesero() {
         return mesero;
     }
 
@@ -40,7 +42,6 @@ public class Mesa implements description{
         return personas;
     }
 
-
     public void setPersonas(int personas) {
         this.personas = personas;
     }
@@ -55,53 +56,64 @@ public class Mesa implements description{
 
     public void addPedido(Alimento orden, int cantidad) {
         int espaciosDisponibles = 0;
-        for(Alimento alimento : pedido){
-            if(alimento == null){
+
+        for (int i = 0; i < pedido.length; i++) {
+            if (pedido[i] == null) {
                 espaciosDisponibles++;
             }
         }
-        if (espaciosDisponibles < cantidad) {// Verificar si hay suficiente espacio
-            System.out.println("Error: No hay suficiente espacio para agregar " + cantidad + " platillos. Espacios disponibles: " + espaciosDisponibles);
+
+        if (espaciosDisponibles < cantidad) { // Verificar si hay suficiente espacio
+            System.out.println("Error: No hay suficiente espacio para agregar " +cantidad +" platillos. Espacios disponibles: " +espaciosDisponibles);
             return;
         }
+
         int agregados = 0;
-        for(Alimento alimento : pedido){
-            if(agregados < cantidad && alimento == null){
-                alimento = orden;
+        for (int i = 0; i < pedido.length; i++) {
+            if (agregados < cantidad && pedido[i] == null) {
+                pedido[i] = orden;
                 agregados++;
             }
         }
     }
 
-    public int getPedidolength(){
+    public int getPedidolength() {
         return pedido.length;
     }
 
-    public Alimento getpedido(int i){
+    public Alimento getpedido(int i) {
         return pedido[i];
     }
 
-    public void printPedido(){
+    public void printPedido() {
         System.out.println("Nombre  ================   Costo");
-        for(Alimento alimento : pedido){
-            if(alimento == null){break;}
-            System.out.print(alimento.getNombre()+" =============  $"+alimento.getCosto());
+        
+        for(int i=0;i<pedido.length;i++){
+            if(pedido[i]!=null){
+                System.out.println(pedido[i].getNombre() + " =============  $" + pedido[i].getCosto());
+            }
         }
         System.out.println("===============================");
     }
 
-    public double getTotal(){
-        for(int i=0; i<pedido.length&&pedido[i]!=null;i++){
-            total+=pedido[i].getCosto();
+    public double getTotal() {
+        for (int i = 0; i < pedido.length && pedido[i] != null; i++) {
+            total += pedido[i].getCosto();
         }
         return total;
     }
+
     @Override
-    public void detalles(){
-        System.out.println("Mesero encargado: "+mesero.getCodigo()+" : "+mesero.getNombre());
-        System.out.println("Mesa: "+numero);
-        System.out.println("Cantidad de personas: "+personas);
-        System.out.println("Activa: "+(activo ? "Si." : "No."));
-        System.out.println("Total actual: "+getTotal());
+    public void detalles() {
+        System.out.println(
+            "Mesero encargado: " +
+            mesero.getCodigo() +
+            " : " +
+            mesero.getNombre()
+        );
+        System.out.println("Mesa: " + numero);
+        System.out.println("Cantidad de personas: " + personas);
+        System.out.println("Activa: " + (activo ? "Si." : "No."));
+        System.out.println("Total actual: " + getTotal());
     }
 }
