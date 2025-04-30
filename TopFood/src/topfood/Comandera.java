@@ -298,13 +298,13 @@ public class Comandera {
             
             System.out.println(pedido instanceof Cafe ? "Cantidad de cafés iguales:" : "Cantidad de platillos iguales:");
             int cantidad = scanner.nextInt();
-            mesa.addPedido(pedido, cantidad);
             agregarPedido(comanda, pedido, cantidad,mesa);
             contador += cantidad;
-    
             if (!deseaOtroPedido()) {
+                mesa.setTotal();
                 mostrarResumen(comanda, platos, cafes);
                 return;
+                
             }
         }
     
@@ -394,6 +394,7 @@ public class Comandera {
                 pedidosAgregados++;
             }
         }
+        mesa.addPedido(pedido, cantidad);
     }
     
     private static boolean deseaOtroPedido() {
@@ -485,20 +486,20 @@ public class Comandera {
         System.out.println("Personas: " + mesa.getPersonas());
         mesa.printPedido();
         System.out.println("Subtotal: ------------------------------------ $" + mesa.getTotal());
-        System.out.println("IVA (16%): ------------------------------------ $" + mesa.getTotal() * 0.16);
-        System.out.println("Total: ------------------------------------ $" + mesa.getTotal() * 1.16);
+        System.out.println("IVA (16%): ------------------------------------ $" + (mesa.getTotal() * 0.16));
+        System.out.println("Total: ------------------------------------ $" + (mesa.getTotal() * 1.16));
         mesa.setActivo(false);
+
     }
 
 
     public static void DeleteMesa(Mesero user, Mesa[] mesas){
         System.out.println("Ingresa el numero de la cuenta a eliminar:");
         int i = scanner.nextInt();
-        boolean myMesa = user.isMyMesa(i);
         boolean isActive = mesas[i].isActivo();
-        if (myMesa && !isActive) {
-            user.cleanMesa(mesas[i]);
-            mesas[i] = new Mesa(i);
+        if (!isActive) {
+            user.cleanMesa(i);
+            mesas[i] = null;
         } else {
             System.out.println("Error. La mesa sigue activa o no es operada por el mesero.");
         }

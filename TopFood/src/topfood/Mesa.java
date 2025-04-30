@@ -14,17 +14,18 @@ public class Mesa implements description {
         this.numero = numero;
         this.personas = personas;
         this.activo = activo;
-        pedido = new Platillo[100];
+        pedido = new Alimento[100];
         total = 0;
     }
 
-    public Mesa(int numero) {
-        mesero = null;
-        this.numero = numero;
-        personas = 0;
-        activo = false;
-        total = 0;
+    public Mesa(int numero){
+        this.mesero=null;
+        this.numero=numero;
+        this.personas=0;
+        this.activo=false;
+        this.total=0;    
     }
+
 
     public Mesero getMesero() {
         return mesero;
@@ -96,10 +97,15 @@ public class Mesa implements description {
         System.out.println("===============================");
     }
 
-    public double getTotal() {
-        for (int i = 0; i < pedido.length && pedido[i] != null; i++) {
-            total += pedido[i].getCosto();
+    public void setTotal() {
+        total = 0;              // ← reiniciar antes de sumar
+        for (int i = 0; i < pedido.length; i++) {
+            if (pedido[i] != null) {
+                total += pedido[i].getCosto();
+            }
         }
+    }    
+    public double getTotal() {
         return total;
     }
 

@@ -81,8 +81,8 @@ public class Mesero implements description {
         return false;
     }
 
-    public void cleanMesa(Mesa mesa) {
-        mesas[mesa.getNumero()] = new Mesa(mesa.getNumero());
+    public void cleanMesa(int i) {
+        mesas[i] = null;
     }
 
     public int getContador() {
