@@ -12,7 +12,6 @@ public class Mesero implements description {
         this.nombre = nombre;
         this.codigo = codigo;
         this.password = password;
-        this.mesas = new Mesa[60];
         this.contador = 0;
     }
 
@@ -21,7 +20,6 @@ public class Mesero implements description {
         codigo = 0;
         password = -1;
         contador = 0;
-        this.mesas = new Mesa[60];
     }
 
     public String getNombre() {
@@ -50,39 +48,10 @@ public class Mesero implements description {
 
     public void setPassword(int password) {
         this.password = password;
-    }
-
-    public void printMesas() {
-        for (Mesa mesa : this.mesas) {
-            if (mesa != null) {
-                mesa.detalles();
-                mesa.printPedido();
-            }
-        }
-    }
-
-    public void addMesa(Mesa mesanueva) {
-        for (int i = 0; i < mesas.length; i++) {
-            if (mesas[i] == null) {
-                mesas[i] = mesanueva;
-                contador++;
-                return;
-            }
-        }
-        System.out.println("Error. El mesero no puede agregar más mesas.");
-    }
-
-    public boolean isMyMesa(int numero) {
-        for (int i = 0; i < mesas.length; i++) {
-            if (mesas[i] != null) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void cleanMesa(int i) {
-        mesas[i] = null;
+    }    
+    
+    public void addContador(){
+        contador++;
     }
 
     public int getContador() {

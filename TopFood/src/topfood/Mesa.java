@@ -19,7 +19,7 @@ public class Mesa implements description {
     }
 
     public Mesa(int numero){
-        this.mesero=null;
+        this.mesero = null;
         this.numero=numero;
         this.personas=0;
         this.activo=false;
@@ -79,7 +79,13 @@ public class Mesa implements description {
     }
 
     public int getPedidolength() {
-        return pedido.length;
+        int pedidolength = 0;
+        for(int i=0;i<pedido.length;i++){
+            if(pedido[i]!=null){
+                pedidolength++;
+            }
+        }
+        return pedidolength;
     }
 
     public Alimento getpedido(int i) {
