@@ -12,7 +12,6 @@ import java.util.Scanner;
  */
 public class Comandera {
 
-    private static Scanner scanner = new Scanner(System.in);
 
     public static Mesero LogIn(Mesero[] meseros, int password) {
         int i = 0;
@@ -27,6 +26,7 @@ public class Comandera {
     }
 
     public static void crearMesero(Mesero[] meseros) {
+        Scanner scanner = new Scanner(System.in);
         int i;
         for (i = 0; i < meseros.length; i++) {
             if (meseros[i] == null) {
@@ -56,6 +56,7 @@ public class Comandera {
         }
     }
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         Mesero[] meseros = new Mesero[20];
         meseros[0] = new Mesero("Luis", 49, 2707);
         Mesa[] mesas = new Mesa[70];
@@ -121,6 +122,7 @@ public class Comandera {
     }
 
     public static void MenuMesero(Mesero user, Mesero[] meseros, Mesa[] mesas, Alimento[] menu) {
+        Scanner scanner = new Scanner(System.in);
         int opc, fallas = 0, i, opt;
         do {
             boolean myMesa, isActive;
@@ -247,6 +249,7 @@ public class Comandera {
     }
 
     public static void crearAlimento(Alimento[] menu) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Crear:");
         System.out.println("1. Platillo");
         System.out.println("2. Café");
@@ -283,6 +286,7 @@ public class Comandera {
     }
 
     public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu) {
+        Scanner scanner = new Scanner(System.in);
         if (!isMyMesa(mesero, mesa)) {
             return;
         }
@@ -326,6 +330,7 @@ public class Comandera {
     }
     
     private static void configurarPlatillo(Platillo platillo) {
+        Scanner scanner = new Scanner(System.in);
         int opcion;
         do {
             System.out.println("Orden completa o media orden:");
@@ -348,6 +353,7 @@ public class Comandera {
     }
     
     private static void configurarCafe(Cafe cafe) {
+        Scanner scanner = new Scanner(System.in);
         int opcion;
         
         do {
@@ -416,6 +422,7 @@ public class Comandera {
     }
     
     private static boolean deseaOtroPedido() {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("¿Desea ingresar otro pedido?");
         System.out.println("1. Sí");
         System.out.println("2. No");
@@ -473,6 +480,7 @@ public class Comandera {
     // Metodo para abrir una mesa
 
     public static void asignarMesa(Mesero mesero, Mesa[] mesas, Alimento[] menu) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Ingresa el numero de la mesa: ");
         int i = scanner.nextInt();
         if (mesas[i]!=null) {
