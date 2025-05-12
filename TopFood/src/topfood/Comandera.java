@@ -4,6 +4,7 @@
  */
 package topfood;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -11,8 +12,53 @@ import java.util.Scanner;
  * @author Luis Javier Robles Topete 25460001
  */
 public class Comandera {
+    //metodos que optimizan el uso del scanner
+    public static String Stringscan(String mensaje) {
+        Scanner scanner = new Scanner(System.in);
+        String scanned;
+        while (true) {
+            System.out.println(mensaje);
+            scanned = scanner.nextLine();
+            if (!scanned.isEmpty()) {
+                break;
+            }
+            System.out.println("Error, no se permite una entrada vacía. Intente nuevamente.");
+        }
+        
+        return scanned;
+    }    
 
-
+    public static double Doublescan(String mensaje) {
+        Scanner scanner = new Scanner(System.in);
+        double scanned;
+        while (true) {
+            try {
+                System.out.println(mensaje);
+                scanned = scanner.nextDouble();
+                break;
+            } catch (InputMismatchException ex) {
+                System.out.println("Error, caracteres introducidos no válidos. Intente nuevamente.");
+            }
+        }
+        return scanned;
+    }
+    
+    public static int Intscan(String mensaje) {
+        Scanner scanner = new Scanner(System.in);
+        int scanned;
+        while (true) {
+            try {
+                System.out.println(mensaje);
+                scanned = scanner.nextInt(); // Leer como texto y convertir
+                break;
+            } catch (InputMismatchException ex) {
+                System.out.println("Error, caracteres introducidos no válidos. Intente nuevamente.");
+                scanner.nextLine();
+            }
+        }
+        return scanned;
+    }    
+    
     public static Mesero LogIn(Mesero[] meseros, int password) {
         int i = 0;
         while (i < meseros.length - 1) {
@@ -26,25 +72,19 @@ public class Comandera {
     }
 
     public static void crearMesero(Mesero[] meseros) {
-        Scanner scanner = new Scanner(System.in);
         int i;
         for (i = 0; i < meseros.length; i++) {
             if (meseros[i] == null) {
-                System.out.println("Ingresa el nombre del mesero:");
-                String nombre = scanner.nextLine();
+                String nombre = Stringscan("Ingresa el nombre del mesero:");
                 boolean done = false;
                 int pass1, pass2;
                 do {
-                    System.out.println("Ingresa la contraseña: ");
-                    pass1 = scanner.nextInt();
-                    System.out.println("Confirma tu contraseña: ");
-                    pass2 = scanner.nextInt();
+                    pass1 = Intscan("Ingresa la contraseña: ");
+                    pass2 = Intscan("Confirma tu contraseña: ");
                     if (pass1 == pass2) {
                         done = true;
                     } else {
-                        System.out.println(
-                            "Error. las contraseñas no coinciden."
-                        );
+                        System.out.println("Error. las contraseñas no coinciden.");
                     }
                 } while (!done);
                 meseros[i] = new Mesero(nombre, i, pass1);
@@ -56,7 +96,6 @@ public class Comandera {
         }
     }
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         Mesero[] meseros = new Mesero[20];
         meseros[0] = new Mesero("Luis", 49, 2707);
         Mesa[] mesas = new Mesa[70];
@@ -72,19 +111,22 @@ public class Comandera {
         menu[7] = new Cafe("Latte", 4.20, "Leche enteral y espuma.", false);
         menu[8] = new Cafe("Cappuccino", 4.00, "Espuma de leche.", true);
         menu[9] = new Cafe("Mocha", 5.00, "Chocolate y leche entera.", false);
+        
+        String menus = """
+            Ingrese la acción que desea realizar a continuación:
+            1.- Iniciar sesión como mesero.
+            2.- Registrar un mesero nuevo.
+            3.- Ingresar nuevos alimentos.
+            4.- Dar de baja un producto.
+            5.- Dar de alta un producto.
+            6.- Salir del sistema.""";
+
         Mesero user = null;
         int opcion;
 
         do {
-            System.out.println("Ingrese la acción que desea realizar a continuación:");
-            System.out.println("1.- Iniciar sesión como mesero.");
-            System.out.println("2.- Registrar un mesero nuevo.");
-            System.out.println("3.- Ingresar nuevos alimentos.");
-            System.out.println("4.- Dar de baja un producto.");
-            System.out.println("5.- Dar de alta un producto.");
-            System.out.println("6.- Salir del sistema.");
-            opcion = scanner.nextInt();
-            scanner.nextLine();
+
+            opcion = Intscan(menus);
             switch (opcion) {
                 case 1:
                     // Iniciar sesion como mesero, si no, crear un mesero
@@ -97,12 +139,10 @@ public class Comandera {
                     crearAlimento(menu);
                     break;
                 case 4:
-                    System.out.println("Ingresa el nombre de el producto: ");
-                    SetExistencia(scanner.nextLine(), menu, false);
+                    SetExistencia(Stringscan("Ingresa el nombre de el producto: "), menu, false);
                     break;
                 case 5:
-                    System.out.println("Ingresa el nombre de el producto: ");
-                    SetExistencia(scanner.nextLine(), menu, true);
+                    SetExistencia(Stringscan("Ingresa el nombre de el producto: "), menu, true);
                     break;
                 case 6:
                     System.out.println("Saliendo...");
@@ -122,21 +162,24 @@ public class Comandera {
     }
 
     public static void MenuMesero(Mesero user, Mesero[] meseros, Mesa[] mesas, Alimento[] menu) {
-        Scanner scanner = new Scanner(System.in);
         int opc, fallas = 0, i, opt;
+        String menumesero = """
+        1.- Abrir cuenta.
+        2.- Visualizar mesas.
+        3.- Agregar productos.
+        4.- Cerrar una cuenta.
+        5.- Eliminar una cuenta.
+        6.- Juntar cuentas.
+        7.- Salir.""";
         do {
             boolean myMesa, isActive;
 
             while (user == null) {
-                System.out.println("Ingresa tu contraseña para iniciar sesión:");
-                user = LogIn(meseros, scanner.nextInt());
+                user = LogIn(meseros, Intscan("Ingresa tu contraseña para iniciar sesión:"));
                 fallas += 1;
                 if (fallas >= 3) {
-                    System.out.println("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo?");
-                    System.out.println("1. Si      2. No");
                     fallas = 0;
-                    int crear = scanner.nextInt();
-                    scanner.nextLine();
+                    int crear = Intscan("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo?/n1. Si      2. No");
                     if (crear == 1) {
                         crearMesero(meseros);
                     } else {
@@ -145,15 +188,8 @@ public class Comandera {
                 }
             }
             System.out.println("Bienvenido " + user.getNombre() + ", elija la opción a continuación: ");
-            System.out.println("1.- Abrir cuenta. ");
-            System.out.println("2.- Visualizar mesas.");
-            System.out.println("3.- Agregar productos.");
-            System.out.println("4.- Cerrar una cuenta.");
-            System.out.println("5.- Eliminar una cuenta.");
-            System.out.println("6.- Juntar cuentas.");
-            System.out.println("7.- Salir.");
-            opc = scanner.nextInt();
-            scanner.nextLine();
+            
+            opc = Intscan(menumesero);
             switch (opc) {
                 case 1:
                     asignarMesa(user, mesas, menu);
@@ -169,8 +205,7 @@ public class Comandera {
                     }                
                     break;
                 case 3:
-                    System.out.println("Ingresa el numero de la mesa:");
-                    i = scanner.nextInt();
+                    i = Intscan("Ingresa el numero de la mesa:");
                     myMesa = isMyMesa(user, mesas[i]);
                     if (myMesa) {
                         hacerPedido(mesas[i], user, menu);
@@ -178,32 +213,35 @@ public class Comandera {
                     }
                     break;
                 case 4:
-                    System.out.println("Ingresa la cuenta que deseas cerrar:");
-                    i = scanner.nextInt();
-                    myMesa = isMyMesa(user, mesas[i]);
+                    i = Intscan("Ingresa la cuenta que deseas cerrar:");
+                    try{
+                        myMesa = isMyMesa(user, mesas[i]);
                     isActive = mesas[i].isActivo();
                     if (myMesa && isActive) {
                         Ticket(mesas[i]);
                         mesas[i].setActivo(false);
                     } else {
-                        System.out.println("Error. La mesa no fue encontrada activa o no es operada por el mesero.");
+                        System.out.println("Error. La mesa ya fue cerrada o no es operada por el mesero.");
+                    }
+                    }catch(NullPointerException ex){
+                        System.out.println("Error, la mesa no está siendo operada.");
                     }
                     break;
                 case 5:
-                    System.out.println("Ingresa el numero de la cuenta a eliminar:");
-                    i = scanner.nextInt();
-                    if(isMyMesa(user, mesas[i])){
-                        DeleteMesa(user,i,mesas,mesas[i].isActivo());
+                    try{
+                        i = Intscan("Ingresa el numero de la cuenta a eliminar:");
+                        if(isMyMesa(user, mesas[i])){
+                            DeleteMesa(user,i,mesas,mesas[i].isActivo());
+                        }
+                    }catch(NullPointerException ex){
+                        System.out.println("Error, la mesa no existe.");
                     }
                     break;
                 case 6:
                     System.out.println("Ingresa los números de las mesas:");
-                    System.out.print("Mesa 1:");
-                    int mesa1= scanner.nextInt();
-                    System.out.print("Mesa 2:");
-                    int mesa2= scanner.nextInt();
-                    System.out.println("Ingresa el numero de la nueva mesa:");
-                    int newmesa = scanner.nextInt();
+                    int mesa1 = Intscan("Mesa 1:");
+                    int mesa2 = Intscan("Mesa 2:");
+                    int newmesa = Intscan("Ingresa el numero de la nueva mesa:");
                     juntarMesas(user, mesas, mesas[mesa1], mesas[mesa2],newmesa);
                     break;
                 case 7:
@@ -217,63 +255,59 @@ public class Comandera {
     }
 
     public static void juntarMesas(Mesero mesero, Mesa[]mesas,Mesa mesa1,Mesa mesa2, int newmesa){
-        if(isMyMesa(mesero, mesa1) && isMyMesa(mesero, mesa2) ){
-            Mesa newMesa = new Mesa(mesero, newmesa,(mesa1.getPersonas()+mesa2.getPersonas()),true);
-            Mesa[] temparray = {mesa1, mesa2};
-            for (Mesa mesa : temparray) {
-                for(int i=0;i<mesa.getPedidolength();i++){
-                    newMesa.addPedido(mesa.getpedido(i), 1);
+        try{
+            if(isMyMesa(mesero, mesa1) && isMyMesa(mesero, mesa2) ){
+                Mesa newMesa = new Mesa(mesero, newmesa,(mesa1.getPersonas()+mesa2.getPersonas()),true);
+                Mesa[] temparray = {mesa1, mesa2};
+                for (Mesa mesa : temparray) {
+                    for(int i=0;i<mesa.getPedidolength();i++){
+                        newMesa.addPedido(mesa.getpedido(i), 1);
+                    }
                 }
+                if(mesa1.getNumero() == newmesa || mesa2.getNumero()==newmesa || mesas[newmesa]==null){
+                    DeleteMesa(mesero,mesa1.getNumero(), mesas, false);
+                    DeleteMesa(mesero,mesa2.getNumero(), mesas, false);
+                    mesas[newmesa] = newMesa;
+                }
+            }else{
+                System.out.println("Error. La/s mesas no corresponden al mesero.");
             }
-            if(mesa1.getNumero() == newmesa || mesa2.getNumero()==newmesa || mesas[newmesa]==null){
-                DeleteMesa(mesero,mesa1.getNumero(), mesas, false);
-                DeleteMesa(mesero,mesa2.getNumero(), mesas, false);
-                mesas[newmesa] = newMesa;
-            }
-        }else{
-            System.out.println("Error. La/s mesas no corresponden al mesero.");
+        }catch(NullPointerException ex){
+            System.out.println("Error. La/s mesa/s no han sido encontrada.");
         }
         
     }
 
     public static boolean isMyMesa (Mesero mesero, Mesa mesa){
-        if(mesa!=null){
+        try{
             if(mesa.getMesero()==mesero){
                 return true;
             }
+        }catch(NullPointerException ex){
+            System.out.println("Error, la mesa no ha sido encontrada o no es operada por el mesero.");
         }
-        
-        System.out.println("Error, la mesa no ha sido encontrada o no es operada por el mesero.");
-        
         return false;
     }
 
     public static void crearAlimento(Alimento[] menu) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Crear:");
-        System.out.println("1. Platillo");
-        System.out.println("2. Café");
-        int opc = scanner.nextInt();
-        scanner.nextLine();
+        String menuCrear = """
+        Crear:
+        1. Platillo
+        2. Café""";
+        int opc = Intscan(menuCrear);
         for (int i = 0; i < menu.length; i++) {
             if (menu[i] == null) {
                 String nombre;
                 double costo;
                 switch (opc) {
                     case 1:
-                        System.out.println("Ingresa el nombre del Platillo");
-                        nombre = scanner.nextLine();
-                        System.out.println("Ingresa el costo base del producto (Orden Completa):");
-                        costo = scanner.nextDouble();
-                        scanner.nextLine(); // Limpia el salto de línea
+                        nombre = Stringscan("Ingresa el nombre del Platillo");
+                        costo = Doublescan("Ingresa el costo base del producto (Orden Completa):");
                         menu[i] = new Platillo(nombre, costo, null, true);
                         return;
                     case 2:
-                        System.out.println("Ingresa el nombre del Cafe");
-                        nombre = scanner.nextLine();
-                        System.out.println("Ingresa el costo base del producto (Chico):");
-                        costo = scanner.nextDouble();
-                        scanner.nextLine(); // Limpia el salto de línea
+                        nombre = Stringscan("Ingresa el nombre del Cafe");
+                        costo = Doublescan("Ingresa el costo base del producto (Chico):");
                         menu[i] = new Cafe(nombre, costo, null, true);
                         return;
                     default:
@@ -286,24 +320,20 @@ public class Comandera {
     }
 
     public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu) {
-        Scanner scanner = new Scanner(System.in);
         if (!isMyMesa(mesero, mesa)) {
+            System.out.println("La mesa a la que desea agregar alimentos no pertenece al mesero.");
             return;
         }
         
         Alimento[] comanda = new Alimento[100];
         int contador = 0;
         boolean platos = false, cafes = false;
-        scanner.nextLine();
         while (contador < comanda.length) {
-            
-            System.out.println("Busqueda por nombre:");
-            String nombre = scanner.nextLine();
-            Alimento pedido = buscarAlimento(nombre, menu);
+
+            Alimento pedido = buscarAlimento(Stringscan("Busqueda por nombre:"), menu);
     
             if (pedido != null) {
-                System.out.println("Realizar un comentario:");
-                String comentario =  scanner.nextLine();
+                String comentario =  Stringscan("Realizar un comentario:");
                 pedido.setComentario(comentario);
     
                 if (pedido instanceof Platillo) {
@@ -313,9 +343,7 @@ public class Comandera {
                 configurarCafe((Cafe) pedido);
                 cafes = true;
                 }
-            
-                System.out.println(pedido instanceof Cafe ? "Cantidad de cafés iguales:" : "Cantidad de platillos iguales:");
-                int cantidad = scanner.nextInt();
+                int cantidad = Intscan(pedido instanceof Cafe ? "Cantidad de cafés iguales:" : "Cantidad de platillos iguales:");
                 agregarPedido(comanda, pedido, cantidad,mesa);
                 contador += cantidad;
                 if (!deseaOtroPedido()) {
@@ -323,20 +351,22 @@ public class Comandera {
                     mostrarResumen(comanda, platos, cafes);
                     return;
                 }
-                scanner.nextLine();
             }     
         }
         System.out.println("No se pueden ingresar más alimentos a la cuenta.");
     }
     
     private static void configurarPlatillo(Platillo platillo) {
-        Scanner scanner = new Scanner(System.in);
         int opcion;
+        
+        String menuorden = """
+        Orden completa o media orden:
+        1. Orden Completa
+        2. Media Orden""";
+
         do {
-            System.out.println("Orden completa o media orden:");
-            System.out.println("1. Orden Completa");
-            System.out.println("2. Media Orden");
-            opcion = scanner.nextInt();
+            
+            opcion = Intscan(menuorden);
             switch (opcion) {
                 case 1: 
                     platillo.setOrdenCompleta(true);
@@ -353,14 +383,19 @@ public class Comandera {
     }
     
     private static void configurarCafe(Cafe cafe) {
-        Scanner scanner = new Scanner(System.in);
         int opcion;
-        
+        String[] menucafeteria = {
+            """
+            Cafeina:
+            1. Sí
+            2. No""",
+            """
+            Hielo:
+            1. Frío
+            2. Caliente         """,
+        };        
         do {
-            System.out.println("Cafeina:");
-            System.out.println("1. Sí");
-            System.out.println("2. No");
-            opcion = scanner.nextInt();
+            opcion = Intscan(menucafeteria[0]);
             switch (opcion) {
                 case 1: 
                     cafe.setCafeina(true);
@@ -376,10 +411,7 @@ public class Comandera {
         } while (opcion == -1);
     
         do {
-            System.out.println("Hielo:");
-            System.out.println("1. Frío");
-            System.out.println("2. Caliente");
-            opcion = scanner.nextInt();
+            opcion = Intscan(menucafeteria[1]);
             switch (opcion) {
                 case 1: 
                     cafe.setHielo(true);
@@ -394,11 +426,10 @@ public class Comandera {
                 
             }
         } while (opcion == -1);
-    
+
         do {
-            System.out.println("Tipo de leche:");
             cafe.printMilklist();
-            opcion = scanner.nextInt();
+            opcion = Intscan("Tipo de leche:");
             if (opcion >= 0 && opcion < cafe.getMilklistSize()) {
                 cafe.setMilk(opcion);
             } else {
@@ -422,11 +453,12 @@ public class Comandera {
     }
     
     private static boolean deseaOtroPedido() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("¿Desea ingresar otro pedido?");
-        System.out.println("1. Sí");
-        System.out.println("2. No");
-        int condicion = scanner.nextInt();
+        String otropedido = 
+        """
+        ¿Desea ingresar otro pedido?
+        1. Sí
+        2. No""";
+        int condicion = Intscan(otropedido);
         if(condicion==1){
             return true;
         }
@@ -480,21 +512,19 @@ public class Comandera {
     // Metodo para abrir una mesa
 
     public static void asignarMesa(Mesero mesero, Mesa[] mesas, Alimento[] menu) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingresa el numero de la mesa: ");
-        int i = scanner.nextInt();
+        int i = Intscan("Ingresa el numero de la mesa: ");
         if (mesas[i]!=null) {
             System.out.println("Error, la mesa está ocupada.");
         } else {
-            System.out.println("Ingresa el numero de personas: ");
-            int personas = scanner.nextInt();
+            int personas = Intscan("Ingresa el numero de personas: ");
             mesas[i] = new Mesa(mesero, i, personas, true);
             mesero.addContador();
             int tomarorden = 0;
             do {
-                System.out.println("Desea tomar la orden?");
-                System.out.println("1. Si       2. No");
-                tomarorden = scanner.nextInt();
+                String ordenar = """
+                Desea tomar la orden?
+                1. Si       2. No""";
+                tomarorden = Intscan(ordenar);
                 if (tomarorden == 1) {
                     hacerPedido(mesas[i], mesero, menu);
                 } else if (tomarorden == 2) {
