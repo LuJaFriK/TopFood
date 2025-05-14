@@ -71,7 +71,7 @@ public class Aux {
      public static void OverrideFile(String filename, String order){
         try{
             FileWriter file = new FileWriter(filename, true);
-            file.write(order);
+            file.write(order + System.lineSeparator());
             file.close();
         }catch(IOException ex){
             System.out.println("Algo ha pasado. Intenta nuevamente.");

@@ -20,9 +20,8 @@ public class Comandera {
             }
             i++;
         }
-        Aux.wait(2000);
         System.out.println("Error. Contraseña incorrecta.");
-        Aux.wait(2000);
+        Aux.wait(1000);
         return null;
     }
 
@@ -141,7 +140,7 @@ public class Comandera {
                 fallas += 1;
                 if (fallas >= 3) {
                     fallas = 0;
-                    int crear = Aux.InputInt("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo?/n1. Si      2. No");
+                    int crear = Aux.InputInt("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No");
                     if (crear == 1) {
                         crearMesero(meseros);
                     } else {
@@ -275,8 +274,8 @@ public class Comandera {
                         return;
                     case 2:
                         Aux.OverrideFile("Menú.txt", i+" Café");
-                        Aux.OverrideFile("Menú.txt", "Ingresa el nombre del Café");
-                        Aux.OverrideFile("Menú.txt", "Ingresa el costo base del producto (Chico):");
+                        Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el nombre del Café"));
+                        Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el costo base del producto (Chico):"));
                         return;
                     default:
                         System.out.println("Error. Opcion no valida");
