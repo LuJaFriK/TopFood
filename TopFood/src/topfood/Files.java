@@ -7,12 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FilesManager {
+public class Files {
 
-     public static void leer(){
-          File file = new File("Pepe.txt");
-          file.exists();
-     }
+
+     
      public static void main (String[]args){
           String aviso;
           Scanner scanner = new Scanner(System.in);
