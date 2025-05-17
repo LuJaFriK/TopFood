@@ -124,4 +124,13 @@ public class Files {
                return;
           }
      }
+
+     public static void WriteWithBuffered(String message){
+
+     }
+
+     public static void ReadWithBuffered(){
+
+     }
+
 }

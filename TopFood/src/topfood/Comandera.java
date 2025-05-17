@@ -157,11 +157,9 @@ public class Comandera {
                     break;
                 case 2:
                     for (i = 0; i < mesas.length; i++) {
-                        if (mesas[i] != null) {
-                            if (mesas[i].getMesero() == user) {
-                                mesas[i].detalles();
-                                mesas[i].printPedido();
-                            }
+                        if (mesas[i] != null && mesas[i].getMesero() == user) {
+                            mesas[i].detalles();
+                            mesas[i].printPedido();
                         }
                     }                
                     break;
@@ -191,22 +189,10 @@ public class Comandera {
                     }
                     break;
                 case 5:
-                    try{
-                        i = Aux.InputInt("Ingresa el numero de la cuenta a eliminar:");
-                        if(isMyMesa(user, mesas[i])){
-                            DeleteMesa(user,i,mesas,mesas[i].isActivo());
-                        }
-                    }catch(NullPointerException ex){
-                        System.out.println("Error, la mesa no existe.");
-                        Aux.wait(2000);
-                    }
+                    DeleteMesa(user, mesas);
                     break;
                 case 6:
-                    System.out.println("Ingresa los números de las mesas:");
-                    int mesa1 = Aux.InputInt("Mesa 1:");
-                    int mesa2 = Aux.InputInt("Mesa 2:");
-                    int newmesa = Aux.InputInt("Ingresa el numero de la nueva mesa:");
-                    juntarMesas(user, mesas, mesas[mesa1], mesas[mesa2],newmesa);
+                    juntarMesas(user, mesas);
                     break;
                 case 7:
                     System.out.println("Saliendo...");
@@ -219,8 +205,14 @@ public class Comandera {
         } while (opc != 7);
     }
 
-    public static void juntarMesas(Mesero mesero, Mesa[]mesas,Mesa mesa1,Mesa mesa2, int newmesa){
+    public static void juntarMesas(Mesero mesero, Mesa[]mesas){
         try{
+            System.out.println("Ingresa los números de las mesas:");
+            int a = Aux.InputInt("Mesa 1:");
+            int b = Aux.InputInt("Mesa 2:");
+            int newmesa = Aux.InputInt("Ingresa el numero de la nueva mesa:");
+            Mesa mesa1 = mesas[a];
+            Mesa mesa2 = mesas[b];
             if(isMyMesa(mesero, mesa1) && isMyMesa(mesero, mesa2) ){
                 Mesa newMesa = new Mesa(mesero, newmesa,(mesa1.getPersonas()+mesa2.getPersonas()),true);
                 Mesa[] temparray = {mesa1, mesa2};
@@ -229,17 +221,16 @@ public class Comandera {
                         newMesa.addPedido(mesa.getpedido(i), 1);
                     }
                 }
-                if(mesa1.getNumero() == newmesa || mesa2.getNumero()==newmesa || mesas[newmesa]==null){
-                    DeleteMesa(mesero,mesa1.getNumero(), mesas, false);
-                    DeleteMesa(mesero,mesa2.getNumero(), mesas, false);
-                    mesas[newmesa] = newMesa;
+                if(mesa1.getNumero() == newmesa || mesa2.getNumero()== newmesa || mesas[newmesa]==null){
+                    mesas[a] = null;
+                    mesas[b] = null;
                 }
             }else{
                 System.out.println("Error. La/s mesas no corresponden al mesero.");
                 Aux.wait(2000);
             }
         }catch(NullPointerException ex){
-            System.out.println("Error. La/s mesa/s no han sido encontrada.");
+            System.out.println("Error. La/s mesa/s no han sido encontrada/s.");
             Aux.wait(2000);
         }
         
@@ -267,7 +258,7 @@ public class Comandera {
             if (menu[i] == null) {
                 switch (opc) {
                     case 1:
-                        Aux.OverrideFile("Menú.txt", i+" Platillo");
+                        Aux.OverrideFile("Menú.txt", i+"\n Platillo");
                         Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el nombre del Platillo"));
                         Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el costo base del producto (Orden Completa):"));
                         Aux.OverrideFile("Menú.txt", "True");
@@ -525,12 +516,21 @@ public class Comandera {
     }
 
 
-    public static void DeleteMesa(Mesero user,int i, Mesa[] mesas, boolean condition){
-        if (condition==false) {
-            mesas[i] = null;
-        } else {
-            System.out.println("Error. La mesa sigue activa o no es operada por el mesero.");
+    public static void DeleteMesa(Mesero user, Mesa[] mesas){
+        try{
+            int i = Aux.InputInt("Ingresa el numero de la cuenta a eliminar:");
+            if(isMyMesa(user, mesas[i])){
+                if (mesas[i].isActivo()==false) {
+                    mesas[i] = null;
+                } else {
+                    System.out.println("Error. La mesa sigue activa o no es operada por el mesero.");
+                }
+            }
+        }catch(NullPointerException ex){
+            System.out.println("Error, la mesa no existe.");
+            Aux.wait(2000);
         }
+        
         
     }
 }

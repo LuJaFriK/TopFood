@@ -1,5 +1,6 @@
 package topfood;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -47,7 +48,7 @@ public class Aux {
                 scanned = scanner.nextInt(); 
                 break;
             } catch (InputMismatchException ex) {
-                System.out.println("Error, caracteres introducidos no válidos. Intente nuevamente.");
+                System.out.println("Error. Caracteres introducidos no válidos. Intente nuevamente.");
                 wait(2000);
             }
         }
@@ -55,16 +56,34 @@ public class Aux {
     }
 
     //Buscar archivos (On development)
-    public static Object[] SearchFile(String filename){
-          Object[] objectarray = new Object[10];
-          try{
-               FileReader file = new FileReader(filename+".txt");
-          }catch(FileNotFoundException ex){
-               System.out.println(filename+" no existe. Se creará automaticamente.");
-               File file = new File(filename+".txt");
-               return objectarray;
-          }
-          return objectarray;
+    public static String Converter(String filename, int index){
+        String data = null;
+        File file = new File(filename+".txt");
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+            FileReader fr = new FileReader(filename+".txt");
+            
+        }catch(FileNotFoundException ex){
+            System.out.println("Error. Archivo no encontrado.");
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return data;
+        
+     }
+
+     public static void BufferedReader(String filename){
+        File file = new File(filename+".txt");
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+            String data;
+            while((data = reader.readLine())!=null){
+                System.out.println(data);
+            }
+            reader.close();
+        } catch(FileNotFoundException ex){
+            System.out.println("Error. Archivo no encontrado.");
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        }
      }
 
      //Escribir archivos (On development)
@@ -75,6 +94,7 @@ public class Aux {
             file.close();
         }catch(IOException ex){
             System.out.println("Algo ha pasado. Intenta nuevamente.");
+            ex.printStackTrace();
         }
      }
 }
