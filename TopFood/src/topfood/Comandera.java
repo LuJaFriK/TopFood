@@ -502,15 +502,21 @@ public class Comandera {
     }
 
     public static void Ticket(Mesa mesa) {
-        System.out.println("=========TICKET=========");
-        System.out.println("Mesa: " + mesa.getNumero());
-        System.out.println("Mesero: " + mesa.getMesero().getNombre() +" : "+ mesa.getMesero().getCodigo());
-        System.out.println("Personas: " + mesa.getPersonas());
-        mesa.printPedido();
-        System.out.println("Subtotal: ---------- $" + mesa.getTotal());
-        System.out.println("IVA (16%): --------- $" + (mesa.getTotal() * 0.16));
-        System.out.println("Total: ------------- $" + (mesa.getTotal() * 1.16));
-        System.out.println("=========================");
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "=========TICKET=========");
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Mesa: " + mesa.getNumero());
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt","Mesero: " + mesa.getMesero().getNombre() +" : "+ mesa.getMesero().getCodigo());
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Personas: " + mesa.getPersonas());
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Nombre  =========   Costo");
+        for(int i=0;i<mesa.getPedidolength();i++){
+            if(mesa.getpedido(i)!=null){
+                Aux.OverrideFile(mesa.getNumero()+"_temp.txt", mesa.getpedido(i).getNombre() + " =============  $" + mesa.getpedido(i).getCosto());
+            }
+        }
+        System.out.println("===============================");
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Subtotal: ---------- $" + mesa.getTotal());
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "IVA (16%): --------- $" + (mesa.getTotal() * 0.16));
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Total: ------------- $" + (mesa.getTotal() * 1.16));
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "=========================");
         mesa.setActivo(false);
 
     }

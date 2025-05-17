@@ -86,7 +86,7 @@ public class Aux {
         }
      }
 
-     //Escribir archivos (On development)
+     //Escribir archivos 
      public static void OverrideFile(String filename, String order){
         try{
             FileWriter file = new FileWriter(filename, true);
