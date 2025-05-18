@@ -49,7 +49,31 @@ public class Aux {
                 break;
             } catch (InputMismatchException ex) {
                 System.out.println("Error. Caracteres introducidos no válidos. Intente nuevamente.");
+                scanner.nextLine();
                 wait(2000);
+            }
+        }
+        return scanned;
+    }
+
+    //nuevo metodo input que tambien solo te permite ingresar un numero entre un rango determinado
+    public static int InputIntRange(String mensaje, int min, int max) {
+        Scanner scanner = new Scanner(System.in);
+        int scanned;
+        while (true) {
+            try {
+                System.out.println(mensaje);
+                scanned = scanner.nextInt(); 
+                if(scanned>=min&&scanned<=max){
+                    break;
+                }else{
+                    System.out.println("Error. Opción no válida.");
+                    wait(1500);
+                }
+            } catch (InputMismatchException ex) {
+                System.out.println("Error. Caracteres introducidos no válidos. Intente nuevamente.");
+                scanner.nextLine();
+                wait(1500);
             }
         }
         return scanned;

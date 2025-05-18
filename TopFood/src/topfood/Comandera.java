@@ -52,21 +52,17 @@ public class Comandera {
         }
     }
     public static void main(String[] args) {
+        
         Mesero[] meseros = new Mesero[20];
         meseros[0] = new Mesero("Luis", 49, 2707);
+        
         Mesa[] mesas = new Mesa[70];
 
         Alimento[] menu = new Alimento[90]; // puede ser variable de instancia
         menu[0] = new Platillo("Pizza", 4.9, "Some comment", true);
         menu[1] = new Platillo("Taco", 3.8, "Another comment", false);
-        menu[2] = new Platillo("Platillo3", 5.7, "Yet another comment", true);
-        menu[3] = new Platillo("Platillo4", 2.9, "The final comment", false);
-        menu[4] = new Platillo("Platillo5", 1.8, "Final final comment", true);
         menu[5] = new Cafe("Expresso", 3.50, "No se especifica.", true);
         menu[6] = new Cafe("Americano", 2.80, "Sin crema.", true);
-        menu[7] = new Cafe("Latte", 4.20, "Leche enteral y espuma.", false);
-        menu[8] = new Cafe("Cappuccino", 4.00, "Espuma de leche.", true);
-        menu[9] = new Cafe("Mocha", 5.00, "Chocolate y leche entera.", false);
         
         String menus = """
             Ingrese la acción que desea realizar a continuación:
@@ -82,7 +78,7 @@ public class Comandera {
 
         do {
 
-            opcion = Aux.InputInt(menus);
+            opcion = Aux.InputIntRange(menus,1,6);
             switch (opcion) {
                 case 1:
                     // Iniciar sesion como mesero, si no, crear un mesero
@@ -103,10 +99,6 @@ public class Comandera {
                 case 6:
                     System.out.println("Saliendo...");
                     break;
-                default:
-                    System.out.println("Error. Opción no válida.");
-                    Aux.wait(2000);
-                    break;
             }
         } while (opcion != 6);
     }
@@ -124,6 +116,7 @@ public class Comandera {
 
     public static void MenuMesero(Mesero user, Mesero[] meseros, Mesa[] mesas, Alimento[] menu) {
         int opc, fallas = 0, i;
+        
         String menumesero = """
         1.- Abrir cuenta.
         2.- Visualizar mesas.
@@ -132,7 +125,7 @@ public class Comandera {
         5.- Eliminar una cuenta.
         6.- Juntar cuentas.
         7.- Salir.""";
-        do {
+        
             boolean myMesa, isActive;
 
             while (user == null) {
@@ -148,9 +141,10 @@ public class Comandera {
                     }
                 }
             }
+    
+        do {
             System.out.println("Bienvenido " + user.getNombre() + ", elija la opción a continuación: ");
-            
-            opc = Aux.InputInt(menumesero);
+            opc = Aux.InputIntRange(menumesero,1,7);            
             switch (opc) {
                 case 1:
                     asignarMesa(user, mesas, menu);
@@ -197,10 +191,6 @@ public class Comandera {
                 case 7:
                     System.out.println("Saliendo...");
                     break;
-                default:
-                    System.out.println("Error. Opción no válida.");
-                    Aux.wait(2000);
-                    break;
             }
         } while (opc != 7);
     }
@@ -208,9 +198,9 @@ public class Comandera {
     public static void juntarMesas(Mesero mesero, Mesa[]mesas){
         try{
             System.out.println("Ingresa los números de las mesas:");
-            int a = Aux.InputInt("Mesa 1:");
-            int b = Aux.InputInt("Mesa 2:");
-            int newmesa = Aux.InputInt("Ingresa el numero de la nueva mesa:");
+            int a = Aux.InputIntRange("Mesa 1:",1,mesas.length);
+            int b = Aux.InputIntRange("Mesa 2:",1,mesas.length);
+            int newmesa = Aux.InputIntRange("Ingresa el numero de la nueva mesa:",1,mesas.length);
             Mesa mesa1 = mesas[a];
             Mesa mesa2 = mesas[b];
             if(isMyMesa(mesero, mesa1) && isMyMesa(mesero, mesa2) ){
@@ -253,7 +243,7 @@ public class Comandera {
         Crear:
         1. Platillo
         2. Café""";
-        int opc = Aux.InputInt(menuCrear);
+        int opc = Aux.InputIntRange(menuCrear,1,2);
         for (int i = 0; i < menu.length; i++) {
             if (menu[i] == null) {
                 switch (opc) {
@@ -268,10 +258,6 @@ public class Comandera {
                         Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el nombre del Café"));
                         Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el costo base del producto (Chico):"));
                         return;
-                    default:
-                        System.out.println("Error. Opcion no valida");
-                        Aux.wait(2000);
-                        break;
                 }
             }
         }     
@@ -319,33 +305,51 @@ public class Comandera {
     
     private static void configurarPlatillo(Platillo platillo) {
         int opcion;
-        
-        String menuorden = """
+        boolean repetir = true;
+        String[] ordenyprioridad = {
+            """
         Orden completa o media orden:
         1. Orden Completa
-        2. Media Orden""";
+        2. Media Orden""",
+        """
+        1. Prioridad Alta
+        2. Prioridad Baja"""
+        };
 
         do {
             
-            opcion = Aux.InputInt(menuorden);
+            opcion = Aux.InputIntRange(ordenyprioridad[0],1,2);
             switch (opcion) {
                 case 1: 
                     platillo.setOrdenCompleta(true);
+                    repetir = false;
                     break;
                 case 2:  
                     platillo.setOrdenCompleta(false);
+                    repetir = false;
                     break;
-                default:
-                    System.out.println("Error. Opción no válida.");
-                    opcion = -1;
-                    Aux.wait(2000);
-                break;
             }
-        } while (opcion == -1);
+        } while (repetir);
+
+        do {
+            
+            opcion = Aux.InputIntRange(ordenyprioridad[1],1,2);
+            switch (opcion) {
+                case 1: 
+                    platillo.setPrioridadAlta(true);
+                    repetir = false;
+                    break;
+                case 2:  
+                    platillo.setPrioridadAlta(false);
+                    repetir = false;
+                    break;
+            }
+        } while (repetir);
     }
     
     private static void configurarCafe(Cafe cafe) {
         int opcion;
+        boolean repetir;
         String[] menucafeteria = {
             """
             Cafeina:
@@ -355,56 +359,49 @@ public class Comandera {
             Hielo:
             1. Frío
             2. Caliente         """,
-        };        
+        };
+        repetir = true;        
         do {
-            opcion = Aux.InputInt(menucafeteria[0]);
+            opcion = Aux.InputIntRange(menucafeteria[0],1,2);
             switch (opcion) {
                 case 1: 
                     cafe.setCafeina(true);
+                    repetir = false;
                     break;
                 case 2: 
                     cafe.setCafeina(false);
+                    repetir = false;
                     break;
-                default:
-                    System.out.println("Error. Opción no válida.");
-                    opcion = -1;
-                    Aux.wait(2000);
-                break;
             }
-        } while (opcion == -1);
-    
+        } while (repetir);
+
+        repetir = true;
         do {
-            opcion = Aux.InputInt(menucafeteria[1]);
+            opcion = Aux.InputIntRange(menucafeteria[1],1,2);
             switch (opcion) {
                 case 1: 
                     cafe.setHielo(true);
+                    repetir = false;
                     break;
                 case 2: 
                     cafe.setHielo(false);
-                    break;
-                default: 
-                    System.out.println("Error. Opción no válida.");
-                    opcion = -1;
-                    Aux.wait(2000);
+                    repetir = false;
                     break;
                 
             }
-        } while (opcion == -1);
+        } while (repetir);
 
+        repetir = true;
         do {
             cafe.printMilklist();
-            opcion = Aux.InputInt("Tipo de leche:");
+            opcion = Aux.InputIntRange("Tipo de leche:",0,(cafe.getMilklistSize()-1));
             if (opcion >= 0 && opcion < cafe.getMilklistSize()) {
                 cafe.setMilk(opcion);
-            } else {
-                System.out.println("Error. Opción no válida.");
-                opcion = -1;
-                Aux.wait(2000);
+                break;
             }
-        } while (opcion == -1);
+        } while (repetir);
     }
     
-
     
     private static void agregarPedido(Alimento[] comanda, Alimento pedido, int cantidad, Mesa mesa) {
         int pedidosAgregados = 0;
@@ -429,31 +426,25 @@ public class Comandera {
         }
         return false;
     }
-    
-    private static void mostrarResumen(Alimento[] comanda, boolean platos, boolean cafes) {
-        if (platos) {
-            System.out.println("=================================");
-            System.out.println("Platillos:");
-            for (Alimento alimento : comanda) {
-                if (alimento instanceof Platillo) {
-                    System.out.println("-----------------");
-                    alimento.detalles();
-                    System.out.println("-----------------");
+
+    private static void mostrarResumen(Alimento[] comanda, boolean platos, boolean cafes){
+        Class<?>[] clases = new Class<?>[] { Platillo.class , Cafe.class};//En los dos arreglos primero son los platillos y luego los cafes
+        boolean[] queSePidio = {platos,cafes};
+        String[] etiquetas = { "Platillos:", "Cafés:" };
+        for(int i=0;i<2;i++){
+            if(queSePidio[i]){
+                System.out.println("=================================");
+                System.out.println(etiquetas[i]);
+                for(Alimento pedido : comanda){
+                    if(clases[i].isInstance(pedido)){
+                        System.out.println("-----------------");
+                        pedido.detalles();
+                        System.out.println("-----------------");
+                    }
                 }
+                System.out.println("=================================");
             }
         }
-        if (cafes) {
-            System.out.println("=================================");
-            System.out.println("Cafés:");
-            for (Alimento alimento : comanda) {
-                if (alimento instanceof Cafe) {
-                    System.out.println("-----------------");
-                    alimento.detalles();
-                    System.out.println("-----------------");
-                }
-            }
-        }
-        System.out.println("=================================");
     }
     
     // Metodo buscador de un alimento, si lo encuentra retorna el alimento, si no, retorna
