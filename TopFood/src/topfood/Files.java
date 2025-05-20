@@ -87,7 +87,7 @@ public class Files {
                               System.out.println("Excepción al intentar crear el archivo.");
                               e.printStackTrace();
                          }
-                         pausar(scanner);
+                         Aux.pause();
                          break;
                     case 2:
                          if(archivo!=null){
@@ -97,7 +97,7 @@ public class Files {
                          }else{
                               System.out.println("No se ha encontrado el archivo.");
                          }
-                         pausar(scanner);
+                         Aux.pause();
                          break;
                     case 3:
                          if(archivo!=null){
@@ -116,21 +116,11 @@ public class Files {
           }while(opc!=4);
      }
 
-     public static void pausar(Scanner scanner){
-          System.out.println("Presiona enter para continuar");
-          String enter = scanner.nextLine();
-          if(enter.equals("/n")){
-               scanner.nextLine();
-               return;
-          }
-     }
-
-     public static void WriteWithBuffered(String message){
+     public static void guardarobjetos(){
 
      }
 
-     public static void ReadWithBuffered(){
-
+     public static void retomarobjetos(){
+          
      }
-
 }

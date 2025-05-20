@@ -59,10 +59,10 @@ public class Comandera {
         Mesa[] mesas = new Mesa[70];
 
         Alimento[] menu = new Alimento[90]; // puede ser variable de instancia
-        menu[0] = new Platillo("Pizza", 4.9, "Some comment", true);
-        menu[1] = new Platillo("Taco", 3.8, "Another comment", false);
-        menu[5] = new Cafe("Expresso", 3.50, "No se especifica.", true);
-        menu[6] = new Cafe("Americano", 2.80, "Sin crema.", true);
+        menu[0] = new Platillo("Pizza", 4.9, "", true);
+        menu[1] = new Platillo("Taco", 3.8, "", false);
+        menu[5] = new Cafe("Expresso", 3.50, "", true);
+        menu[6] = new Cafe("Americano", 2.80, "", true);
         
         String menus = """
             Ingrese la acción que desea realizar a continuación:
@@ -74,11 +74,10 @@ public class Comandera {
             6.- Salir del sistema.""";
 
         Mesero user = null;
-        int opcion;
 
         do {
 
-            opcion = Aux.InputIntRange(menus,1,6);
+            int opcion = Aux.InputIntRange(menus,1,6);
             switch (opcion) {
                 case 1:
                     // Iniciar sesion como mesero, si no, crear un mesero
@@ -98,9 +97,9 @@ public class Comandera {
                     break;
                 case 6:
                     System.out.println("Saliendo...");
-                    break;
+                    return;
             }
-        } while (opcion != 6);
+        } while (true);
     }
 
     public static void SetExistencia(String nombre,Alimento[] menu,boolean existencia) {
@@ -115,7 +114,7 @@ public class Comandera {
     }
 
     public static void MenuMesero(Mesero user, Mesero[] meseros, Mesa[] mesas, Alimento[] menu) {
-        int opc, fallas = 0, i;
+        int fallas = 0, i;
         
         String menumesero = """
         1.- Abrir cuenta.
@@ -133,7 +132,7 @@ public class Comandera {
                 fallas += 1;
                 if (fallas >= 3) {
                     fallas = 0;
-                    int crear = Aux.InputInt("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No");
+                    int crear = Aux.InputIntRange("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No",1,2);
                     if (crear == 1) {
                         crearMesero(meseros);
                     } else {
@@ -144,7 +143,7 @@ public class Comandera {
     
         do {
             System.out.println("Bienvenido " + user.getNombre() + ", elija la opción a continuación: ");
-            opc = Aux.InputIntRange(menumesero,1,7);            
+            int opc = Aux.InputIntRange(menumesero,1,7);            
             switch (opc) {
                 case 1:
                     asignarMesa(user, mesas, menu);
@@ -190,9 +189,9 @@ public class Comandera {
                     break;
                 case 7:
                     System.out.println("Saliendo...");
-                    break;
+                    return;
             }
-        } while (opc != 7);
+        } while (true);
     }
 
     public static void juntarMesas(Mesero mesero, Mesa[]mesas){

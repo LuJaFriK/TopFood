@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.swing.plaf.synth.SynthGraphicsUtils;
+
 public class Aux {
     // metodo para esperar un momento
     public static void wait(int milliseconds) {
@@ -46,6 +48,23 @@ public class Aux {
             try {
                 System.out.println(mensaje);
                 scanned = scanner.nextInt(); 
+                break;
+            } catch (InputMismatchException ex) {
+                System.out.println("Error. Caracteres introducidos no válidos. Intente nuevamente.");
+                scanner.nextLine();
+                wait(2000);
+            }
+        }
+        return scanned;
+    }
+
+    public static double InputDouble(String mensaje) {
+        Scanner scanner = new Scanner(System.in);
+        double scanned;
+        while (true) {
+            try {
+                System.out.println(mensaje);
+                scanned = scanner.nextDouble(); 
                 break;
             } catch (InputMismatchException ex) {
                 System.out.println("Error. Caracteres introducidos no válidos. Intente nuevamente.");
@@ -121,4 +140,14 @@ public class Aux {
             ex.printStackTrace();
         }
      }
+
+     public static void pause(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Presiona enter para continuar");
+        String enter = scanner.nextLine();
+        if(enter.equals("/n")){
+             scanner.nextLine();
+             return;
+        }
+   }
 }
