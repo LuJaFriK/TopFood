@@ -42,7 +42,7 @@ public class Aux {
 
     
     public static int InputInt(String mensaje) {
-        Scanner scanner = new Scanner(System.in);
+       Scanner scanner = new Scanner(System.in);
         int scanned;
         while (true) {
             try {
