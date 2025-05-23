@@ -1,6 +1,6 @@
 package topfood;
 
-public class Alimento implements description{
+public class Alimento {
     private String nombre;
     private double costo;
     private String comentario;
@@ -41,7 +41,8 @@ public class Alimento implements description{
         this.comentario = comentario;
     }
 
-    public boolean isExistencia() {
+    public 
+    boolean isExistencia() {
         return existencia;
     }
 
@@ -49,14 +50,12 @@ public class Alimento implements description{
         this.existencia = existencia;
     }
 
-
-
     @Override
-    public void detalles() {
-        System.out.println(nombre);
-        System.out.println("Precio: " + costo);
-        System.out.println("Comentarios: " + getComentario());
-        System.out.println("Existencia: " + (existencia ? "Si." : "No."));
+    public String toString() {
+        return 
+        ("Nombre: "+nombre+
+        "\nPrecio: " + costo+
+        "\nComentarios: " + getComentario()+
+        "\nExistencia: " + (existencia ? "Si." : "No."));
     }
-
 }

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import javax.swing.plaf.synth.SynthGraphicsUtils;
+
 
 public class Aux {
     // metodo para esperar un momento

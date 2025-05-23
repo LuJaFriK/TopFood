@@ -3,12 +3,30 @@ package topfood;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class Files {
 
+     File file = new File("pepe.txt");
+     public static void FileOutputstream(){
+          //crea un flujo de salida de bytes
+     }
+
+     public static void ObjecOutputstream(){
+           
+     }
+
+     public static void FileInputStream(){
+
+     }
+
+     public static void ObjectInputStream(){
+
+     }
 
      
      public static void main (String[]args){

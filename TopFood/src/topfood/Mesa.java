@@ -1,6 +1,6 @@
 package topfood;
 
-public class Mesa implements description {
+public class Mesa {
 
     private Mesero mesero;
     private int numero;
@@ -116,16 +116,13 @@ public class Mesa implements description {
     }
 
     @Override
-    public void detalles() {
-        System.out.println(
-            "Mesero encargado: " +
-            mesero.getCodigo() +
-            " : " +
-            mesero.getNombre()
-        );
-        System.out.println("Mesa: " + numero);
-        System.out.println("Cantidad de personas: " + personas);
-        System.out.println("Activa: " + (activo ? "Si." : "No."));
-        System.out.println("Total actual: " + getTotal());
+
+    public String toString() {
+        return "Mesero encargado: " + mesero.getCodigo() + " : " + mesero.getNombre() + "\n" +
+                "Mesa: " + numero + "\n" +
+                "Cantidad de personas: " + personas + "\n" +
+                "Activa: " + (activo ? "Si." : "No.") + "\n" +
+                "Total actual: " + getTotal();
     }
+
 }

@@ -37,8 +37,8 @@ public class Platillo extends Alimento {
     }
 
     @Override
-    public void detalles() {
-        super.detalles();
-        System.out.println(prioridadAlta ? "Prioridad: Alta" : "Prioridad: Baja");
+    public String toString() {
+        return super.toString() + "\n" +
+            (prioridadAlta ? "Prioridad: Alta" : "Prioridad: Baja");
     }
 }

@@ -1,6 +1,6 @@
 package topfood;
 
-public class Mesero implements description {
+public class Mesero {
 
     private String nombre;
     private int codigo;
@@ -58,14 +58,10 @@ public class Mesero implements description {
         return contador;
     }
 
-    public void detalles() {
-        System.out.println("Codigo: " + codigo);
-        System.out.println("Nombre: " + nombre);
-        for (Mesa mesa : mesas) {
-            if (mesa != null) {
-                System.out.print(mesa.getNumero() + " ");
-            }
-        }
-        System.out.println("Contador de mesas: " + contador);
+    @Override
+    public String toString() {
+        return "Codigo: " + codigo + "\n" +
+            "Nombre: " + nombre + "\n";
     }
+
 }

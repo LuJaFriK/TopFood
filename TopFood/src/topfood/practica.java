@@ -1,5 +1,8 @@
 package topfood;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class practica {
     public static void main(String[]args){
@@ -15,13 +18,13 @@ public class practica {
             switch(opc){
                 case 1:
                     capturarPerfume(perfumes);
-                break;
+                    break;
                 case 2:
                     mostrarPerfumes(perfumes);
-                break;
+                    break;
                 case 3:
-                System.out.println("Saliendo...");
-                return;
+                    System.out.println("Saliendo...");
+                    return;
             }
         }while(true);
     }
@@ -38,15 +41,32 @@ public class practica {
                 return;
             }
         }
+        System.out.println("Error. No se pueden agregar más perfumes.");
     }
 
     public static void mostrarPerfumes(Perfume[]perfumes){
         try{
             for(Perfume perfume : perfumes){
-                perfume.detalles();
+                if(perfume!=null){
+                    System.out.println("---------------");
+                    System.out.println(perfume);
+                    System.out.println("---------------");
+                }
             }
         }catch(NullPointerException ex){
             return;
         }
+    }
+
+    public static void guardarinventario(Perfume[]perfumes, int contador){
+        File archivo = new File("Arshivo.dat");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            oos.writeObject(perfumes);
+            oos.writeInt(contador);
+            oos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

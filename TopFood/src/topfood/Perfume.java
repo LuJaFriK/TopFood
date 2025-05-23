@@ -1,6 +1,9 @@
 package topfood;
 
-public class Perfume {
+import java.io.Serializable;
+
+public class Perfume implements Serializable {
+    //Para convertir un objeto a serializable debo de implementar la interfaz
     private String clave;
     private String nombre;
     private double precio;
@@ -10,16 +13,11 @@ public class Perfume {
         this.clave = clave;
         this.nombre = nombre;
         this.precio = precio;
-        this.existencia = existencia;
-        
+        this.existencia = existencia;   
     }
 
-    public void detalles(){
-        System.out.println("-------------------------");
-        System.out.println("Clave del producto: "+clave);
-        System.out.println("Nombre: "+nombre);
-        System.out.println("Costo: "+precio);
-        System.out.println("Disponibilidad: "+existencia);
-        System.out.println("-------------------------");
+    @Override
+    public String toString() {
+        return ("Clave: "+clave+"\nNombre: "+nombre+"\nPrecio: "+precio+"\nExistencia: "+existencia);
     }
 }

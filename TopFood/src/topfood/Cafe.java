@@ -34,11 +34,14 @@ public class Cafe extends Alimento{
           this.hielo = hielo;
      }
      
-     public void printMilklist(){
-          for(int i = 0;i<milkList.length;i++){
-               System.out.println(i+". "+milkList[i]);
-          }
-     }
+     public String printMilklist() {
+          return "0. " + milkList[0] + "\n" +
+                 "1. " + milkList[1] + "\n" +
+                 "2. " + milkList[2] + "\n" +
+                 "3. " + milkList[3] + "\n" +
+                 "4. " + milkList[3];
+}
+
 
      public int getMilklistSize(){
           return milkList.length;
@@ -83,12 +86,12 @@ public class Cafe extends Alimento{
 
      super.setCosto(newCosto); 
      }
-
-     @Override 
-     public void detalles(){
-          super.detalles();
-          System.out.println("Cafeina: "+(cafeina ? "Si" : "No"));
-          System.out.println("Hielo: "+(hielo ? "Si.":"No."));
+     
+     @Override
+     public String toString() {
+          return 
+          super.toString()+
+          "\nCafeina: "+(cafeina ? "Si" : "No")+
+          "\nHielo: "+(hielo ? "Si.":"No.");
      }
-
 }
