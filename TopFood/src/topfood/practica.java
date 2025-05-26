@@ -9,7 +9,8 @@ import java.io.ObjectOutputStream;
 
 public class practica {
     public static void main(String[]args){
-        Perfume[]perfumes = new Perfume[100];
+        Perfume[]perfumes = cargarInventario();
+        if (perfumes==null) perfumes = new Perfume[100];
         String opciones = 
         """
         1.-Capturar perfume
@@ -60,7 +61,7 @@ public class practica {
             return;
         }
     }
-
+    //Done (Ready to modify)
     public static void guardarinventario(Perfume[]perfumes){
         File archivo = new File("Archivo.dat");
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
@@ -69,9 +70,10 @@ public class practica {
             e.printStackTrace();
         }
     }
-
-    public Perfume[] cargarInventario(){
+    //Done (Ready to modify)
+    public static Perfume[] cargarInventario(){
         File archivo = new File("Archivo.dat");
+        if(!archivo.exists()) return null;
         Perfume[] perfumes = null;
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))){
             perfumes = (Perfume[]) ois.readObject();
