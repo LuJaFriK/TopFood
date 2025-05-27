@@ -1,6 +1,8 @@
 package topfood;
 
-public class Mesero {
+import java.io.Serializable;
+
+public class Mesero implements Serializable{
 
     private String nombre;
     private int codigo;
@@ -52,6 +54,10 @@ public class Mesero {
     
     public void addContador(){
         contador++;
+    }
+
+    public void rebootContador(){
+        contador = 0;
     }
 
     public int getContador() {

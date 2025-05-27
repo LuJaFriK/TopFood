@@ -1,6 +1,8 @@
 package topfood;
 
-public class Mesa {
+import java.io.Serializable;
+
+public class Mesa implements Serializable{
 
     private Mesero mesero;
     private int numero;

@@ -70,21 +70,13 @@ public class Cafe extends Alimento{
      }
 
      @Override
-     public void setCosto(double costo) {
-     double newCosto = costo;
-     if("Almendras".equals(leche)) { 
-          newCosto += 10;
-     }
-          switch(size.toUpperCase()) {
-               case "M":
-                    newCosto *= 1.10;
-                    break;
-               case "G":
-                    newCosto *= 1.20;
-                    break;
-          }
+     public double getCosto() {
+     double newCosto = super.getCosto();
+     if("Almendras".equals(leche)) newCosto += 10;
+     if(size.equalsIgnoreCase("M")) newCosto *= 1.10;
+     else if(size.equalsIgnoreCase("G")) newCosto *= 1.20;
 
-     super.setCosto(newCosto); 
+     return newCosto;
      }
      
      @Override

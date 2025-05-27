@@ -28,12 +28,10 @@ public class Platillo extends Alimento {
     }
 
     @Override
-    public void setCosto(double costo) {
-        double newCosto = costo;
-        if (!ordenCompleta) {
-            newCosto = costo * 0.80;
-        }
-        super.setCosto(newCosto);
+    public double getCosto() {
+        double newCosto=super.getCosto();
+        if (!ordenCompleta) newCosto *= 0.80;
+        return newCosto;
     }
 
     @Override

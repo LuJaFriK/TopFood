@@ -338,19 +338,14 @@ public class Comandera {
     }
     
     
-    private static void agregarPedido(Alimento[] comanda, Alimento pedido, int cantidad, Mesa mesa) {
-        int pedidosAgregados = 0;
-        try {
-            for (int i = 0; i < comanda.length && pedidosAgregados < cantidad; i++) {
+    private static void agregarPedido(Alimento[] comanda, Alimento alimento, int cantidad, Mesa mesa) {
+        mesa.addPedido(alimento, cantidad);
+            for (int i = 0,pedidosAgregados = 0; i < comanda.length && pedidosAgregados < cantidad; i++) {
                 if (comanda[i] == null) {
-                    comanda[i] = pedido;
+                    comanda[i] = alimento;
                     pedidosAgregados++;
                 }
             }
-        mesa.addPedido(pedido, cantidad);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("No pueden agregarse más pedidos.");
-        }
     }
     
     private static boolean deseaOtroPedido() {
