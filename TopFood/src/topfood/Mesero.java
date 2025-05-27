@@ -41,11 +41,7 @@ public class Mesero implements Serializable{
     }
 
     public boolean login(int password) {
-        if (this.password == password) {
-            return true;
-        } else {
-            return false;
-        }
+        return (this.password == password);
     }
 
     public void setPassword(int password) {

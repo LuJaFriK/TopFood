@@ -155,22 +155,25 @@ public class Aux {
         }
    }
    
-   public static void guardarinventario(Object[]Datos){
+   public static void guardarDatos(Mesero[] meseros, Alimento[] menu){
         File archivo = new File("Data.dat");
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
-            oos.writeObject(Datos);
+            oos.writeObject(meseros);
+            oos.writeObject(menu);
+            System.out.println("Datos guardados exitosamente");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
 
-    public static Object[] cargarInventario(){
+    public static Object[] cargarDatos(){
         File archivo = new File("Data.dat");
         if(!archivo.exists()) return null;
-        Object[] Datos = null;
+        Object[] Datos = new Object[2];
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))){
-            Datos = (Object[]) ois.readObject();
+            Datos[0] = (Mesero[]) ois.readObject();
+            Datos[1] = (Alimento[]) ois.readObject();
         }catch(IOException e){
             e.printStackTrace();
         }catch(ClassNotFoundException e){

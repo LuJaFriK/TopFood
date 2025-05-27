@@ -43,8 +43,7 @@ public class Alimento implements Serializable{
         this.comentario = comentario;
     }
 
-    public 
-    boolean isExistencia() {
+    public boolean isExistencia() {
         return existencia;
     }
 

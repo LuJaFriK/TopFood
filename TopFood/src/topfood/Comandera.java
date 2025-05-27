@@ -52,18 +52,14 @@ public class Comandera {
         Aux.wait(2000);
     }
     public static void main(String[] args) {
-        
         Mesero[] meseros = new Mesero[20];
-        meseros[0] = new Mesero("Luis", 49, 2707);
-        
-        Mesa[] mesas = new Mesa[70];
-
-        Alimento[] menu = new Alimento[90]; // puede ser variable de instancia
-        menu[0] = new Platillo("Pizza", 4.9, "", true);
-        menu[1] = new Platillo("Taco", 3.8, "", false);
-        menu[5] = new Cafe("Expresso", 3.50, "", true);
-        menu[6] = new Cafe("Americano", 2.80, "", true);
-        
+         Alimento[] menu = new Alimento[90];
+        Object[] Datos = Aux.cargarDatos();
+        if(Datos!=null){
+            meseros = (Mesero[]) Datos[0];
+            menu = (Alimento[]) Datos[1];
+        }      
+        Mesa[] mesas = new Mesa[70];     
         String menus = """
             Ingrese la acción que desea realizar a continuación:
             1.- Iniciar sesión como mesero.
@@ -94,6 +90,7 @@ public class Comandera {
                     break;
                 case 6:
                     System.out.println("Saliendo...");
+                    Aux.guardarDatos(meseros, menu);
                     return;
             }
         }
@@ -227,7 +224,6 @@ public class Comandera {
         return false;
     }
     
-    //Falta modificar este metodo URGENTEMENTE
     public static void crearAlimento(Alimento[] menu) {
         String menuCrear = """
         Crear:
@@ -239,15 +235,16 @@ public class Comandera {
             if (menu[i] == null) {
                 switch (opc) {
                     case 1:
-                        Aux.OverrideFile("Menú.txt", i+"\n Platillo");
-                        Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el nombre del Platillo"));
-                        Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el costo base del producto (Orden Completa):"));
-                        Aux.OverrideFile("Menú.txt", "True");
+                        menu[i] = new Platillo(Aux.InputString("Ingresa el nombre del platillo:"),
+                         Aux.InputDouble("Ingresa el costo del platillo:"),
+                          "",
+                           true);
                         return;
                     case 2:
-                        Aux.OverrideFile("Menú.txt", i+" Café");
-                        Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el nombre del Café"));
-                        Aux.OverrideFile("Menú.txt", Aux.InputString("Ingresa el costo base del producto (Chico):"));
+                       menu[i] = new Cafe(Aux.InputString("Ingresa el nombre del cafe:"),
+                         Aux.InputDouble("Ingresa el costo del cafe:"),
+                          "",
+                           true);
                         return;
                 }
             }

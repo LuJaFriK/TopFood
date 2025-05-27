@@ -51,7 +51,7 @@ public class Cafe extends Alimento{
           this.leche=milkList[index];
      }
 
-     public String getLeche(){
+     public String getMilk(){
           return leche;
      }
 
@@ -63,27 +63,27 @@ public class Cafe extends Alimento{
           return sizeList.length;
      }
 
-     public void printSizeList(){
-          for(int i = 0;i<sizeList.length;i++){
-               System.out.println(i+". "+sizeList[i]);
-          }
+     public String printSizeList(){
+          return "0. " + sizeList[0] + "\n" +
+                 "1. " + sizeList[1] + "\n" +
+                 "2. " + sizeList[2];
      }
 
      @Override
      public double getCosto() {
-     double newCosto = super.getCosto();
-     if("Almendras".equals(leche)) newCosto += 10;
-     if(size.equalsIgnoreCase("M")) newCosto *= 1.10;
-     else if(size.equalsIgnoreCase("G")) newCosto *= 1.20;
+          double newCosto = super.getCosto();
 
-     return newCosto;
+          if("Almendras".equals(leche)) newCosto += 10;
+          if(size.equalsIgnoreCase("M")) newCosto *= 1.10;
+          else if(size.equalsIgnoreCase("G")) newCosto *= 1.20;
+
+          return newCosto;
      }
      
      @Override
      public String toString() {
-          return 
-          super.toString()+
-          "\nCafeina: "+(cafeina ? "Si" : "No")+
-          "\nHielo: "+(hielo ? "Si.":"No.");
+          return super.toString()+
+                 "\n"+"Cafeina: "+(cafeina ? "Si" : "No")+
+                 "\n"+"Hielo: "+(hielo ? "Si.":"No.");
      }
 }
