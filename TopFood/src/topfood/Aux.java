@@ -2,10 +2,14 @@ package topfood;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -42,7 +46,7 @@ public class Aux {
 
     
     public static int InputInt(String mensaje) {
-        Scanner scanner = new Scanner(System.in);
+       Scanner scanner = new Scanner(System.in);
         int scanned;
         while (true) {
             try {
@@ -150,4 +154,28 @@ public class Aux {
              return;
         }
    }
+   
+   public static void guardarinventario(Object[]Datos){
+        File archivo = new File("Data.dat");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            oos.writeObject(Datos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+
+    public static Object[] cargarInventario(){
+        File archivo = new File("Data.dat");
+        if(!archivo.exists()) return null;
+        Object[] Datos = null;
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))){
+            Datos = (Object[]) ois.readObject();
+        }catch(IOException e){
+            e.printStackTrace();
+        }catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return Datos;    
+    }
 }
