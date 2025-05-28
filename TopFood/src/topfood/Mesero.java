@@ -7,7 +7,6 @@ public class Mesero implements Serializable{
     private String nombre;
     private int codigo;
     private int password;
-    private Mesa[] mesas;
     private int contador;
 
     public Mesero(String nombre, int codigo, int password) {

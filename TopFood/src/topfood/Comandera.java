@@ -53,7 +53,7 @@ public class Comandera {
     }
     public static void main(String[] args) {
 
-        Mesero[] meseros = new Mesero[20];
+        Mesero[] meseros = new Mesero[20]; 
         Alimento[] menu = new Alimento[90];
 
         /*Carga los datos de los archivos*/{
