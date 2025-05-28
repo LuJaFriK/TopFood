@@ -52,13 +52,19 @@ public class Comandera {
         Aux.wait(2000);
     }
     public static void main(String[] args) {
+
         Mesero[] meseros = new Mesero[20];
-         Alimento[] menu = new Alimento[90];
-        Object[] Datos = Aux.cargarDatos();
-        if(Datos!=null){
-            meseros = (Mesero[]) Datos[0];
-            menu = (Alimento[]) Datos[1];
-        }      
+        Alimento[] menu = new Alimento[90];
+
+        /*Carga los datos de los archivos*/{
+                Object[] Datos = Aux.cargarDatos();
+                if (Datos != null) {
+                    if (Datos[0] != null) meseros = (Mesero[]) Datos[0];
+                    if (Datos[1] != null) menu = (Alimento[]) Datos[1];
+                }
+                
+        }
+
         Mesa[] mesas = new Mesa[70];     
         String menus = """
             Ingrese la acción que desea realizar a continuación:
@@ -260,11 +266,15 @@ public class Comandera {
         
         Alimento[] comanda = new Alimento[100];
         int contador = 0;
+        int intento = 0;
         while (contador < comanda.length) {
 
             Alimento pedido = buscarAlimento(Aux.InputString("Busqueda por nombre:"), menu);
-    
-            if (pedido != null) {
+            if(pedido == null){
+                intento++;
+                if(intento==3)break;
+            }
+            else{
 
                 pedido.setComentario(Aux.InputString("Realizar un comentario:"));//Agregar comentario
     
@@ -285,7 +295,7 @@ public class Comandera {
                 }
             }     
         }
-        System.out.println("No se pueden ingresar más alimentos a la cuenta.");
+        System.out.println("No se ingresarán más alimentos a la cuenta.");
         Aux.wait(2000);
     }
     
