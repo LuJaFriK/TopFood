@@ -148,7 +148,7 @@ public class Comandera {
             Alimento alimento = buscarAlimento(Aux.InputString("Ingresa el nombre de el producto: "), menu);//Busca el alimento
             alimento.setExistencia(existencia); //Da de alta o da de baja
             System.out.println("Alimento dado de "+(existencia ? "alta" : "baja")+" exitosamente");
-        } catch (NullPointerException e) {//Si a caso el platillo fuera nulo
+        } catch (NullPointerException e) {//Si a caso el snack fuera nulo
             return;
         }
 
@@ -267,7 +267,7 @@ public class Comandera {
     public static void crearAlimento(Alimento[] menu) {
         String menuCrear = """
         Crear:
-        1. Platillo
+        1. Snack
         2. Café""";
 
         int opc = Aux.InputIntRange(menuCrear,1,2);
@@ -275,8 +275,8 @@ public class Comandera {
             if (menu[i] == null) {
                 switch (opc) {
                     case 1:
-                        menu[i] = new Snack(Aux.InputString("Ingresa el nombre del platillo:"),
-                         Aux.InputDouble("Ingresa el costo del platillo:"),
+                        menu[i] = new Snack(Aux.InputString("Ingresa el nombre del snack:"),
+                         Aux.InputDouble("Ingresa el costo del snack:"),
                           "",
                            true,
                            Aux.InputInt("Ingresa el tamaño del Paquete / Porcion Grande:"));
@@ -317,7 +317,7 @@ public class Comandera {
                 pedido.setComentario(Aux.InputString("Realizar un comentario:"));//Agregar comentario
 
                 int cantidad = Aux.InputInt(
-                (pedido instanceof Cafe) ? "Cantidad de cafés iguales:" : "Cantidad de platillos iguales:");
+                (pedido instanceof Cafe) ? "Cantidad de cafés iguales:" : "Cantidad de snacks iguales:");
                 agregarPedido(comanda, pedido, cantidad, mesa);
                 contador += cantidad;
                 if (!deseaOtroPedido()) {
@@ -386,7 +386,7 @@ public class Comandera {
 
     private static void mostrarResumen(Alimento[] comanda){
         Class<?>[] clases = new Class<?>[] { Snack.class , Cafe.class};
-        String[] etiquetas = { "Platillos:", "Cafés:" };
+        String[] etiquetas = { "snacks:", "Cafés:" };
         for(int i = 0; i<clases.length;i++){
             System.out.println("=================================");
             System.out.println(etiquetas[i]);
@@ -409,7 +409,7 @@ public class Comandera {
             if(alimento == null) continue;
             if (alimento.getNombre().equalsIgnoreCase(nombre)) {
                 if (!alimento.isExistencia()) {
-                    System.out.println("El platillo está dado de baja indefinidamente.");
+                    System.out.println("El snack está dado de baja indefinidamente.");
                     break;
                 } else {
                     return alimento;
