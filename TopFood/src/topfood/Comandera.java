@@ -13,24 +13,21 @@ public class Comandera {
     
     
     private static Mesero LogIn(Mesero[] meseros) {
-
-        for (int fallas = 0; fallas<3;fallas++) {//Registra cuantas veces ha fallado
-            int password = Aux.InputInt("Ingresa tu contraseña para iniciar sesión:");
-            for(int i = 0;i<meseros.length;i++){ //Compara con las contraseñas de cada mesero
-                if (meseros[i] == null) {
-                    System.out.println("Error. Contraseña incorrecta.");
-                    Aux.wait(1500);
-                    break;//En caso de que la contraseña no pertenezca a ningun mesero, regresa al ciclo externo
-                }else if ( meseros[i].getPassword()==password){
-                    return meseros[i];
-                }
+    for (int fallas = 0; fallas < 3; fallas++) {
+        int password = Aux.InputInt("Ingresa tu contraseña para iniciar sesión:");
+        for (Mesero mesero : meseros) {
+            if (mesero != null && mesero.getPassword() == password) {
+                return mesero;
             }
         }
-        int crear = Aux.InputIntRange("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No",1,2);
-        if (crear == 1) crearMesero(meseros); 
-        //En caso que no se haya creado un mesero nuevo ni la contraseña sea correcta, devuelve null
-        return null;            
+        System.out.println("Error. Contraseña incorrecta.");
+        Aux.wait(1500);
     }
+    int crear = Aux.InputIntRange("¿Deseas crear un mesero nuevo?\n1. Sí\n2. No", 1, 2);
+    if (crear == 1) crearMesero(meseros); 
+    return null;
+}
+
 
     public static void crearMesero(Mesero[] meseros) {
         for (int i = 0; i < meseros.length; i++) {
@@ -148,7 +145,7 @@ public class Comandera {
             Alimento alimento = buscarAlimento(Aux.InputString("Ingresa el nombre de el producto: "), menu);//Busca el alimento
             alimento.setExistencia(existencia); //Da de alta o da de baja
             System.out.println("Alimento dado de "+(existencia ? "alta" : "baja")+" exitosamente");
-        } catch (NullPointerException e) {//Si a caso el platillo fuera nulo
+        } catch (NullPointerException e) {//Si a caso el Postre fuera nulo
             return;
         }
 
@@ -267,7 +264,7 @@ public class Comandera {
     public static void crearAlimento(Alimento[] menu) {
         String menuCrear = """
         Crear:
-        1. Platillo
+        1. Postre
         2. Café""";
 
         int opc = Aux.InputIntRange(menuCrear,1,2);
@@ -275,14 +272,14 @@ public class Comandera {
             if (menu[i] == null) {
                 switch (opc) {
                     case 1:
-                        menu[i] = new Snack(Aux.InputString("Ingresa el nombre del platillo:"),
-                         Aux.InputDouble("Ingresa el costo del platillo:"),
+                        menu[i] = new Postre(Aux.InputString("Ingresa el nombre del Postre:"),
+                         Aux.InputDouble("Ingresa el costo del postre:"),
                           "",
                            true,
                            Aux.InputInt("Ingresa el tamaño del Paquete / Porcion Grande:"));
                         return;
                     case 2:
-                       menu[i] = new Cafe(Aux.InputString("Ingresa el nombre del cafe:"),
+                       menu[i] = new Cafe(Aux.InputString("Ingresa el nombre del café:"),
                          Aux.InputDouble("Ingresa el costo del cafe:"),
                           "",
                            true);
@@ -308,8 +305,8 @@ public class Comandera {
                 if(intento==3)break;
             }else{
 
-                if (pedido instanceof Snack) {
-                configurarSnack((Snack) pedido);
+                if (pedido instanceof Postre) {
+                configurarPostre((Postre) pedido);
                 } else if (pedido instanceof Cafe) {
                 configurarCafe((Cafe) pedido);
                 }
@@ -317,7 +314,7 @@ public class Comandera {
                 pedido.setComentario(Aux.InputString("Realizar un comentario:"));//Agregar comentario
 
                 int cantidad = Aux.InputInt(
-                (pedido instanceof Cafe) ? "Cantidad de cafés iguales:" : "Cantidad de platillos iguales:");
+                (pedido instanceof Cafe) ? "Cantidad de cafés iguales:" : "Cantidad de Postres iguales:");
                 agregarPedido(comanda, pedido, cantidad, mesa);
                 contador += cantidad;
                 if (!deseaOtroPedido()) {
@@ -355,12 +352,12 @@ public class Comandera {
         if (opcion >= 0 && opcion < cafe.getMilklistSize()) cafe.setMilk(opcion);
     }
     
-    private static void configurarSnack(Snack snack) {
+    private static void configurarPostre(Postre Postre) {
         String indOpaquete = """
         1. Porcion individual
         2. Porcion Completa""";
         //Capturar si se trata de una porcion o de un paquete
-        snack.setPorcionIndividual(Aux.InputIntRange(indOpaquete, 1, 2) == 1);  
+        Postre.setPorcionIndividual(Aux.InputIntRange(indOpaquete, 1, 2) == 1);  
     }
     
     private static void agregarPedido(Alimento[] comanda, Alimento alimento, int cantidad, Mesa mesa) {
@@ -385,8 +382,8 @@ public class Comandera {
     }
 
     private static void mostrarResumen(Alimento[] comanda){
-        Class<?>[] clases = new Class<?>[] { Snack.class , Cafe.class};
-        String[] etiquetas = { "Platillos:", "Cafés:" };
+        Class<?>[] clases = new Class<?>[] { Postre.class , Cafe.class};
+        String[] etiquetas = { "Postres:", "Cafés:" };
         for(int i = 0; i<clases.length;i++){
             System.out.println("=================================");
             System.out.println(etiquetas[i]);
@@ -409,7 +406,7 @@ public class Comandera {
             if(alimento == null) continue;
             if (alimento.getNombre().equalsIgnoreCase(nombre)) {
                 if (!alimento.isExistencia()) {
-                    System.out.println("El platillo está dado de baja indefinidamente.");
+                    System.out.println("El Postre está dado de baja indefinidamente.");
                     break;
                 } else {
                     return alimento;
