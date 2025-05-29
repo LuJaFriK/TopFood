@@ -1,11 +1,11 @@
 package topfood;
 
-public class Postre extends Alimento {
+public class Snack extends Alimento {
 
     private boolean porcionIndividual;
     private int porcionGrande; 
 
-    public Postre(String nombre,double costo,String comentario,boolean existencia, int porcion) {
+    public Snack(String nombre,double costo,String comentario,boolean existencia, int porcion) {
         super(nombre, costo, comentario, existencia);
         this.porcionIndividual = true;
         this.porcionGrande = porcion;

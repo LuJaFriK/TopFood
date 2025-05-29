@@ -56,7 +56,7 @@ public class Mesa implements Serializable{
         }
 
         if (agregados < cantidad) {
-            System.out.println("Aviso: Solo se agregaron " + agregados + " de " + cantidad + " Postres por falta de espacio.");
+            System.out.println("Aviso: Solo se agregaron " + agregados + " de " + cantidad + " platillos por falta de espacio.");
         }
     }
 
