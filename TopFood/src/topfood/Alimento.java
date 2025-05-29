@@ -2,7 +2,7 @@ package topfood;
 
 import java.io.Serializable;
 
-public class Alimento implements Serializable{
+public abstract class Alimento implements Serializable{
     private String nombre;
     private double costo;
     private String comentario;
@@ -24,7 +24,7 @@ public class Alimento implements Serializable{
         this.nombre = nombre;
     }
 
-    public double getCosto() {
+    public  double getCosto(){
         return costo;
     }
 
@@ -56,7 +56,6 @@ public class Alimento implements Serializable{
         return 
         ("Nombre: "+nombre+
         "\nPrecio: " + costo+
-        "\nComentarios: " + getComentario()+
-        "\nExistencia: " + (existencia ? "Si." : "No."));
+        "\nComentarios: " + getComentario());
     }
 }

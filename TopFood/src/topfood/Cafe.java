@@ -9,7 +9,7 @@ public class Cafe extends Alimento{
 
      public Cafe(String nombre, double costo,String comentario,boolean existencia){
           super(nombre,costo,comentario,existencia);
-          this.cafeina=false;
+          this.cafeina=true;
           this.hielo=false;
           this.leche=milkList[0];
           this.size = sizeList[0];

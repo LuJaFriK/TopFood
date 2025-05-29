@@ -21,7 +21,7 @@ public class Comandera {
                     System.out.println("Error. Contraseña incorrecta.");
                     Aux.wait(1500);
                     break;//En caso de que la contraseña no pertenezca a ningun mesero, regresa al ciclo externo
-                }else if ( meseros[i].login(password)){
+                }else if ( meseros[i].getPassword()==password){
                     return meseros[i];
                 }
             }
@@ -36,21 +36,52 @@ public class Comandera {
         for (int i = 0; i < meseros.length; i++) {
             if (meseros[i] == null) {
                 String nombre = Aux.InputString("Ingresa el nombre del mesero:");
+                
+                // Generar código único entre 1 y 100
+                int codigodemesero;
                 do {
+                    codigodemesero = (int) (Math.random() * 100) + 1;
+                } while (codigoExistente(meseros, codigodemesero));
+                
+                // Pedir y confirmar contraseña
+                while (true) {
                     int password = Aux.InputInt("Ingresa la contraseña: ");
                     if (password == Aux.InputInt("Confirma tu contraseña: ")) {
-                        meseros[i] = new Mesero(nombre, i, password);
+                        meseros[i] = new Mesero(nombre, codigodemesero, password);
                         return;
                     } else {
-                        System.out.println("Error. las contraseñas no coinciden.");
+                        System.out.println("Error. Las contraseñas no coinciden.");
                         Aux.wait(1500);
                     }
-                } while (true);
+                }
             }
         }
         System.out.println("Error. No pueden ingresar más meseros.");
         Aux.wait(2000);
     }
+
+    public static void eliminarMesero(Mesero[]meseros){
+        int codigo = Aux.InputInt("Ingresa el código del mesero");
+        for (int i = 0; i < meseros.length; i++) {
+        if (meseros[i] != null && meseros[i].getCodigo() == codigo) {
+            meseros[i] = null;
+            System.out.println("Mesero con código " + codigo + " eliminado exitosamente.");
+            return;
+        }
+    }
+    System.out.println("Error: No se encontró ningún mesero con el código " + codigo + ".");
+    }
+
+    // Método para verificar si el código ya existe
+    private static boolean codigoExistente(Mesero[] meseros, int codigo) {
+        for (Mesero m : meseros) {
+            if (m != null && m.getCodigo() == codigo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 
         Mesero[] meseros = new Mesero[20]; 
@@ -70,31 +101,41 @@ public class Comandera {
             Ingrese la acción que desea realizar a continuación:
             1.- Iniciar sesión como mesero.
             2.- Registrar un mesero nuevo.
-            3.- Ingresar nuevos alimentos.
-            4.- Dar de baja un producto.
-            5.- Dar de alta un producto.
-            6.- Salir del sistema.""";
+            3.- Eliminar un mesero.
+            4.- Ingresar nuevos alimentos.
+            5.- Dar de baja un producto.
+            6.- Dar de alta un producto.
+            7.- Salir del sistema.""";
         // menu en bucle
-        while (true /*case 6 hace return*/){
-            int opcion = Aux.InputIntRange(menus,1,6);
+        while (true /*case 7 hace return*/){
+            int opcion = Aux.InputIntRange(menus,1,7);
             switch (opcion) {
                 case 1:
-                    // Iniciar sesion como mesero, si no, crear un mesero
+                // Iniciar sesion como mesero, si no, crear un mesero
                     MenuMesero(null, meseros, mesas, menu);
                     break;
                 case 2:
+                //Registrar un mesero nuevo
                     crearMesero(meseros);
                     break;
                 case 3:
-                    crearAlimento(menu);
+                //Eliminar un mesero.
+                    eliminarMesero(meseros);
                     break;
                 case 4:
-                    SetExistencia(Aux.InputString("Ingresa el nombre de el producto: "), menu, false);
+                //Ingresar nuevos alimentos
+                    crearAlimento(menu);
                     break;
                 case 5:
-                    SetExistencia(Aux.InputString("Ingresa el nombre de el producto: "), menu, true);
+                //Dar de baja un producto
+                    SetExistencia(menu, false);
                     break;
                 case 6:
+                //Dar de alta un producto
+                    SetExistencia(menu, true);
+                    break;
+                case 7:
+                //Salir del sistema
                     System.out.println("Saliendo...");
                     Aux.guardarDatos(meseros, menu);
                     return;
@@ -102,14 +143,12 @@ public class Comandera {
         }
     }
 
-    public static void SetExistencia(String nombre,Alimento[] menu,boolean existencia) {
+    public static void SetExistencia(Alimento[] menu,boolean existencia) {
         try {
-            Alimento alimento = buscarAlimento(nombre, menu);
-            alimento.setExistencia(existencia);
-            System.out.print("Alimento dado de ");
-            System.out.print(existencia ? "alta" : "baja");
-            System.out.println(" exitosamente");
-        } catch (NullPointerException e) {
+            Alimento alimento = buscarAlimento(Aux.InputString("Ingresa el nombre de el producto: "), menu);//Busca el alimento
+            alimento.setExistencia(existencia); //Da de alta o da de baja
+            System.out.println("Alimento dado de "+(existencia ? "alta" : "baja")+" exitosamente");
+        } catch (NullPointerException e) {//Si a caso el platillo fuera nulo
             return;
         }
 
@@ -136,9 +175,11 @@ public class Comandera {
             int opc = Aux.InputIntRange(menumesero,1,7);            
             switch (opc) {
                 case 1:
+                //Abrir una cuenta
                     asignarMesa(user, mesas, menu);
                     break;
                 case 2:
+                //Visualizar las mesas propias
                     for(Mesa mesa : mesas){
                         if(mesa != null && mesa.getMesero() == user){
                             System.out.println(mesa);
@@ -147,9 +188,10 @@ public class Comandera {
                     }                
                     break;
                 case 3:
+                //Agregar productos a una mesa propia ya existente
                     try {
                         int i = Aux.InputInt("Ingresa el numero de la mesa:");
-                        if (isMyMesa(user, mesas[i])) {
+                        if (mesas[i].getMesero()==user) {
                         hacerPedido(mesas[i], user, menu);
                         System.out.println(user.getNombre());
                         }
@@ -158,9 +200,10 @@ public class Comandera {
                     }
                     break;
                 case 4:
+                //Cerrar una cuenta abierta
                     try{
                         int i = Aux.InputInt("Ingresa la cuenta que deseas cerrar:");
-                        if (isMyMesa(user, mesas[i]) && mesas[i].isActivo()) {
+                        if (mesas[i].getMesero()==user && mesas[i].isActivo()) {
                             Ticket(mesas[i]);
                             mesas[i].setActivo(false);
                         } else {
@@ -173,12 +216,15 @@ public class Comandera {
                     }
                     break;
                 case 5:
+                //Eliminar una cuenta cerrada
                     DeleteMesa(user, mesas);
                     break;
                 case 6:
+                //Juntar dos mesas propias en una sola cuenta
                     juntarMesas(user, mesas);
                     break;
                 case 7:
+                //Cerrar cesión como mesero (Las mesas no se manipulan)
                     System.out.println("Saliendo...");
                     return;
             }
@@ -194,11 +240,11 @@ public class Comandera {
             Mesa mesa1 = mesas[a];
             Mesa mesa2 = mesas[b];
             if(mesa1.getNumero() == newmesa || mesa2.getNumero() == newmesa || mesas[newmesa]==null){
-                if(isMyMesa(mesero, mesa1) && isMyMesa(mesero, mesa2) ){
-                    Mesa newMesa = new Mesa(mesero, newmesa,(mesa1.getPersonas()+mesa2.getPersonas()),true);
+                if(mesa1.getMesero()==mesero && mesa2.getMesero()==mesero ){
+                    Mesa newMesa = new Mesa(mesero, newmesa,true);
                     Mesa[] temparray = {mesa1, mesa2};
                     for (Mesa mesa : temparray) {
-                        for(int i=0;i<mesa.getPedidolength();i++){
+                        for(int i=0;i<100;i++){
                             newMesa.addPedido(mesa.getpedido(i), 1);
                         }
                     }
@@ -217,18 +263,6 @@ public class Comandera {
         }
         
     }
-
-    public static boolean isMyMesa (Mesero mesero, Mesa mesa){
-        try{
-            if(mesa.getMesero()==mesero){
-                return true;
-            }
-        }catch(NullPointerException ex){
-            System.out.println("Error, la mesa no ha sido encontrada o no es operada por el mesero.");
-            Aux.wait(2000);
-        }
-        return false;
-    }
     
     public static void crearAlimento(Alimento[] menu) {
         String menuCrear = """
@@ -241,10 +275,11 @@ public class Comandera {
             if (menu[i] == null) {
                 switch (opc) {
                     case 1:
-                        menu[i] = new Platillo(Aux.InputString("Ingresa el nombre del platillo:"),
+                        menu[i] = new Snack(Aux.InputString("Ingresa el nombre del platillo:"),
                          Aux.InputDouble("Ingresa el costo del platillo:"),
                           "",
-                           true);
+                           true,
+                           Aux.InputInt("Ingresa el tamaño del Paquete / Porcion Grande:"));
                         return;
                     case 2:
                        menu[i] = new Cafe(Aux.InputString("Ingresa el nombre del cafe:"),
@@ -260,9 +295,7 @@ public class Comandera {
     }
 
     public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu) {
-        if (!isMyMesa(mesero, mesa)) {
-            return;
-        }
+        if (!(mesa.getMesero()==mesero)) return;
         
         Alimento[] comanda = new Alimento[100];
         int contador = 0;
@@ -273,23 +306,22 @@ public class Comandera {
             if(pedido == null){
                 intento++;
                 if(intento==3)break;
-            }
-            else{
+            }else{
 
-                pedido.setComentario(Aux.InputString("Realizar un comentario:"));//Agregar comentario
-    
-                if (pedido instanceof Platillo) {
-                configurarPlatillo((Platillo) pedido);
+                if (pedido instanceof Snack) {
+                configurarSnack((Snack) pedido);
                 } else if (pedido instanceof Cafe) {
                 configurarCafe((Cafe) pedido);
                 }
+
+                pedido.setComentario(Aux.InputString("Realizar un comentario:"));//Agregar comentario
 
                 int cantidad = Aux.InputInt(
                 (pedido instanceof Cafe) ? "Cantidad de cafés iguales:" : "Cantidad de platillos iguales:");
                 agregarPedido(comanda, pedido, cantidad, mesa);
                 contador += cantidad;
                 if (!deseaOtroPedido()) {
-                    mesa.setTotal();
+                    mesa.addTotal(pedido.getCosto()*cantidad);
                     mostrarResumen(comanda);
                     return;
                 }
@@ -298,28 +330,7 @@ public class Comandera {
         System.out.println("No se ingresarán más alimentos a la cuenta.");
         Aux.wait(2000);
     }
-    
-    private static void configurarPlatillo(Platillo platillo) {
-        int opcion;
-        String[] ordenyprioridad = {
-            """
-        Orden completa o media orden:
-        1. Orden Completa
-        2. Media Orden""",
-        """
-        1. Prioridad Alta
-        2. Prioridad Baja"""
-        };
 
-            opcion = Aux.InputIntRange(ordenyprioridad[0],1,2);
-            if(opcion == 1) platillo.setOrdenCompleta(true);
-            else platillo.setOrdenCompleta(false);
-            
-            opcion = Aux.InputIntRange(ordenyprioridad[1],1,2);
-            if(opcion == 1) platillo.setPrioridadAlta(true);
-            else platillo.setPrioridadAlta(false);
-    }
-    
     private static void configurarCafe(Cafe cafe) {
         int opcion;
         String[] menucafeteria = {
@@ -344,6 +355,13 @@ public class Comandera {
         if (opcion >= 0 && opcion < cafe.getMilklistSize()) cafe.setMilk(opcion);
     }
     
+    private static void configurarSnack(Snack snack) {
+        String indOpaquete = """
+        1. Porcion individual
+        2. Porcion Completa""";
+        //Capturar si se trata de una porcion o de un paquete
+        snack.setPorcionIndividual(Aux.InputIntRange(indOpaquete, 1, 2) == 1);  
+    }
     
     private static void agregarPedido(Alimento[] comanda, Alimento alimento, int cantidad, Mesa mesa) {
         mesa.addPedido(alimento, cantidad);
@@ -362,15 +380,12 @@ public class Comandera {
         1. Sí
         2. No""";
 
-        int condicion = Aux.InputIntRange(otropedido,1,2);
-        if(condicion==1){
-            return true;
-        }
-        return false;
+        return (Aux.InputIntRange(otropedido, 1, 2) == 1);
+
     }
 
     private static void mostrarResumen(Alimento[] comanda){
-        Class<?>[] clases = new Class<?>[] { Platillo.class , Cafe.class};
+        Class<?>[] clases = new Class<?>[] { Snack.class , Cafe.class};
         String[] etiquetas = { "Platillos:", "Cafés:" };
         for(int i = 0; i<clases.length;i++){
             System.out.println("=================================");
@@ -401,9 +416,8 @@ public class Comandera {
                 }
             }
         }
-        Aux.wait(300);
         System.out.println("No se ha encontrado el alimento.");
-        Aux.wait(1500);
+        Aux.wait(1000);
         return null;
     }
 
@@ -414,16 +428,13 @@ public class Comandera {
         if (mesas[i]!=null) {
             System.out.println("Error, la mesa está ocupada.");
         } else {
-            int personas = Aux.InputInt("Ingresa el numero de personas: ");
-            mesas[i] = new Mesa(mesero, i, personas, true);
-            mesero.addContador();
+            mesas[i] = new Mesa(mesero, i, true);
 
                 String ordenar = """
                 Desea tomar la orden?
                 1. Si       2. No""";
 
-                int tomarorden = Aux.InputIntRange(ordenar,1,2);
-                if (tomarorden == 1) hacerPedido(mesas[i], mesero, menu); 
+                if (Aux.InputIntRange(ordenar,1,2) == 1) hacerPedido(mesas[i], mesero, menu); 
                 else return;
         }
     }
@@ -432,9 +443,8 @@ public class Comandera {
         Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "=========TICKET=========");
         Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Mesa: " + mesa.getNumero());
         Aux.OverrideFile(mesa.getNumero()+"_temp.txt","Mesero: " + mesa.getMesero());
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Personas: " + mesa.getPersonas());
         Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Nombre  =========   Costo");
-        for(int i=0;i<mesa.getPedidolength();i++){
+        for(int i=0;i<100;i++){
             if(mesa.getpedido(i)!=null){
                 Aux.OverrideFile(mesa.getNumero()+"_temp.txt", mesa.getpedido(i).getNombre() + " =============  $" + mesa.getpedido(i).getCosto());
             }
@@ -452,7 +462,7 @@ public class Comandera {
     public static void DeleteMesa(Mesero user, Mesa[] mesas){
         try{
             int i = Aux.InputInt("Ingresa el numero de la cuenta a eliminar:");
-            if(isMyMesa(user, mesas[i])&&!mesas[i].isActivo()){
+            if(mesas[i].getMesero()==user&&!mesas[i].isActivo()){
                 mesas[i] = null;
             } else {
                 System.out.println("Error. La mesa sigue activa o no es operada por el mesero.");   
