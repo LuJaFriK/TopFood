@@ -1,5 +1,5 @@
 
-# ☕ Sistema de Gestión para Mesas de Cafetería
+# ☕ TopFood
 
 Este programa de escritorio, desarrollado en Java y operado desde la línea de comandos (CLI), permite a una cafetería gestionar de forma eficiente sus mesas, pedidos y productos, todo almacenado en archivos locales.
 
