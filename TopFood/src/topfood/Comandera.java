@@ -386,7 +386,7 @@ public class Comandera {
 
     private static void mostrarResumen(Alimento[] comanda){
         Class<?>[] clases = new Class<?>[] { Snack.class , Cafe.class};
-        String[] etiquetas = { "snacks:", "Cafés:" };
+        String[] etiquetas = { "Snacks:", "Cafés:" };
         for(int i = 0; i<clases.length;i++){
             System.out.println("=================================");
             System.out.println(etiquetas[i]);

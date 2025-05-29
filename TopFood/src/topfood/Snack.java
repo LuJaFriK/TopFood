@@ -30,7 +30,7 @@ public class Snack extends Alimento {
     }
     @Override
     public double getCosto(){
-        double newCosto = getCosto();
+        double newCosto = super.getCosto();
         if (!isPorcionIndividual()) newCosto*=(porcionGrande-2);
         return newCosto;
     }

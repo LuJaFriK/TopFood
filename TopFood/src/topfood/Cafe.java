@@ -39,7 +39,7 @@ public class Cafe extends Alimento{
                  "1. " + milkList[1] + "\n" +
                  "2. " + milkList[2] + "\n" +
                  "3. " + milkList[3] + "\n" +
-                 "4. " + milkList[3];
+                 "4. " + milkList[4];
 }
 
 
