@@ -116,9 +116,9 @@ public class Aux {
         }
         return data;
         
-     }
+    }
 
-     public static void BufferedReader(String filename){
+    public static void BufferedReader(String filename){
         File file = new File(filename+".txt");
         try (BufferedReader reader = new BufferedReader(new FileReader(file))){
             String data;
@@ -131,10 +131,10 @@ public class Aux {
         }catch (IOException ex) {
             ex.printStackTrace();
         }
-     }
+    }
 
      //Escribir archivos 
-     public static void OverrideFile(String filename, String order){
+    public static void OverrideFile(String filename, String order){
         try{
             FileWriter file = new FileWriter(filename, true);
             file.write(order + System.lineSeparator());
@@ -143,9 +143,9 @@ public class Aux {
             System.out.println("Algo ha pasado. Intenta nuevamente.");
             ex.printStackTrace();
         }
-     }
+    }
 
-     public static void pause(){
+    public static void pause(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Presiona enter para continuar");
         String enter = scanner.nextLine();
@@ -153,9 +153,9 @@ public class Aux {
              scanner.nextLine();
              return;
         }
-   }
+    }
    
-   public static void guardarDatos(Mesero[] meseros, Alimento[] menu){
+    public static void guardarDatos(Mesero[] meseros, Alimento[] menu){
         File archivo = new File("Data.dat");
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
             oos.writeObject(meseros);
