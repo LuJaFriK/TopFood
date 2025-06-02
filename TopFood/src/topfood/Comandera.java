@@ -61,6 +61,13 @@ public class Comandera {
     }
 
     public static void eliminarMesero(Mesero[]meseros){
+        for(Mesero mesero : meseros){
+            if(mesero !=null){
+                System.out.println("---------------");
+                System.out.println(mesero);
+                System.out.println("---------------");
+            }
+        }
         int codigo = Aux.InputInt("Ingresa el código del mesero");
         for (int i = 0; i < meseros.length; i++) {
         if (meseros[i] != null && meseros[i].getCodigo() == codigo) {
@@ -307,7 +314,7 @@ public class Comandera {
                 intento++;
                 if(intento==3)break;
             }else{
-
+                intento = 0;
                 if (pedido instanceof Snack) {
                 configurarSnack((Snack) pedido);
                 } else if (pedido instanceof Cafe) {
