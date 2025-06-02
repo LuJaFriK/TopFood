@@ -1,4 +1,5 @@
 package topfood;
+
 public class Cafe extends Alimento{
      private boolean cafeina;
      private boolean hielo;
@@ -16,7 +17,6 @@ public class Cafe extends Alimento{
      }
      
      public boolean hasCafeina() {
-          System.out.println((cafeina ? "Si.":"No."));
           return cafeina;
      }
 
@@ -25,7 +25,6 @@ public class Cafe extends Alimento{
      }
 
      public boolean hasHielo() {
-          System.out.println((hielo ? "Si.":"No."));
           return hielo;
      }
 

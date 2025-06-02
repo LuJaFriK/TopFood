@@ -33,9 +33,7 @@ public abstract class Alimento implements Serializable{
     }
 
     public String getComentario() {
-        if (comentario==null){
-            comentario = "";
-        }
+        if (comentario==null) comentario = "";
         return comentario;
     }
 

@@ -11,8 +11,6 @@ public class Snack extends Alimento {
         this.porcionGrande = porcion;
     }
 
-
-
     public boolean isPorcionIndividual() {
         return porcionIndividual;
     }
