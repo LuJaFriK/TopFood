@@ -121,22 +121,6 @@ public class Aux {
         return data;
         
     }
-
-    public static void BufferedReader(String filename){
-        File file = new File(filename+".txt");
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
-            String data;
-            while((data = reader.readLine())!=null){
-                System.out.println(data);
-            }
-            reader.close();
-        } catch(FileNotFoundException ex){
-            System.out.println("Error. Archivo no encontrado.");
-        }catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
      //Escribir archivos 
     public static void OverrideFile(String filename, String order){
         try{
@@ -159,11 +143,12 @@ public class Aux {
         }
     }
    
-    public static void guardarDatos(Mesero[] meseros, Alimento[] menu){
+    public static void guardarDatos(Mesero[] meseros, Alimento[] menu, int cant){
         File archivo = new File("Data.dat");
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
             oos.writeObject(meseros);
             oos.writeObject(menu);
+            oos.writeInt(cant);
             System.out.println("Datos guardados exitosamente");
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,10 +159,11 @@ public class Aux {
     public static Object[] cargarDatos(){
         File archivo = new File("Data.dat");
         if(!archivo.exists()) return null;
-        Object[] Datos = new Object[2];
+        Object[] Datos = new Object[3];
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))){
             Datos[0] = (Mesero[]) ois.readObject();
             Datos[1] = (Alimento[]) ois.readObject();
+            Datos[2] = ois.readInt();
         }catch(IOException e){
             e.printStackTrace();
         }catch(ClassNotFoundException e){

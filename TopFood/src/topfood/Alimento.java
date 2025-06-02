@@ -49,6 +49,11 @@ public abstract class Alimento implements Serializable{
         this.existencia = existencia;
     }
 
+    public void detalles(){
+        System.out.println(nombre);
+        System.out.println("$ "+costo);
+    }
+
     @Override
     public String toString() {
         return 
