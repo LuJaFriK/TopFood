@@ -32,15 +32,17 @@ public class Aux {
         Scanner scanner = new Scanner(System.in);
         String scanned;
         while (true) {
-            System.out.println(mensaje);
+            System.out.println(mensaje+ "(-1 para salir).");
             scanned = scanner.nextLine();
-            if (!scanned.isEmpty()) {
-                break;
-            }
+            if (!scanned.isEmpty()) break;
             System.out.println("Error, no se permite una entrada vacía. Intente nuevamente.");
             wait(2000);
         }
-        
+        if(scanned.equals("-1")){
+            System.out.println("Cancelado...");
+            return null;
+        } 
+
         return scanned;
     }    
 
@@ -50,7 +52,7 @@ public class Aux {
         int scanned;
         while (true) {
             try {
-                System.out.println(mensaje);
+                System.out.println(mensaje+ "(-1 para salir).");
                 scanned = scanner.nextInt(); 
                 break;
             } catch (InputMismatchException ex) {
@@ -59,6 +61,7 @@ public class Aux {
                 wait(2000);
             }
         }
+        if(scanned == -1) System.out.println("Cancelado...");
         return scanned;
     }
 
@@ -67,7 +70,7 @@ public class Aux {
         double scanned;
         while (true) {
             try {
-                System.out.println(mensaje);
+                System.out.println(mensaje+ "(-1 para salir).");
                 scanned = scanner.nextDouble(); 
                 break;
             } catch (InputMismatchException ex) {
@@ -76,6 +79,7 @@ public class Aux {
                 wait(2000);
             }
         }
+        if(scanned == -1) System.out.println("Cancelado...");
         return scanned;
     }
 
