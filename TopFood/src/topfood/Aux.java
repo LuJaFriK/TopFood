@@ -118,13 +118,8 @@ public class Aux {
         }catch (IOException ex) {
             ex.printStackTrace();
         }
-        return data;
-        
+        return data;   
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 2c949fb892457191159f173cbe0cf1146c586a50
      //Escribir archivos 
     public static void OverrideFile(String filename, String order){
         try{
