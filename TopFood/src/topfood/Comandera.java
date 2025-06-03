@@ -54,7 +54,7 @@ public class Comandera {
                     if(password1 == -1) return;
                     int password2 = Aux.InputInt("Confirma tu contraseña: ");
                     if(password2 == -1) return;
-                    if (password1 == password2) {
+                    if (password1 == password2 && !passwordExistente(meseros, password2)) {
                         meseros[i] = new Mesero(nombre, codigodemesero, password1);
                         return;
                     } else {
@@ -88,10 +88,19 @@ public class Comandera {
     System.out.println("Error: No se encontró ningún mesero con el código " + codigo + ".");
     }
 
-    // Método para verificar si el código ya existe
+    // Verificar si el código ya existe
     private static boolean codigoExistente(Mesero[] meseros, int codigo) {
         for (Mesero m : meseros) {
             if (m != null && m.getCodigo() == codigo) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // Verifica si la contraseña no existe
+    private static boolean passwordExistente(Mesero[] meseros, int password) {
+        for (Mesero m : meseros) {
+            if (m != null && m.getPassword() == password) {
                 return true;
             }
         }
