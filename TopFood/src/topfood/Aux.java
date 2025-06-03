@@ -21,7 +21,6 @@ public class Aux {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
-            // Aquí puedes registrar, ignorar o actuar según el caso
             System.out.println("La espera fue interrumpida.");
         }
     }   
