@@ -84,7 +84,7 @@ public class Comandera {
             System.out.println("Mesero con código " + codigo + " eliminado exitosamente.");
             return;
         }
-    }
+        }
     System.out.println("Error: No se encontró ningún mesero con el código " + codigo + ".");
     }
 
