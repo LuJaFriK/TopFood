@@ -6,7 +6,7 @@ public class Cafe extends Alimento{
      private String leche; 
      private String[] milkList= {"No","Entera","Deslactosada","Light","Almendras"};
      private String size;
-     private String[] sizeList={"CH","M","G"};
+     private String[] sizeList={"CH","M","G"};.
 
      public Cafe(String nombre, double costo,String comentario,boolean existencia){
           super(nombre,costo,comentario,existencia);
