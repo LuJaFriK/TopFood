@@ -1,8 +1,8 @@
 public interface Pricing {
     
-    void SetCosto(double CostoBase);
+    public void SetCosto(double CostoBase);
 
-    double getCosto();
+    public double getCosto();
     
-    void ConfigCosto();
+    protected void ConfigCosto();
 }

@@ -4,6 +4,11 @@
  */
 package topfood;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 /**
@@ -11,121 +16,69 @@ package topfood;
  * @author Luis Javier Robles Topete 25460001
  */
 public class Comandera {
-    
-    
-    private static Mesero LogIn(Mesero[] meseros) {
 
-        for (int fallas = 0; fallas<4;fallas++) {//Registra cuantas veces ha fallado
-            int password = Aux.InputInt("Ingresa tu contraseña para iniciar sesión:");
-            if(password==-1) break;
-            for(int i = 0;i<meseros.length;i++){ //Compara con las contraseñas de cada mesero
-                if (meseros[i] == null) {
-                    System.out.println("Error. Contraseña incorrecta.");
-                    Aux.wait(1500);
-                    break;//En caso de que la contraseña no pertenezca a ningun mesero, regresa al ciclo externo
-                }else if ( meseros[i].getPassword()==password){
-                    return meseros[i];
-                }
+    private static Map<Integer,Mesero> meseros = new HashMap<>();
+    private static List<Alimento> menu = new ArrayList<>();
+    private static List<Mesa> mesas = new ArrayList<>();
+
+    private static Mesero MeseroLogIn(){
+        int attempts = 0;
+        while(True){
+            int meseroKey = Aux.InputInt("Ingresa tu clave de mesero:");
+            if (meseros.get(meseroKey)){
+                int password = Aux.InputInt("Ingresa tu contraseña para iniciar sesión:");
+                if (meseros.get(meseroKey).login(password)) return meseros.get(meseroKey).login(password);
             }
-        if(fallas == 3){
-            int crear = Aux.InputIntRange("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No",1,2);
-            if (crear == 1) crearMesero(meseros);
-            else if (crear == -1) continue; 
+            System.out.println("Error. Contraseña incorrecta.");
+            i++;
+
         }
-        }
-        //En caso que no se haya creado un mesero nuevo ni la contraseña sea correcta, devuelve null
-        return null;            
+        int crear = Aux.InputIntRange("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No",1,2);
+        if (crear == 1) crearMesero(meseros);
+        return null;
     }
 
     public static void crearMesero(Mesero[] meseros) {
-        for (int i = 0; i < meseros.length; i++) {
-            if (meseros[i] == null) {
-                String nombre = Aux.InputString("Ingresa el nombre del mesero:");
-                if(nombre == null) return;
-                // Generar código único entre 1 y 100
-                int codigodemesero;
-                do {
-                    codigodemesero = (int) (Math.random() * 100) + 1;
-                } while (codigoExistente(meseros, codigodemesero));
-                
-                // Pedir y confirmar contraseña
-                while (true) {
-                    int password1 = Aux.InputInt("Ingresa la contraseña: ");
-                    if(password1 == -1) return;
-                    int password2 = Aux.InputInt("Confirma tu contraseña: ");
-                    if(password2 == -1) return;
-                    if (password1 == password2 && !passwordExistente(meseros, password2)) {
-                        meseros[i] = new Mesero(nombre, codigodemesero, password1);
-                        return;
-                    } else {
-                        System.out.println("Error. Las contraseñas no coinciden.");
-                        Aux.wait(1500);
-                    }
-                }
+        String nombre = Aux.InputString("Ingresa el nombre del mesero:");
+        while (true) {
+            int password1 = Aux.InputInt("Ingresa la contraseña: ");
+            if (password1 == -1) return;
+            int password2 = Aux.InputInt("Confirma tu contraseña: ");
+            if (password2 == -1) return;
+            if (!password1 == password2) {
+                System.out.println("Error. Las contraseñas no coinciden.");
+                Aux.wait(1500);
             }
         }
-        System.out.println("Error. No pueden ingresar más meseros.");
-        Aux.wait(2000);
+        Mesero newMesero = new Mesero();
+        while(True){
+            Integer key = Aux.InputInt("Ingresa una clave nueva:");
+            if (!meseros.containsKey(key)) {
+                meseros.put(key, newMesero);
+                break;
+            }else{
+                System.out.println("Error. La clave ya existe.");
+            }
+        }
     }
 
-    public static void eliminarMesero(Mesero[]meseros){
-        for(Mesero mesero : meseros){
-            if(mesero !=null){
-                System.out.println("---------------");
-                System.out.println(mesero);
-                System.out.println("---------------");
-            }
-        }
-        int codigo = Aux.InputInt("Ingresa el código del mesero");
+    public static void eliminarMesero(){
+        Aux.printList(meseros.values(),"-------------");
+        Integer key = Aux.InputInt("Ingresa el código del mesero");
         if(codigo == -1) return;
-        for (int i = 0; i < meseros.length; i++) {
-        if (meseros[i] != null && meseros[i].getCodigo() == codigo) {
-            meseros[i] = null;
-            System.out.println("Mesero con código " + codigo + " eliminado exitosamente.");
-            return;
-        }
-        }
-    System.out.println("Error: No se encontró ningún mesero con el código " + codigo + ".");
-    }
-
-    // Verificar si el código ya existe
-    private static boolean codigoExistente(Mesero[] meseros, int codigo) {
-        for (Mesero m : meseros) {
-            if (m != null && m.getCodigo() == codigo) {
-                return true;
-            }
-        }
-        return false;
-    }
-    // Verifica si la contraseña no existe
-    private static boolean passwordExistente(Mesero[] meseros, int password) {
-        for (Mesero m : meseros) {
-            if (m != null && m.getPassword() == password) {
-                return true;
-            }
-        }
-        return false;
+        meseros.remove(key)
     }
 
     public static void main(String[] args) {
 
-        Mesero[] meseros = new Mesero[20]; 
-        Alimento[] menu = new Alimento[90];
-        int mesasLength = 0;
-
         /*Carga los datos de los archivos*/{
                 Object[] Datos = Aux.cargarDatos();
                 if (Datos != null) {
-                    if (Datos[0] != null) meseros = (Mesero[]) Datos[0];
-                    if (Datos[1] != null) menu = (Alimento[]) Datos[1];
-                    if (Datos[2] != null) mesasLength = (int) Datos[2];
+                    if (Datos[0] != null) meseros = (hMap<Integer,Mesero>) Datos[0];
+                    if (Datos[1] != null) menu = (List<Alimento>) Datos[1];
                 }
-                if(mesasLength == 0||mesasLength == -1) mesasLength = Aux.InputInt("Ingrese la cantidad de mesas disponibles:")+1;
-                if(mesasLength == -1) return;
-                
         }
 
-        Mesa[] mesas = new Mesa[mesasLength];     
         String menus = """
             Ingrese la acción que desea realizar a continuación:
             1.- Iniciar sesión como mesero.
@@ -178,7 +131,7 @@ public class Comandera {
         }
     }
 
-    public static void SetExistencia(Alimento[] menu,boolean existencia) {
+    public static void SetExistencia(boolean existencia) {
         try {
             mostrarMenu(menu);
             Alimento alimento = buscarAlimento(Aux.InputString("Ingresa el nombre de el producto: "), menu);//Busca el alimento
@@ -190,7 +143,7 @@ public class Comandera {
 
     }
 
-    public static void MenuMesero(Mesero user, Mesero[] meseros, Mesa[] mesas, Alimento[] menu) {
+    public static void MenuMesero() {
         
         String menumesero = """
         1.- Abrir cuenta.

@@ -2,18 +2,24 @@ package topfood;
 
 import java.io.Serializable;
 
-public abstract class Alimento implements Serializable{
+public abstract class Alimento implements Serializable,Pricing {
     private String nombre;
     private double costo;
     private String comentario;
     private boolean existencia;
 
-    public Alimento(String nombre, double costo, String comentario, boolean existencia) {
+    public Alimento(String nombre, double costo, boolean existencia) {
         this.nombre = nombre;
         this.costo = costo;
-        this.comentario = comentario;
+        this.comentario = "";
         this.existencia = existencia;
+    }
 
+    public Alimento(final Alimento original,String comentario){
+        this.nombre = original.nombre;
+        this.costo = ConfigCosto(original.costo);
+        this.comentario = comentario;
+        this.existencia = original.existencia;
     }
 
     public String getNombre() {
@@ -24,17 +30,23 @@ public abstract class Alimento implements Serializable{
         this.nombre = nombre;
     }
 
+    @Override
     public  double getCosto(){
         return costo;
     }
 
+    @Override
     public void setCosto(double costo) {
         this.costo = costo;
     }
 
+    @Override
+    protected ConfigCosto(double CostoBase){
+        return CostoBase;
+    }
+
     public String getComentario() {
-        if (comentario==null) comentario = "";
-        return comentario;
+        return (comentario!=null?comentario:"");
     }
 
     public void setComentario(String comentario) {
@@ -49,16 +61,11 @@ public abstract class Alimento implements Serializable{
         this.existencia = existencia;
     }
 
-    public void detalles(){
-        System.out.println(nombre);
-        System.out.println("$ "+costo);
-    }
-
     @Override
     public String toString() {
         return 
         ("Nombre: "+nombre+
         "\nPrecio: " + costo+
-        "\nComentarios: " + getComentario());
+        (comentario!=null?"\nComentarios: " + comentario:""));
     }
 }

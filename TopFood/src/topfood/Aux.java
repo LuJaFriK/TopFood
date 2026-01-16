@@ -141,27 +141,38 @@ public class Aux {
         }
     }
    
-    public static void guardarDatos(Mesero[] meseros, Alimento[] menu, int cant){
+    public static void guardarDatos(Map<Integer,Mesero> meseros,List<Alimento> menu){
         File archivo = new File("Data.dat");
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
             oos.writeObject(meseros);
             oos.writeObject(menu);
-            oos.writeInt(cant);
             System.out.println("Datos guardados exitosamente");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
+    public static void printList(List<?> list){
+        int i=0;
+        for(var value: list) System.out.println(i+": "+ value); i++;
+    }
+
+    public static void printList(List<?> list,String design){
+        int i=0;
+        for(var value: list) {
+            System.out.println(design);
+            System.out.println(i+": "+ value); i++;
+            System.out.println(design);
+        }
+    }
 
     public static Object[] cargarDatos(){
         File archivo = new File("Data.dat");
         if(!archivo.exists()) return null;
-        Object[] Datos = new Object[3];
+        Object[] Datos = new Object[2];
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))){
             Datos[0] = (Mesero[]) ois.readObject();
             Datos[1] = (Alimento[]) ois.readObject();
-            Datos[2] = ois.readInt();
         }catch(IOException e){
             e.printStackTrace();
         }catch(ClassNotFoundException e){

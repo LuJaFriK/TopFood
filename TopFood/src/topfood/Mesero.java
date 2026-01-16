@@ -5,10 +5,9 @@ import java.io.Serializable;
 public class Mesero implements Serializable{
 
     private String nombre;
-    private int codigo;
     private int password;
 
-    public Mesero(String nombre, int codigo, int password) {
+    public Mesero(String nombre, int password) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.password = password;
@@ -16,7 +15,6 @@ public class Mesero implements Serializable{
 
     public Mesero() {
         nombre = "Default";
-        codigo = 0;
         password = -1;
     }
 
@@ -28,26 +26,13 @@ public class Mesero implements Serializable{
         this.nombre = nombre;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public boolean login(int password){
+        return (this.password == password);
     }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-
-    public int getPassword() {
-        return password;
-    }
-
-    public void setPassword(int password) {
-        this.password = password;
-    }    
 
     @Override
     public String toString() {
-        return "Codigo: " + codigo + "\n" +
-            "Nombre: " + nombre + "\n";
+            "Nombre: " + nombre;
     }
 
 }
