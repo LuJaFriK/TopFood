@@ -1,8 +1,8 @@
-package topfood;
+package src.backend;
 
 import java.io.Serializable;
 
-public abstract class Alimento implements Serializable,Pricing {
+public abstract class Alimento implements Serializable {
     private String nombre;
     private double costo;
     private String comentario;
@@ -15,13 +15,6 @@ public abstract class Alimento implements Serializable,Pricing {
         this.existencia = existencia;
     }
 
-    public Alimento(final Alimento original,String comentario){
-        this.nombre = original.nombre;
-        this.costo = ConfigCosto(original.costo);
-        this.comentario = comentario;
-        this.existencia = original.existencia;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -30,20 +23,18 @@ public abstract class Alimento implements Serializable,Pricing {
         this.nombre = nombre;
     }
 
-    @Override
+
     public  double getCosto(){
         return costo;
     }
 
-    @Override
+
     public void setCosto(double costo) {
         this.costo = costo;
     }
 
-    @Override
-    protected double ConfigCosto(double CostoBase){
-        return CostoBase;
-    }
+
+    protected abstract double configCosto(double costoBase);
 
     public String getComentario() {
         return (comentario!=null?comentario:"");

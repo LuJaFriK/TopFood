@@ -1,4 +1,4 @@
-package topfood;
+package src.backend;
 
 import java.io.Serializable;
 

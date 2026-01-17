@@ -1,3 +1,5 @@
+package src.backend;
+
 public enum SizeType implements Modifier{
     CHICO("CH"),
     MEDIANO("M"),

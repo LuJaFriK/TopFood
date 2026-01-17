@@ -1,3 +1,5 @@
+package src.backend;
+
 public enum MilkType implements Modifier{
     NO("No"),
     ENTERA("Entera"),

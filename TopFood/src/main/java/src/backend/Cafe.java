@@ -1,4 +1,4 @@
-package topfood;
+package src.backend;
 import topfood.Alimento;
 import topfood.MilkType;
 

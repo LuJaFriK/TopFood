@@ -1,3 +1,5 @@
+package src.backend;
+
 public interface Modifier {
 
     static <T extends Enum<T> & Modifier> T fromString(Class<T> enumClass, String text, T defaultValue) {

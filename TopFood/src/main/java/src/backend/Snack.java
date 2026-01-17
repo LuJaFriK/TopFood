@@ -1,4 +1,4 @@
-package topfood;
+package src.backend;
 
 public class Snack extends Alimento {
 
@@ -32,6 +32,7 @@ public class Snack extends Alimento {
         if (!isPorcionIndividual()) newCosto*=(porcionGrande-2);
         return newCosto;
     }
+
     
     @Override
     public String toString() {

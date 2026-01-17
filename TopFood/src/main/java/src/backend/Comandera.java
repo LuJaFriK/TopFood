@@ -1,17 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
-package topfood;
-
+package src.backend;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
-import topfood.Mesero;
-import topfood.Alimento;
-import topfood.Mesa;
-import topfood.Aux;
 
 
 
@@ -25,7 +16,7 @@ public class Comandera {
     private static List<Alimento> menu = new ArrayList<>();
     private static List<Mesa> mesas = new ArrayList<>();
 
-    private static topfood.Mesero MeseroLogIn(){
+    private static Mesero MeseroLogIn(){
         int attempts = 0;
         while(true){
             int meseroKey = Aux.InputInt("Ingresa tu clave de mesero:");
@@ -40,11 +31,6 @@ public class Comandera {
         int crear = Aux.InputIntRange("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No",1,2);
         if (crear == 1) crearMesero();
         return null;
-    }
-
-    public static void nigga(){
-        String hola = "hola";
-        hola.e
     }
 
     public static void crearMesero() {
