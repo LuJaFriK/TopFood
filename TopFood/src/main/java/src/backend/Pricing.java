@@ -4,5 +4,5 @@ public interface Pricing {
 
     public double getCosto();
     
-    protected void ConfigCosto();
+    void ConfigCosto();
 }

@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+import topfood.Mesero;
+import topfood.Alimento;
+import topfood.Mesa;
+import topfood.Aux;
 
 
 
@@ -17,41 +21,46 @@ import java.util.List;
  */
 public class Comandera {
 
-    private static Map<Integer,Mesero> meseros = new HashMap<>();
+    private static Map<Integer, Mesero> meseros = new HashMap<>();
     private static List<Alimento> menu = new ArrayList<>();
     private static List<Mesa> mesas = new ArrayList<>();
 
-    private static Mesero MeseroLogIn(){
+    private static topfood.Mesero MeseroLogIn(){
         int attempts = 0;
-        while(True){
+        while(true){
             int meseroKey = Aux.InputInt("Ingresa tu clave de mesero:");
-            if (meseros.get(meseroKey)){
+            if (meseros.containsKey(meseroKey)){
                 int password = Aux.InputInt("Ingresa tu contraseña para iniciar sesión:");
                 if (meseros.get(meseroKey).login(password)) return meseros.get(meseroKey).login(password);
             }
             System.out.println("Error. Contraseña incorrecta.");
-            i++;
+            attempts++;
 
         }
         int crear = Aux.InputIntRange("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No",1,2);
-        if (crear == 1) crearMesero(meseros);
+        if (crear == 1) crearMesero();
         return null;
     }
 
-    public static void crearMesero(Mesero[] meseros) {
+    public static void nigga(){
+        String hola = "hola";
+        hola.e
+    }
+
+    public static void crearMesero() {
         String nombre = Aux.InputString("Ingresa el nombre del mesero:");
         while (true) {
             int password1 = Aux.InputInt("Ingresa la contraseña: ");
             if (password1 == -1) return;
             int password2 = Aux.InputInt("Confirma tu contraseña: ");
             if (password2 == -1) return;
-            if (!password1 == password2) {
+            if (password1 != password2) {
                 System.out.println("Error. Las contraseñas no coinciden.");
                 Aux.wait(1500);
             }
         }
         Mesero newMesero = new Mesero();
-        while(True){
+        while(true){
             Integer key = Aux.InputInt("Ingresa una clave nueva:");
             if (!meseros.containsKey(key)) {
                 meseros.put(key, newMesero);

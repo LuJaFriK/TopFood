@@ -41,7 +41,7 @@ public abstract class Alimento implements Serializable,Pricing {
     }
 
     @Override
-    protected ConfigCosto(double CostoBase){
+    protected double ConfigCosto(double CostoBase){
         return CostoBase;
     }
 

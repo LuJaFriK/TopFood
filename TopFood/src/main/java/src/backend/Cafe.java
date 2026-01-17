@@ -1,10 +1,13 @@
 package topfood;
+import topfood.Alimento;
+import topfood.MilkType;
+
 
 public class Cafe extends Alimento{
      private boolean caffeine;
      private boolean ice;
      private MilkType milk;
-     private Size size;
+     private SizeType size;
 
      public Cafe(String nombre, double costo,boolean existencia){
           super(nombre,costo,existencia);
@@ -43,11 +46,11 @@ public class Cafe extends Alimento{
           return milk;
      }
 
-     public void setSize(Size size){
+     public void setSize(SizeType size){
           this.size = size;
      }
 
-     public Size getSize(){
+     public SizeType getSize(){
           return size;
      }
 
@@ -55,8 +58,8 @@ public class Cafe extends Alimento{
      public double getCosto() {
           double newCosto = super.getCosto();
 
-          if("Almendras".equals(leche)) newCosto += 10;
-          if(size.equalsIgnoreCase("M")) newCosto *= 1.10;
+          if("Almendras".equals(milk.toString())) newCosto += 10;
+          if(size.toString().equalsIgnoreCase("M")) newCosto *= 1.10;
           else if(size.equalsIgnoreCase("G")) newCosto *= 1.20;
 
           return newCosto;
