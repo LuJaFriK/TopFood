@@ -10,11 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collection;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Aux {
@@ -139,7 +135,6 @@ public class Aux {
         String enter = scanner.nextLine();
         if(enter.equals("/n")){
              scanner.nextLine();
-             return;
         }
     }
    
@@ -154,27 +149,37 @@ public class Aux {
         }
     }
 
-    public static void printList(List<?> list){
-        int i=0;
-        for(var value: list) System.out.println(i+": "+ value); i++;
-    }
-
-    public static void printList(List<?> list,String design){
+    public static String printList(List<?> list,String design){
+        StringBuilder sb = new StringBuilder();
         int i=0;
         for(var value: list) {
-            System.out.println(design);
-            System.out.println(i+": "+ value); i++;
-            System.out.println(design);
+            sb.append(design);
+            sb.append(i+": "+ value.toString()); i++;
+            sb.append(design);
         }
+        return sb.toString();
     }
 
-    public static void printList(Collection<?> list, String design){
+    public static String printList(Collection<?> list, String design){
+        StringBuilder sb = new StringBuilder();
         int i=0;
         for(var value: list) {
-            System.out.println(design);
-            System.out.println(i+": "+ value); i++;
-            System.out.println(design);
+            sb.append(design);
+            sb.append(i+": "+ value.toString()); i++;
+            sb.append(design);
         }
+        return sb.toString();
+    }
+
+    public static String printList( list, String design){
+        StringBuilder sb = new StringBuilder();
+        int i=0;
+        for(var value: list) {
+            sb.append(design);
+            sb.append(i+": "+ value.toString()); i++;
+            sb.append(design);
+        }
+        return sb.toString();
     }
 
     public static Object[] cargarDatos(){

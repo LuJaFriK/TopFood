@@ -15,25 +15,24 @@ public class Comandera {
     private static Map<Integer, Mesero> meseros = new HashMap<>();
     private static List<Alimento> menu = new ArrayList<>();
     private static List<Mesa> mesas = new ArrayList<>();
+    private static Mesero user;
 
     private static Mesero MeseroLogIn(){
-        int attempts = 0;
-        while(true){
+
+        for(int attempts = 0;attempts<3;attempts++){
             int meseroKey = Aux.InputInt("Ingresa tu clave de mesero:");
             if (meseros.containsKey(meseroKey)){
                 int password = Aux.InputInt("Ingresa tu contraseña para iniciar sesión:");
-                if (meseros.get(meseroKey).login(password)) return meseros.get(meseroKey).login(password);
+                if (meseros.get(meseroKey).login(password)) return meseros.get(meseroKey);
             }
             System.out.println("Error. Contraseña incorrecta.");
-            attempts++;
-
         }
         int crear = Aux.InputIntRange("Parece que haz ingresado una clave incorrecta muchas veces, deseas crear un mesero nuevo? \n 1. Si      2. No",1,2);
         if (crear == 1) crearMesero();
         return null;
     }
 
-    public static void crearMesero() {
+    private static void crearMesero() {
         String nombre = Aux.InputString("Ingresa el nombre del mesero:");
         while (true) {
             int password1 = Aux.InputInt("Ingresa la contraseña: ");
@@ -58,7 +57,7 @@ public class Comandera {
         }
     }
 
-    public static void eliminarMesero(){
+    private static void eliminarMesero(){
         Aux.printList(meseros.values(),"-------------");
         Integer key = Aux.InputInt("Ingresa el código del mesero");
         if(key == -1) return;
@@ -70,8 +69,8 @@ public class Comandera {
         /*Carga los datos de los archivos*/{
                 Object[] Datos = Aux.cargarDatos();
                 if (Datos != null) {
-                    if (Datos[0] != null) meseros = (Map<Integer,Mesero>) Datos[0];
-                    if (Datos[1] != null) menu = (List<Alimento>) Datos[1];
+                    if (Datos[0] != null) meseros = (HashMap<Integer,Mesero>) Datos[0];
+                    if (Datos[1] != null) menu = (ArrayList<Alimento>) Datos[1];
                 }
         }
 
@@ -123,8 +122,8 @@ public class Comandera {
 
     public static void SetExistencia(boolean existencia) {
         try {
-            mostrarMenu();
-            Alimento alimento = buscarAlimento(Aux.InputString("Ingresa el nombre de el producto: "), menu);//Busca el alimento
+            ResumenAlimentos(menu);
+            Alimento alimento = buscarAlimento(Aux.InputString("Ingresa el nombre de el producto: "));//Busca el alimento
             alimento.setExistencia(existencia); //Da de alta o da de baja
             System.out.println("Alimento dado de "+(existencia ? "alta" : "baja")+" exitosamente");
         } catch (NullPointerException e) {//Si a caso el snack fuera nulo
@@ -144,7 +143,7 @@ public class Comandera {
         6.- Juntar cuentas.
         7.- Salir.""";
         // inicio de sesion como mesero
-        user = LogIn(meseros);
+        user = MeseroLogIn();
         if(user == null){
             return;
         }
@@ -284,16 +283,16 @@ public class Comandera {
         Aux.wait(2000);
     }
 
-    public static void hacerPedido(Mesa mesa, Mesero mesero, Alimento[] menu) {
-        if (mesa.getMesero()!=mesero) return;
+    public static void hacerPedido(Mesa mesa) {
+        if (mesa.getMesero()!=user) return;
         
-        Alimento[] comanda = new Alimento[100];
+        List<Alimento> comanda = new ArrayList<>();
         int contador = 0;
         int intento = 0;
-        while (contador < comanda.length) {
-            mostrarMenu(menu);
+        while (true) {
+            ResumenAlimentos(menu);
             String nombre = Aux.InputString("Busqueda por nombre:"); //Busca un alimento para agregarlo y configurarlo
-            Alimento pedido = buscarAlimento(nombre, menu);
+            Alimento pedido = buscarAlimento(nombre);
             if(pedido == null){  
                 intento++;              //Si fall
                 if(intento==3) break;
@@ -326,8 +325,6 @@ public class Comandera {
                 }
             }     
         }
-        System.out.println("No se ingresarán más alimentos a la cuenta.");
-        Aux.wait(2000);
     }
 
     private static void configurarCafe(Cafe cafe) {
@@ -350,10 +347,10 @@ public class Comandera {
         if(opcion == 1) cafe.setHielo(true);
         else cafe.setHielo(false);       
 
-        opcion = Aux.InputIntRange("Tipo de leche:\n"+cafe.printMilklist(),0,(cafe.getMilklistSize()-1));//Para elegir una leche o no
-        if (opcion >= 0 && opcion < cafe.getMilklistSize()) cafe.setMilk(opcion);
+        opcion = Aux.InputIntRange("Tipo de leche:\n"+Aux.printList(MilkType.print()),1,MilkType.length);
+        cafe.setMilk(MilkType.fromInt(opcion));
     }
-    
+
     private static void configurarSnack(Snack snack) {
         final String indOpaquete = """
         1. Porcion individual
@@ -397,15 +394,14 @@ public class Comandera {
     // Metodo buscador de un alimento, si lo encuentra retorna el alimento, si no, retorna
     // null
 
-    public static Alimento buscarAlimento(String nombre, Alimento[] menu) {
+    public static Alimento buscarAlimento(String nombre) {
         for (Alimento alimento : menu) {
-            if(alimento == null) continue;
             if (alimento.getNombre().equalsIgnoreCase(nombre)) {
-                if (!alimento.isExistencia()) {
+                if (alimento.isExistencia()) {
+                    return alimento;
+                } else {
                     System.out.println("El snack está dado de baja indefinidamente.");
                     break;
-                } else {
-                    return alimento;
                 }
             }
         }
@@ -438,31 +434,44 @@ public class Comandera {
     }
 
     public static void Ticket(Mesa mesa) { //Exporta el ticker a un archivo.txt
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "=========TICKET=========");
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Mesa: " + mesa.getNumero());
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt","Mesero: " + mesa.getMesero());
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Nombre  =========   Costo");
+        StringBuilder pedidos = new StringBuilder();
+        pedidos.append("=========TICKET=========\n");
+        pedidos.append("Mesa: "); pedidos.append(mesa.getNumero());
+        pedidos.append("\n");
+        pedidos.append("Mesero: "); pedidos.append( mesa.getMesero());
+        pedidos.append("\n");
+        pedidos.append("Nombre  =========   Costo\n");
+
         for(int i=0;i<100;i++){
             if(mesa.getpedido(i)!=null){
-                Aux.OverrideFile(mesa.getNumero()+"_temp.txt", mesa.getpedido(i).getNombre() + " =============  $" + mesa.getpedido(i).getCosto());
+                pedidos.append(mesa.getpedido(i).getNombre());
+                pedidos.append(" =============  $");
+                pedidos.append(mesa.getpedido(i).getCosto());
+                pedidos.append("\n");
             }
         }
-        System.out.println("===============================");
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Subtotal: ---------- $" + mesa.getTotal());
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "IVA (16%): --------- $" + (mesa.getTotal() * 0.16));
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "Total: ------------- $" + (mesa.getTotal() * 1.16));
-        Aux.OverrideFile(mesa.getNumero()+"_temp.txt", "=========================");
+        pedidos.append("===============================\n");
+        pedidos.append("Subtotal: ---------- $");pedidos.append( mesa.getTotal());
+        pedidos.append("\n");
+        pedidos.append("IVA (16%): --------- $");pedidos.append(mesa.getTotal() * 0.16);
+        pedidos.append("\n");
+        pedidos.append("Total: ------------- $");
+        pedidos.append(mesa.getTotal() * 1.16);
+        pedidos.append("\n");
+        pedidos.append("=========================\n");
+        Aux.OverrideFile(mesa.getNumero()+"_temp.txt",pedidos.toString());
         mesa.setActivo(false);
 
     }
 
 
-    public static void DeleteMesa(Mesero user, Mesa[] mesas){ //Vacia un espacio del arreglo de las mesas si esta ya ha sido 
+    public static void DeleteMesa(){ //Vacia un espacio del arreglo de las mesas si esta ya ha sido
         try{                                                  //cobrada
-            int i = Aux.InputInt("Ingresa el numero de la cuenta a eliminar:");
-            if(i==-1) return;
-            if(mesas[i].getMesero()==user&&!mesas[i].isActivo()){
-                mesas[i] = null;
+            int index = Aux.InputInt("Ingresa el numero de la cuenta a eliminar:");
+            if(index==-1) return;
+            var mesaDelete = mesas.get(index);
+            if(mesaDelete.getMesero()==user && !mesaDelete.isActivo()){
+                mesas.remove(index);
             } else {
                 System.out.println("Error. La mesa sigue activa o no es operada por el mesero.");   
             }
