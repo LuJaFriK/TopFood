@@ -11,8 +11,15 @@ public abstract class Alimento implements Serializable {
     public Alimento(String nombre, double costo, boolean existencia) {
         this.nombre = nombre;
         this.costo = costo;
-        this.comentario = "";
+        this.comentario = null;
         this.existencia = existencia;
+    }
+
+    public Alimento(final Alimento original,String comentario){
+        this.nombre = original.nombre;
+        this.costo = configCosto(original.costo);
+        this.comentario = comentario;
+        this.existencia = original.existencia;
     }
 
     public String getNombre() {

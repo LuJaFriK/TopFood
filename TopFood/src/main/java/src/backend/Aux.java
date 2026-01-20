@@ -10,9 +10,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+import java.util.List;
+import java.util.Map;
 
 
 public class Aux {
@@ -158,6 +160,15 @@ public class Aux {
     }
 
     public static void printList(List<?> list,String design){
+        int i=0;
+        for(var value: list) {
+            System.out.println(design);
+            System.out.println(i+": "+ value); i++;
+            System.out.println(design);
+        }
+    }
+
+    public static void printList(Collection<?> list, String design){
         int i=0;
         for(var value: list) {
             System.out.println(design);

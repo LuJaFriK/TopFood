@@ -44,6 +44,7 @@ public class Comandera {
                 System.out.println("Error. Las contraseñas no coinciden.");
                 Aux.wait(1500);
             }
+            break;
         }
         Mesero newMesero = new Mesero();
         while(true){
@@ -60,8 +61,8 @@ public class Comandera {
     public static void eliminarMesero(){
         Aux.printList(meseros.values(),"-------------");
         Integer key = Aux.InputInt("Ingresa el código del mesero");
-        if(codigo == -1) return;
-        meseros.remove(key)
+        if(key == -1) return;
+        meseros.remove(key);
     }
 
     public static void main(String[] args) {
@@ -69,7 +70,7 @@ public class Comandera {
         /*Carga los datos de los archivos*/{
                 Object[] Datos = Aux.cargarDatos();
                 if (Datos != null) {
-                    if (Datos[0] != null) meseros = (hMap<Integer,Mesero>) Datos[0];
+                    if (Datos[0] != null) meseros = (Map<Integer,Mesero>) Datos[0];
                     if (Datos[1] != null) menu = (List<Alimento>) Datos[1];
                 }
         }
@@ -82,45 +83,39 @@ public class Comandera {
             4.- Ingresar nuevos alimentos.
             5.- Dar de baja un producto.
             6.- Dar de alta un producto.
-            7.- Modificar la cantidad de mesas.
-            8.- Salir del sistema.""";
+            7.- Salir del sistema.""";
         // menu en bucle
         while (true /*case 7 hace return*/){
             int opcion = Aux.InputIntRange(menus,1,8);
             switch (opcion) {
                 case 1:
                 // Iniciar sesion como mesero, si no, crear un mesero
-                    MenuMesero(null, meseros, mesas, menu);
+                    MenuMesero();
                     break;
                 case 2:
                 //Registrar un mesero nuevo
-                    crearMesero(meseros);
+                    crearMesero();
                     break;
                 case 3:
                 //Eliminar un mesero.
-                    eliminarMesero(meseros);
+                    eliminarMesero();
                     break;
                 case 4:
                 //Ingresar nuevos alimentos
-                    crearAlimento(menu);
+                    crearAlimento();
                     break;
                 case 5:
                 //Dar de baja un producto
-                    SetExistencia(menu, false);
+                    SetExistencia(false);
                     break;
                 case 6:
                 //Dar de alta un producto
-                    SetExistencia(menu, true);
+                    SetExistencia(true);
                     break;
                 case 7:
-                    int index = Aux.InputInt("Ingrese la cantidad de mesas disponibles:")+1;
-                    if(index == -1) break; 
-                    mesasLength = index;
-                    break;
-                case 8:
                 //Salir del sistema
                     System.out.println("Saliendo...");
-                    Aux.guardarDatos(meseros, menu, mesasLength);
+                    Aux.guardarDatos(meseros, menu);
                     return;
             }
         }
@@ -128,7 +123,7 @@ public class Comandera {
 
     public static void SetExistencia(boolean existencia) {
         try {
-            mostrarMenu(menu);
+            mostrarMenu();
             Alimento alimento = buscarAlimento(Aux.InputString("Ingresa el nombre de el producto: "), menu);//Busca el alimento
             alimento.setExistencia(existencia); //Da de alta o da de baja
             System.out.println("Alimento dado de "+(existencia ? "alta" : "baja")+" exitosamente");
@@ -253,9 +248,9 @@ public class Comandera {
     }
     
 
-    public static void crearAlimento(Alimento[] menu) { //Crear nuevo alimento
+    public static void crearAlimento() { //Crear nuevo alimento
         
-        mostrarMenu(menu);
+        ResumenAlimentos(menu);
         
         String menuCrear = """
         Crear:
@@ -326,7 +321,7 @@ public class Comandera {
 
                 if (Aux.InputIntRange(otropedido, 1, 2) != 1) {
                     mesa.addTotal(pedido.getCosto()*cantidad);
-                    mostrarResumen(comanda);
+                    ResumenAlimentos(comanda);
                     return;
                 }
             }     
@@ -337,7 +332,7 @@ public class Comandera {
 
     private static void configurarCafe(Cafe cafe) {
         int opcion;
-        String[] menucafeteria = {
+        final String[] menucafeteria = {
             """
             Cafeina:
             1. Sí
@@ -345,7 +340,7 @@ public class Comandera {
             """
             Hielo:
             1. Frío
-            2. Caliente         """,};
+            2. Caliente""",};
       
         opcion = Aux.InputIntRange(menucafeteria[0],1,2);//Para agregar o no cafeina
         if(opcion == 1) cafe.setCafeina(true);
@@ -360,7 +355,7 @@ public class Comandera {
     }
     
     private static void configurarSnack(Snack snack) {
-        String indOpaquete = """
+        final String indOpaquete = """
         1. Porcion individual
         2. Porcion Completa""";
         //Capturar si se trata de una porcion o de un paquete
@@ -379,14 +374,16 @@ public class Comandera {
             }
     }
 
-    private static void mostrarResumen(Alimento[] comanda){  //Imprime una comanda
-        Class<?>[] clases = new Class<?>[] { Snack.class , Cafe.class};
-        String[] etiquetas = { "Snacks:", "Cafés:" };
-        for(int i = 0; i<clases.length;i++){
+    private static void ResumenAlimentos(List<Alimento> lista){
+        final var ClassMap = Map.of(
+                "Snacks:", Snack.class,
+                "Cafés:", Cafe.class
+        );
+        for(var etiqueta : ClassMap.entrySet()){
             System.out.println("=================================");
-            System.out.println(etiquetas[i]);
-            for(Alimento pedido : comanda){
-                if(pedido!=null && clases[i].isInstance(pedido)){
+            System.out.println(etiqueta.getKey());
+            for(Alimento pedido : lista){
+                if(etiqueta.getValue().isInstance(pedido)){
                     System.out.println("-----------------");
                     System.out.println(pedido);
                     System.out.println("-----------------");
@@ -396,22 +393,6 @@ public class Comandera {
         }
     }
 
-    private static void mostrarMenu(Alimento[] menu){  //Imprime solo el nombre y el precio de los alimentos de un menu
-        Class<?>[] clases = new Class<?>[] { Snack.class , Cafe.class};
-        String[] etiquetas = { "Snacks:", "Cafés:" };
-        for(int i = 0; i<clases.length;i++){
-            System.out.println("=================================");
-            System.out.println(etiquetas[i]);
-            for(Alimento alimento : menu){
-                if(alimento!=null && clases[i].isInstance(alimento)){
-                    System.out.println("-----------------");
-                    alimento.detalles();
-                    System.out.println("-----------------");
-                }
-            }
-            System.out.println("=================================");
-        }
-    }
     
     // Metodo buscador de un alimento, si lo encuentra retorna el alimento, si no, retorna
     // null

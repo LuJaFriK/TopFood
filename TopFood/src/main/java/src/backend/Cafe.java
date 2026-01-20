@@ -1,6 +1,4 @@
 package src.backend;
-import topfood.Alimento;
-import topfood.MilkType;
 
 
 public class Cafe extends Alimento{
@@ -11,10 +9,10 @@ public class Cafe extends Alimento{
 
      public Cafe(String nombre, double costo,boolean existencia){
           super(nombre,costo,existencia);
-          this.cafeina=true;
-          this.hielo=false;
-          this.leche=MilkType.NO;
-          this.size = Size.CHICO;
+          this.caffeine=true;
+          this.ice=false;
+          this.milk=MilkType.NO;
+          this.size = SizeType.CHICO;
      }
 
      public Cafe(final Cafe original,String comentario){
@@ -55,12 +53,24 @@ public class Cafe extends Alimento{
      }
 
      @Override
+     protected double configCosto(double costoBase) {
+          double costoNuevo = costoBase;
+          switch (size){
+               case SizeType.MEDIANO -> costoNuevo*=0.2;
+               case SizeType.GRANDE -> costoNuevo*=0.3;
+          }
+          if(milk==MilkType.ALMENDRAS) costoNuevo+=10;
+          return costoNuevo;
+     }
+
+
+     @Override
      public double getCosto() {
           double newCosto = super.getCosto();
 
           if("Almendras".equals(milk.toString())) newCosto += 10;
           if(size.toString().equalsIgnoreCase("M")) newCosto *= 1.10;
-          else if(size.equalsIgnoreCase("G")) newCosto *= 1.20;
+          else if(size.toString().equalsIgnoreCase("G")) newCosto *= 1.20;
 
           return newCosto;
      }
@@ -68,7 +78,7 @@ public class Cafe extends Alimento{
      @Override
      public String toString() {
           return super.toString()+
-                 "\n"+"Cafeina: "+(cafeina ? "Si" : "No")+
-                 "\n"+"Hielo: "+(hielo ? "Si.":"No.");
+                 "\n"+"Cafeina: "+(caffeine ? "Si" : "No")+
+                 "\n"+"Hielo: "+(ice ? "Si.":"No.");
      }
 }
